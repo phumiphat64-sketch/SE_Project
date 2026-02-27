@@ -1,22 +1,40 @@
 import Image from "next/image";
+import Link from "next/link";
+import "./globals.css";
+
+import { Crimson_Text, Caveat } from "next/font/google";
+
+const crimson = Crimson_Text({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
 
 export default function Home() {
   return (
     <div className="home-container">
       {/* Navbar */}
       <nav className="navbar">
-        <h1>ReRead</h1>
+        <h1 className={`logo-text ${caveat.className}`}>ReRead</h1>
       </nav>
 
       {/* Hero Section */}
       <section className="hero">
-        <h2 className="hero-title">ReRead</h2>
+        <h2 className={`logo-text2 ${caveat.className}`}>ReRead</h2>
         <p className="hero-sub">Give books a second life.</p>
         <p className="hero-sub2">BUY & SELL YOUR BOOKS</p>
 
         <div className="hero-buttons">
           <button className="btn-outline">Browse Books</button>
-          <button className="btn-filled">Join Now</button>
+
+          {/* ✅ ปุ่ม Join Now ไปหน้า Login */}
+          <Link href="/login" className="btn-filled">
+            Join Now
+          </Link>
         </div>
       </section>
 
@@ -26,7 +44,7 @@ export default function Home() {
           ReRead <span>Where books find new homes.</span>
         </h2>
 
-        <div className="book-grid">
+        {/* <div className="book-grid">
           {books.map((book, index) => (
             <div key={index} className="book-card">
               <Image
@@ -41,7 +59,7 @@ export default function Home() {
               <p className="seller">🟢 {book.seller}</p>
             </div>
           ))}
-        </div>
+        </div> */}
       </section>
 
       {/* Footer */}

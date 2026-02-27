@@ -93,6 +93,12 @@ a.secondary {
   border-color: var(--button-secondary-border);
 }
 
+.logo-R{
+  font-size: 50px;
+  font-weight: 700;
+  color: #6B4A3A;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   a.primary:hover {

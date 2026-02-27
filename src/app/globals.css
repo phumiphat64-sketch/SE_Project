@@ -5,11 +5,8 @@ body {
 }
 
 .navbar {
-  background-color: #5b3d31;
-  color: white;
-  padding: 20px;
-  font-size: 28px;
-  font-style: italic;
+  background-color: #5a4033;
+  padding: 18px 40px;
 }
 
 .hero {
@@ -110,4 +107,16 @@ body {
 .footer-links span {
   margin-left: 20px;
   cursor: pointer;
+}
+
+.logo-text {
+  font-size: 50px;
+  font-weight: 700;
+  color: white;
+}
+
+.logo-text2 {
+  font-size: 50px;
+  font-weight: 700;
+  color: #6B4A3A;
 }
