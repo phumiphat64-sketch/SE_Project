@@ -1,0 +1,165 @@
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.logo {
+  width: 270px;        /* ปรับขนาดได้ */
+  margin-bottom: 15px;
+}
+
+.title {
+  font-size: 50px;
+  font-weight: bold;
+  text-align: center;  /* ให้แน่ใจว่ากลาง */
+}
+
+.container {
+  min-height: 100vh;
+  background-color: white;   /* เปลี่ยนตรงนี้ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background: white;
+  width: 100%;
+  max-width: 900px;
+  padding: 50px 70px;
+  border-radius: 0;     /* เอาความโค้งออก */
+  box-shadow: none;     /* เอาเงาออก */
+  border: none;         /* เผื่อมี border */
+}
+
+.loginText {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup label {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.inputGroup input {
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.roleSection {
+  margin-top: 20px;
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+.roleOptions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+}
+
+.roleCard {
+  flex: 0 0 48%;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  padding: 80 80px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.roleCard h4 {
+  font-size: 22px;   /* ลดลง */
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.roleCard p {
+  font-size: 16px;   /* จาก 20 ลดลง */
+  line-height: 1.5;
+}
+
+.roleCard:hover {
+  border-color: #2f5d50;
+}
+
+.active {
+  background-color: #dce9e3;   /* เขียวอ่อน */
+  border: 2px solid #2f5d50;   /* ขอบเขียว */
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;  
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.checkboxLabel input {
+  margin-top: 3px;
+  accent-color: #2f5d50;
+}
+
+.linkText {
+  color: #1a73e8;      /* ฟ้าแบบ modern */
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.linkText:hover {
+  text-decoration: underline;
+}
+
+.required {
+  color: red;
+}
+
+.submitBtn {
+  margin-top: 20px;
+  background-color: #4c6b4f;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.submitBtn:hover {
+  background-color: #3b5740;
+}
+
+.footerText {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}

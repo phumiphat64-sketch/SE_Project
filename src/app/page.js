@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
-
 import { Crimson_Text, Caveat } from "next/font/google";
 import BookCarousel from "./components/BookCarousel";
 
@@ -19,9 +18,6 @@ export default function Home() {
   return (
     <div className="home-container">
       {/* Navbar */}
-      <nav className="navbar">
-        <h1 className={`logo-text ${caveat.className}`}>ReRead</h1>
-      </nav>
 
       {/* Hero Section */}
       <section className="hero">

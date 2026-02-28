@@ -16,10 +16,16 @@ const afacad = Afacad({
   weight: ["400", "500", "600", "700"],
 });
 
+import "./globals.css";
+import TopBar from "./components/TopBar";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={afacad.className}>{children}</body>
+      <body>
+        <TopBar />
+        {children}
+      </body>
     </html>
   );
 }

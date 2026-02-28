@@ -14,6 +14,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import styles from "./login.module.css";
+import Link from "next/link";
 
 import { Crimson_Text, Caveat } from "next/font/google";
 
@@ -42,10 +43,6 @@ export default function LoginPage() {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.topBar}>
-        <div className={`logo-text ${caveat.className}`}>ReRead</div>
-      </div>
-
       <div className={styles.container}>
         <div className={styles.logoWrapper}>
           <Image
@@ -89,7 +86,10 @@ export default function LoginPage() {
         </button>
 
         <p className={styles.signup}>
-          Don’t have an account? <span>Sign up</span>
+          Don’t have an account?{" "}
+          <Link href="/register" className={styles.link}>
+            Sign up
+          </Link>
         </p>
 
         <p className={styles.terms}>

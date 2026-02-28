@@ -1,0 +1,32 @@
+.topBar {
+  background-color: #5a4033;
+  height: 70px;
+  padding: 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* 👈 ตัวนี้สำคัญ */
+}
+
+.loginBtn {
+  background-color: #f3efe6;
+  color: #000;
+  padding: 3px 30px;
+  border-radius: 20px;
+  font-size: 18px;
+  text-decoration: none;
+  border: 1px solid #3d2c22;
+  transition: 0.3s;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 👈 เพิ่มตรงนี้ */
+}
+
+.loginBtn:hover {
+  background-color: #e6dfd4;
+}
+
+.logo {
+  font-size: 40px;
+  font-weight: bold;
+  color: white;   /* 👈 ใส่ตรงนี้ */
+}
