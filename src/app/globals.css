@@ -91,12 +91,12 @@ body {
 }
 
 .hero-sub {
-  font-size: 24px;
-  margin-top: 10px;
+  font-size: 45px;
+  margin-top: 20px;
 }
 
 .hero-sub2 {
-  font-weight: bold;
+  font-size: 28px;
   margin-top: 10px;
   letter-spacing: 2px;
 }
@@ -143,10 +143,10 @@ body {
 
 /* ========== Section Title ========== */
 .section-title {
-  text-align: center;
-  font-size: 38px;
-  color: #5b3d31;
-  margin-bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 50px; /* ระยะห่างระหว่างคำ */
 }
 
 .section-title span {

@@ -26,22 +26,24 @@ export default function Home() {
       {/* Hero Section */}
       <section className="hero">
         <h2 className={`hero-title ${caveat.className}`}>ReRead</h2>
-        <p className="hero-sub">Give books a second life.</p>
-        <p className="hero-sub2">BUY & SELL YOUR BOOKS</p>
+        <p className={`hero-sub ${caveat.className}`}>
+          Give books a second life.
+        </p>
+        <p className={`hero-sub2 ${caveat.className}`}>BUY & SELL YOUR BOOKS</p>
 
         <div className="hero-search-wrapper">
           {/* Search Box */}
-          <div className="search-box">
+          <div className="search-box ${caveat.className}">
             <input
               type="text"
               placeholder="Browse Books"
-              className="search-input"
+              className={`${caveat.className} search-input`}
             />
             <button className="search-btn">🔍</button>
           </div>
 
           {/* Join Button */}
-          <Link href="/login" className="btn-filled">
+          <Link href="/login" className={`btn-filled ${caveat.className}`}>
             Join Now
           </Link>
         </div>
@@ -50,7 +52,22 @@ export default function Home() {
       {/* Featured Books */}
       <section className="featured">
         <h2 className="section-title">
-          ReRead <span>Where books find new homes.</span>
+          <span
+            className={caveat.className}
+            style={{
+              fontSize: "4.5rem",
+              color: "#5b3d31",
+              fontWeight: 700,
+            }}
+          >
+            ReRead
+          </span>
+          <span
+            className={`hero-sub2 ${caveat.className}`}
+            style={{ fontSize: "2.8rem" }}
+          >
+            Where books find new homes.
+          </span>
         </h2>
 
         <BookCarousel books={books} />
