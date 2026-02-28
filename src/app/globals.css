@@ -1,23 +1,94 @@
-body {
+/* ========== Base ========== */
+html, body {
   margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+body {
   font-family: "Georgia", serif;
   background-color: #e8ddd1;
+  color: #3e2f25;
 }
 
+.home-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ========== Navbar ========== */
 .navbar {
   background-color: #5a4033;
-  padding: 18px 40px;
+  padding: 20px 60px;
+  display: flex;
+  align-items: center;
 }
 
+.logo-text {
+  font-size: 48px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 1px;
+}
+
+/* ========== Hero Section ========== */
 .hero {
   text-align: center;
-  padding: 80px 20px;
+  padding: 120px 20px 100px 20px;
 }
 
 .hero-title {
-  font-size: 64px;
+  font-size: 72px;
   color: #5b3d31;
   font-style: italic;
+  margin-bottom: 10px;
+}
+
+/* ===== Hero Search ===== */
+
+.hero-search-wrapper {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #e7ddcf;
+  border: 2px solid #5b3d31;
+  border-radius: 40px;
+  padding: 8px 18px;
+  width: 320px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.search-box:hover {
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  font-size: 18px;
+  color: #4d6b4e;
+}
+
+.search-input::placeholder {
+  color: #4d6b4e;
+  opacity: 0.8;
+}
+
+.search-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
 }
 
 .hero-sub {
@@ -28,95 +99,228 @@ body {
 .hero-sub2 {
   font-weight: bold;
   margin-top: 10px;
+  letter-spacing: 2px;
 }
 
 .hero-buttons {
-  margin-top: 30px;
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
+/* Buttons */
 .btn-outline {
   border: 2px solid #5b3d31;
   background: transparent;
-  padding: 10px 20px;
-  border-radius: 25px;
-  margin-right: 15px;
+  padding: 12px 28px;
+  border-radius: 30px;
   cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: #5b3d31;
+  color: white;
 }
 
 .btn-filled {
   background: #6a8f6b;
   color: white;
-  padding: 10px 20px;
-  border-radius: 25px;
+  padding: 12px 28px;
+  border-radius: 30px;
   border: none;
   cursor: pointer;
+  text-decoration: none;
+  font-size: 16px;
+  transition: all 0.3s ease;
 }
 
-.featured {
-  padding: 60px 40px;
+.btn-filled:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 
+/* ========== Section Title ========== */
 .section-title {
-  font-size: 36px;
+  text-align: center;
+  font-size: 38px;
   color: #5b3d31;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 }
 
 .section-title span {
+  display: block;
   font-size: 20px;
-  margin-left: 10px;
+  margin-top: 8px;
+  font-weight: normal;
 }
 
-.book-grid {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+/* ========== Featured Section ========== */
+.featured {
+  padding: 100px 80px;
 }
 
+/* ========== Book Card ========== */
 .book-card {
   background: white;
-  padding: 15px;
-  border-radius: 15px;
-  width: 180px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 18px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
 }
 
 .book-img {
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 .author {
   font-size: 14px;
-  color: gray;
+  color: #777;
 }
 
 .seller {
   font-size: 14px;
   margin-top: 5px;
+  color: #4a7a4a;
 }
 
-.footer {
-  background-color: #5b3d31;
-  color: white;
+/* ========== Why Section ========== */
+.why {
+  padding: 100px 80px;
+}
+
+.why-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.why-card {
+  background: white;
   padding: 30px;
+  border-radius: 20px;
+  width: 260px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* ========== Get Started Section ========== */
+.get-started {
+  padding: 100px 80px;
+}
+
+.start-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.start-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  width: 360px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+/* ========== Footer ========== */
+.footer {
+  background-color: #5a4033;
+  color: white;
+  padding: 50px 110px;
+}
+
+.footer-container {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* ล็อกฝั่งซ้าย */
+.footer-left {
+  display: flex;
+  gap: 1px;
+  flex: 0 0 420px;   /* 👈 สำคัญมาก */
+}
+
+/* คอลัมน์อื่นแบ่งพื้นที่เท่า ๆ กัน */
+.footer-column {
+  flex: 1;
+}
+
+.footer-book-image {
+  height: auto;
+}
+
+.footer-about h3 {
+  font-size: 24px;
+  margin-bottom: 14px;
+}
+
+.email-row {
+  display: flex;
   align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  margin-bottom: 15px;
 }
 
-.footer-links span {
-  margin-left: 20px;
+.social-icons {
+  display: flex;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.social-icons img {
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-.logo-text {
-  font-size: 50px;
-  font-weight: 700;
-  color: white;
+.social-icons img:hover {
+  transform: scale(1.1);
 }
 
-.logo-text2 {
-  font-size: 50px;
-  font-weight: 700;
-  color: #6B4A3A;
+/* Middle + Right */
+.footer-column h3 {
+  font-size: 24px;
+  margin-bottom: 14px;
+}
+
+.footer-column p {
+  font-size: 17px;
+  margin: 8px 0;
+  line-height: 1.6;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.footer-column p:hover {
+  opacity: 0.75;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .footer {
+    padding: 40px 30px;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .footer-book-image {
+    width: 150px;
+  }
 }
