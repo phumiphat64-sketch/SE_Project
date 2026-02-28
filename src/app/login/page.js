@@ -11,10 +11,13 @@
  * - ไม่ควรมี business logic
  */
 
+
+"use client";
 import { useState } from "react";
 import Image from "next/image";
 import styles from "./login.module.css";
 import Link from "next/link";
+import { useEffect } from "react";
 
 import { Crimson_Text, Caveat } from "next/font/google";
 
@@ -40,6 +43,16 @@ export default function LoginPage() {
       alert("Please fill in all fields");
     }
   };
+
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
 
   return (
     <div className={styles.wrapper}>

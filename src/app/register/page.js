@@ -15,7 +15,7 @@ const caveat = Caveat({
 
 export default function RegisterPage() {
   const [selected, setSelected] = useState(null);
-
+  
   return (
     <div className={styles.container}>
       <div className={styles.card}>
