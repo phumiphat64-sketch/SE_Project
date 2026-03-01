@@ -36,11 +36,32 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    // mock ชั่วคราว
-    if (email && password) {
-      alert("Login success (mock)");
-    } else {
+    if (!email || !password) {
       alert("Please fill in all fields");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
+      alert("Login successful");
+
+      // redirect หลัง login สำเร็จ
+      window.location.href = "/";
+    } catch (err) {
+      alert(err.message);
     }
   };
 
