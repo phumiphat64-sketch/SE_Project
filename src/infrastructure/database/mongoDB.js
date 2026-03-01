@@ -1,28 +1,22 @@
-import mongoose from "mongoose";
+// infrastructure/database/mongoDB.js
+// Singleton Pattern - Mongo Native Driver
 
-const MONGODB_URI = process.env.MONGODB_URI;
+import { MongoClient } from "mongodb";
 
-if (!MONGODB_URI) {
+const uri = process.env.MONGODB_URI;
+
+if (!uri) {
   throw new Error("Please define MONGODB_URI in .env.local");
 }
 
-let cached = global.mongoose;
+let client;
+let clientPromise;
 
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+if (!global._mongoClientPromise) {
+  client = new MongoClient(uri);
+  global._mongoClientPromise = client.connect();
 }
 
-async function connectDB() {
-  if (cached.conn) {
-    return cached.conn;
-  }
+clientPromise = global._mongoClientPromise;
 
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI);
-  }
-
-  cached.conn = await cached.promise;
-  return cached.conn;
-}
-
-export default connectDB;
+export default clientPromise;
