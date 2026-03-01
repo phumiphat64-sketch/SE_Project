@@ -203,6 +203,12 @@ export default function RegisterPage() {
               <span>
                 I accept the Terms of Service and Privacy Policy{" "}
                 <span className={styles.required}>*</span>
+                <br />
+                By checking this box, you agree to our{" "}
+                <span className={styles.linkText}>
+                  Terms of Service
+                </span> and{" "}
+                <span className={styles.linkText}>Privacy Policy</span>.
               </span>
             </label>
           </div>
