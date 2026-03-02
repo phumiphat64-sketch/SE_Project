@@ -1,22 +1,22 @@
 // infrastructure/database/mongoDB.js
-// Singleton Pattern - Mongo Native Driver
+// Singleton Pattern - Mongo Native Driver (Docker-safe)
 
 import { MongoClient } from "mongodb";
-
-const uri = process.env.MONGODB_URI;
-
-if (!uri) {
-  throw new Error("Please define MONGODB_URI in .env.local");
-}
 
 let client;
 let clientPromise;
 
-if (!global._mongoClientPromise) {
-  client = new MongoClient(uri);
-  global._mongoClientPromise = client.connect();
+export async function getClient() {
+  const uri = process.env.MONGODB_URI;
+
+  if (!uri) {
+    throw new Error("MONGODB_URI is not defined");
+  }
+
+  if (!clientPromise) {
+    client = new MongoClient(uri);
+    clientPromise = client.connect();
+  }
+
+  return clientPromise;
 }
-
-clientPromise = global._mongoClientPromise;
-
-export default clientPromise;

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import MongoUserRepository from "@/infrastructure/repositories/user.repository.mongo";
 import AuthService from "@/domain/services/auth.service";
 
