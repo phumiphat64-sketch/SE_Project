@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import "./globals.css";
 import { Crimson_Text, Caveat } from "next/font/google";
-import BookCarousel from "./components/BookCarousel";
+import BookCarousel from "../components/BookCarousel";
 
 const crimson = Crimson_Text({
   subsets: ["latin"],

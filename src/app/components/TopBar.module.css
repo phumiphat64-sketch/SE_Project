@@ -34,3 +34,21 @@
   font-weight: bold;
   color: white;   /* 👈 ใส่ตรงนี้ */
 }
+
+.menu {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+}
+
+.logoutBtn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}

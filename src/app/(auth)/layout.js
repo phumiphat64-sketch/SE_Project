@@ -1,4 +1,4 @@
-import "./globals.css";
+import TopBar from "../components/TopBar";
 import { Crimson_Text, Caveat, Afacad } from "next/font/google";
 
 const crimson = Crimson_Text({
@@ -16,15 +16,11 @@ const afacad = Afacad({
   weight: ["400", "500", "600", "700"],
 });
 
-import "./globals.css";
-import TopBar from "./components/TopBar";
-
-export default function RootLayout({ children }) {
+export default function AuthLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        {children}
-      </body>
-    </html>
+    <>
+      <TopBar />
+      {children}
+    </>
   );
 }

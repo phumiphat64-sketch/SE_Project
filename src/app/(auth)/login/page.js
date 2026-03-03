@@ -48,6 +48,7 @@ export default function LoginPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
+        credentials: "include", // 🔥 เพิ่มบรรทัดนี้
       });
 
       const data = await res.json();
@@ -58,8 +59,16 @@ export default function LoginPage() {
 
       alert("Login successful");
 
-      // redirect หลัง login สำเร็จ
-      window.location.href = "/";
+      // เก็บ user ลง localStorage
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      // ตรวจ role
+      if (data.user.role === "buyer") {
+        window.location.href = "/buyer";
+      } else {
+        alert("This page is for Buyers only.");
+        window.location.href = "/login";
+      }
     } catch (err) {
       alert(err.message);
     }

@@ -1,0 +1,257 @@
+/* Background */
+
+.page {
+  min-height: 100vh;
+  padding: 40px 60px;
+
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Greeting */
+.greeting {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+/* Section Title */
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 50px;
+  margin-bottom: 18px;
+}
+
+/* Books Row */
+.booksRow {
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.bookCard {
+  width: 200px;
+  height: 300px;
+  border-radius: 20px;
+  overflow: hidden;
+
+  box-shadow: 0 5px 4px rgba(0,0,0,0.15);
+
+  transition: all 0.25s ease;
+}
+
+/* เวลา hover */
+.bookCard:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 18px 35px rgba(0,0,0,0.15);
+}
+
+/* Orders */
+.ordersHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.viewAll {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.orderCard {
+  background: #F7F7F7;
+  border-radius: 22px;
+  padding: 30px 40px;
+  margin-bottom: 25px;
+
+  border: 1px solid #E2E2E2;
+  box-shadow: 0 5px 4px rgba(0,0,0,0.15);
+
+  display: flex;
+  flex-direction: column;   
+  gap: 25px;
+
+  transition: all 0.25s ease;
+}
+
+.orderCard:hover {
+  transform: translateY(-4px);
+
+}
+
+.orderCard:active {
+  transform: translateY(-1px);
+}
+
+/* Left Info */
+.orderInfo p {
+  margin: 4px 0;
+}
+
+.orderNumber {
+  font-weight: 600;
+}
+
+/* Right Side */
+.orderRight {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Status Badge */
+.status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  align-self: flex-end;
+}
+
+/* Status Colors */
+.pending { background: #e0b44c; }
+.paid { background: #5b8bd9; }
+.shipped { background: #c17a3a; }
+.completed { background: #6a9c78; }
+.cancelled { background: #a44d4d; }
+
+.price {
+  font-weight: 700;
+}
+
+/* Buttons */
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.cancelBtn {
+  background: #b75b5b;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.payBtn {
+  background: #5c7ea4;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.activeCard {
+  box-shadow: 0 14px 35px rgba(0,0,0,0.12);
+}
+
+.expandedSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  animation: expand 0.25s ease;
+}
+
+.expandedButtons {
+  width: 100%;
+  display: flex;
+  gap: 30px;
+}
+
+.cancelLarge,
+.payLarge {
+  flex: 1;
+  padding: 14px 0;
+  border-radius: 30px;
+  border: none;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Cancel */
+.cancelLarge {
+  background: #9b4d4d;
+}
+
+.cancelLarge:hover {
+  background: #873f3f;
+  transform: translateY(-2px);
+}
+
+.cancelLarge:active {
+  transform: translateY(0);
+}
+
+/* Pay */
+.payLarge {
+  background: #5f7f9c;
+}
+
+.payLarge:hover {
+  background: #4f6e8b;
+  transform: translateY(-2px);
+}
+
+.payLarge:active {
+  transform: translateY(0);
+}
+
+/* Focus ring */
+.cancelLarge:focus,
+.payLarge:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.15);
+}
+
+.viewDetails {
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.viewDetails:hover {
+  color: #5c7ea4;
+  transform: scale(1.03);
+}
+
+.viewDetails::before,
+.viewDetails::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 80px;
+  height: 1px;
+  background: #ccc;
+}
+
+.viewDetails::before {
+  left: -90px;
+}
+
+.viewDetails::after {
+  right: -90px;
+}
+
+.orderTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.orderMain {
+  display: flex;
+  gap: 20px;
+}

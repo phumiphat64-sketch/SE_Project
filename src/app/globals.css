@@ -6,7 +6,12 @@ html, body {
 }
 
 body {
-  background: url("/bg.svg") no-repeat top center;
+  background-size: 100% auto;
+}
+
+.page-bg {
+  min-height: 100vh;
+  background: url("/bg.svg") no-repeat top center; /* สีเดิมของคุณ */
   background-size: 100% auto;
 }
 
