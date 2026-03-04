@@ -12,8 +12,16 @@ export async function proxy(request) {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const { payload } = await jwtVerify(token, secret);
 
-    if (payload.role !== "buyer") {
-      return NextResponse.redirect(new URL("/login", request.url));
+    const pathname = request.nextUrl.pathname;
+
+    // buyer route
+    if (pathname.startsWith("/buyer") && payload.role !== "buyer") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    // seller route
+    if (pathname.startsWith("/seller") && payload.role !== "seller") {
+      return NextResponse.redirect(new URL("/", request.url));
     }
 
     return NextResponse.next();
@@ -23,5 +31,5 @@ export async function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/buyer/:path*"],
+  matcher: ["/buyer/:path*", "/seller/:path*"],
 };

@@ -52,3 +52,21 @@
   color: white;
   cursor: pointer;
 }
+
+.backBtn{
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background-color: #f3efe6;
+  border: 1px solid #3d2c22;
+  border-radius: 20px;
+
+  padding: 3px 20px;
+  font-size: 16px;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}

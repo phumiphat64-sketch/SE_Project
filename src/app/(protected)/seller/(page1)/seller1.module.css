@@ -1,0 +1,182 @@
+.container{
+  width:100%;
+  margin:auto;
+  max-width:1800px;
+}
+
+/* header */
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:40px;
+  position:relative;
+}
+
+.bookLeft{
+  position:absolute;
+  left:0;
+  width:450px;
+  height:450px;
+  background-image:url("/books/-_5.png");
+  background-size:contain;
+  background-repeat:no-repeat;
+}
+
+.bookRight{
+  position:absolute;
+  right:0;
+  width:600px;
+  height:600px;
+  background-image:url("/books/-_7.png");
+  background-size:contain;
+  background-repeat:no-repeat;
+}
+
+.title{
+  font-size:28px;
+  font-weight:700;
+  margin-left:clamp(60px, 10vw, 800px);
+}
+
+.subtitle{
+  color:#666;
+  margin-top:5px;
+  margin-left:clamp(60px, 10vw, 800px);
+}
+
+
+/* card */
+
+.card{
+  width:clamp(900px, 95%, 2000px);
+  margin:28px auto;         /* ความกว้างเกือบเต็มจอ */
+  max-width:1800px;   /* จำกัดไม่ให้ใหญ่เกินในจอใหญ่ */
+  
+  border-radius:20px;
+  overflow:hidden;
+  border:1px solid #000;
+  background:#ffffff;
+  box-shadow:0 5px 4px rgba(0,0,0,0.35);
+}
+
+.cardHeader{
+  background:#fff6ea;
+  padding:14px 20px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border-bottom:1px solid #000;
+}
+
+.icon{
+  width:20px;
+  height:20px;
+}
+
+.cardBody{
+  padding:20px;
+}
+
+.cardBody input{
+  width:80%;
+}
+
+/* layout */
+
+.row{
+  display:grid;
+  grid-template-columns:40% 47.76%;
+  gap:179px;
+}
+
+
+/* inputs */
+
+.card input,
+.card select,
+.card textarea{
+  width:100%;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid #ccc;
+  margin-top:6px;
+  resize: none;
+}
+
+.card textarea{
+  min-height:220px;
+}
+
+/* bank select */
+
+.bankField{
+  width:104%;
+}
+
+.bankWrapper{
+  flex:1;
+}
+
+.bankSelect{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom: 15px;
+}
+
+.bankSelect select{
+  width:100%;
+}
+
+.bankLogo{
+  width:30px;
+  height:30px;
+}
+
+
+/* button */
+
+.buttonWrapper{
+  display:flex;
+  justify-content:flex-end;
+  margin:40px 0 40px 0;
+}
+
+.button{
+  background:#5f7f6f;
+  width:18%;
+  color:white;
+  padding:12px 26px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+
+.button:hover{
+  background:#4e6b5e;
+  transform:translateY(-2px);
+  box-shadow:0 6px 12px rgba(0,0,0,0.2);
+}
+
+.button:active{
+  transform:translateY(0);
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
+
+.fullRow{
+  width:98.5%;
+  margin-bottom:18px;
+}
+
+.fullRow input{
+  width:100%;
+}
+
+.row div{
+  flex:1;
+}
+

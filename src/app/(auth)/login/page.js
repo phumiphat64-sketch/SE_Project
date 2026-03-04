@@ -34,7 +34,7 @@ const caveat = Caveat({
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [mounted, setMounted] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -66,8 +66,10 @@ export default function LoginPage() {
       // ตรวจ role
       if (data.user.role === "buyer") {
         window.location.href = "/buyer";
+      } else if (data.user.role === "seller") {
+        window.location.href = "/seller";
       } else {
-        alert("This page is for Buyers only.");
+        alert("Invalid user role");
         window.location.href = "/login";
       }
     } catch (err) {
@@ -76,13 +78,48 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const checkSession = async () => {
+      try {
+        const res = await fetch("/api/auth/me", {
+          credentials: "include",
+        });
 
-    return () => {
-      document.body.style.overflow = originalOverflow;
+        if (!res.ok) {
+          localStorage.removeItem("user");
+          setCheckingAuth(false);
+          return;
+        }
+
+        const user = localStorage.getItem("user");
+
+        if (!user) {
+          setCheckingAuth(false);
+          return;
+        }
+
+        const parsed = JSON.parse(user);
+
+        if (parsed.role === "seller") {
+          window.location.replace("/seller");
+          return;
+        }
+
+        if (parsed.role === "buyer") {
+          window.location.replace("/buyer");
+          return;
+        }
+
+        setCheckingAuth(false);
+      } catch {
+        localStorage.removeItem("user");
+        setCheckingAuth(false);
+      }
     };
+
+    checkSession();
   }, []);
+
+  if (checkingAuth) return null;
 
   return (
     <div className={styles.wrapper}>
