@@ -34,6 +34,7 @@ const caveat = Caveat({
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [mounted, setMounted] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -76,7 +77,6 @@ export default function LoginPage() {
 
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
-
     document.body.style.overflow = "hidden";
 
     return () => {

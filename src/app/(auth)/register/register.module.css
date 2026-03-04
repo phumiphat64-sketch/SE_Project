@@ -157,6 +157,11 @@
   background-color: #3b5740;
 }
 
+.submitBtn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
 .footerText {
   margin-top: 20px;
   font-size: 14px;

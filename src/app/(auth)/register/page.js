@@ -38,6 +38,25 @@ export default function RegisterPage() {
     });
   };
 
+  const isValidEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const isOver20 = (date) => {
+    const today = new Date();
+    const birthDate = new Date(date);
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age >= 20;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -46,13 +65,18 @@ export default function RegisterPage() {
       return;
     }
 
-    if (!formData.acceptedTerms) {
-      alert("You must accept Terms and Privacy Policy");
+    if (!isValidEmail(formData.email)) {
+      alert("Please enter a valid email address");
       return;
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+    if (!isOver20(formData.dateOfBirth)) {
+      alert("You must be at least 20 years old or have parental consent.");
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      alert("Password must be at least 8 characters");
       return;
     }
 
@@ -213,7 +237,11 @@ export default function RegisterPage() {
             </label>
           </div>
 
-          <button type="submit" className={styles.submitBtn}>
+          <button
+            type="submit"
+            className={styles.submitBtn}
+            disabled={!formData.acceptedTerms}
+          >
             Create Account
           </button>
 
