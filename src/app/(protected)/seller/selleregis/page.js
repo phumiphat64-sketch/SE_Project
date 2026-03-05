@@ -8,6 +8,7 @@ export default function SellerPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [bankOpen, setBankOpen] = useState(false);
   const [form, setForm] = useState({
     fullName: "",
     dateOfBirth: "",
@@ -27,6 +28,34 @@ export default function SellerPage() {
   };
 
   const handleSubmit = async () => {
+    const requiredFields = [
+      "fullName",
+      "dateOfBirth",
+      "phone",
+      "storeName",
+      "storeDescription",
+      "bankName",
+      "accountName",
+      "accountNumber",
+    ];
+
+    if (form.phone.length !== 10) {
+      alert("Phone number must be 10 digits");
+      return;
+    }
+
+    if (form.accountNumber.length > 15) {
+      alert("Account number cannot exceed 15 digits");
+      return;
+    }
+
+    for (let field of requiredFields) {
+      if (!form[field] || form[field].trim() === "") {
+        alert("Please fill in all required fields.");
+        return;
+      }
+    }
+
     try {
       const data = {
         userId: user.id,
@@ -64,10 +93,13 @@ export default function SellerPage() {
         return;
       }
 
-      const user = JSON.parse(storedUser);
+      const userData = JSON.parse(storedUser);
+      setUser(userData);
 
       try {
-        const res = await fetch(`/api/auth/seller/verified?userId=${user.id}`);
+        const res = await fetch(
+          `/api/auth/seller/verified?userId=${userData.id}`,
+        );
         const data = await res.json();
 
         if (data.isSeller) {
@@ -147,7 +179,14 @@ export default function SellerPage() {
                 placeholder="xxx-xxx-xxxx"
                 name="phone"
                 value={form.phone}
-                onChange={handleChange}
+                maxLength={10}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, ""); // allow only numbers
+                  setForm({
+                    ...form,
+                    phone: value,
+                  });
+                }}
               />
             </div>
           </div>
@@ -204,17 +243,79 @@ export default function SellerPage() {
               </label>
 
               <div className={styles.bankSelect}>
-                <select
-                  name="bankName"
-                  value={form.bankName}
-                  onChange={handleChange}
-                >
-                  <option value="">Select a Bank</option>
-                  <option>Bangkok Bank (BBL)</option>
-                  <option>Krung Thai Bank (KTB)</option>
-                  <option>Kasikornbank (KBank)</option>
-                  <option>Siam Commercial Bank (SCB)</option>
-                </select>
+                <div className={styles.bankDropdown}>
+                  <div
+                    className={styles.bankSelected}
+                    onClick={() => setBankOpen(!bankOpen)}
+                  >
+                    {form.bankName || "Select a Bank"}
+                  </div>
+
+                  {bankOpen && (
+                    <div className={styles.bankList}>
+                      <div
+                        className={styles.bankOption}
+                        onClick={() => {
+                          setForm({ ...form, bankName: "Bangkok Bank (BBL)" });
+                          setBankOpen(false);
+                        }}
+                      >
+                        <img
+                          src="/icons/Bangkokbank.png"
+                          width="30"
+                          height="30"
+                        />
+                        Bangkok Bank (BBL)
+                      </div>
+
+                      <div
+                        className={styles.bankOption}
+                        onClick={() => {
+                          setForm({
+                            ...form,
+                            bankName: "Krung Thai Bank (KTB)",
+                          });
+                          setBankOpen(false);
+                        }}
+                      >
+                        <img
+                          src="/icons/Khungthai.png"
+                          width="30"
+                          height="30"
+                        />
+                        Krung Thai Bank (KTB)
+                      </div>
+
+                      <div
+                        className={styles.bankOption}
+                        onClick={() => {
+                          setForm({
+                            ...form,
+                            bankName: "Kasikornbank (KBank)",
+                          });
+                          setBankOpen(false);
+                        }}
+                      >
+                        <img src="/icons/KBank.png" width="30" height="30" />
+                        Kasikornbank (KBank)
+                      </div>
+
+                      <div
+                        className={styles.bankOption}
+                        onClick={() => {
+                          setForm({
+                            ...form,
+                            bankName: "Siam Commercial Bank (SCB)",
+                          });
+                          setBankOpen(false);
+                        }}
+                      >
+                        <img src="/icons/SCB.png" width="30" height="30" />
+                        Siam Commercial Bank (SCB)
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -239,7 +340,14 @@ export default function SellerPage() {
               type="text"
               name="accountNumber"
               value={form.accountNumber}
-              onChange={handleChange}
+              maxLength={15}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                setForm({
+                  ...form,
+                  accountNumber: value,
+                });
+              }}
             />
           </div>
         </div>

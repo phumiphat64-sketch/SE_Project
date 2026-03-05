@@ -70,6 +70,11 @@ export default function RegisterPage() {
       return;
     }
 
+    if (formData.phone.length !== 10) {
+      alert("Phone number must be exactly 10 digits");
+      return;
+    }
+
     if (!isOver20(formData.dateOfBirth)) {
       alert("You must be at least 20 years old or have parental consent.");
       return;
@@ -153,7 +158,14 @@ export default function RegisterPage() {
               type="text"
               name="phone"
               value={formData.phone}
-              onChange={handleChange}
+              maxLength={10}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                setFormData({
+                  ...formData,
+                  phone: value,
+                });
+              }}
               placeholder="Enter your phone number"
             />
           </div>
