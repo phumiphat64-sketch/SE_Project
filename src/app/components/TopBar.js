@@ -42,7 +42,7 @@ export default function TopBar({ showBack = false }) {
 
   const forceMenuPages = [
     "/seller/profilehide",
-    "/seller/dashboard",
+    "/seller/home",
     "/seller/products",
   ];
 
@@ -91,10 +91,10 @@ export default function TopBar({ showBack = false }) {
       {/* 🔹 แสดงเมนูเฉพาะหน้า protected เท่านั้น */}
       {!isPublicPage && user && !shouldShowBack && (
         <div className={styles.menu}>
-          <Link href="/">Home</Link>
+          <Link href="/seller/home">Home</Link>
           <Link href="/search">Search</Link>
-          <Link href="/profile">Profile</Link>
-          <Link href="/buyer">Orders</Link>
+          <Link href="/seller/profilehide">Profile</Link>
+          <Link href="/sell">Orders</Link>
           <button onClick={handleLogout} className={styles.logoutBtn}>
             Logout
           </button>

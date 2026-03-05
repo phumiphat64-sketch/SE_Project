@@ -1,0 +1,137 @@
+.container{
+  padding:40px 80px;
+  background:#f6f4f2;
+}
+
+/* HERO */
+
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:30px;
+  border-bottom:2px solid #d5cfc8;
+}
+
+.heroText h1{
+  font-size:36px;
+  margin-bottom:10px;
+}
+
+.heroText p{
+  font-size:18px;
+  color:#555;
+  margin-bottom:20px;
+}
+
+.addBtn{
+  background:#5b4636;
+  color:white;
+  padding:10px 20px;
+  border-radius:20px;
+  border:none;
+  cursor:pointer;
+}
+
+.heroImage{
+  width:250px;
+}
+
+/* SECTION */
+
+.sectionTitle{
+  margin-top:40px;
+  font-size:24px;
+}
+
+/* STATS */
+
+.statsGrid{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:25px;
+}
+
+.statCard{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.15);
+}
+
+.statIcon{
+  font-size:28px;
+}
+
+/* ORDERS */
+
+.ordersHeader{
+  margin-top:50px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.ordersHeader a{
+  text-decoration:none;
+  color:black;
+}
+
+/* TABLE */
+
+.tableWrapper{
+  margin-top:15px;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid #ddd;
+}
+
+.table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.table th{
+  text-align:left;
+  padding:14px;
+  background:#efe6dd;
+}
+
+.table td{
+  padding:12px;
+  border-top:1px solid #eee;
+}
+
+/* STATUS */
+
+.status{
+  padding:4px 10px;
+  border-radius:10px;
+  font-size:12px;
+  color:white;
+}
+
+.Pending{
+  background:#e0b800;
+}
+
+.ToShip{
+  background:#4a7ab7;
+}
+
+.InTransit{
+  background:#c9794a;
+}
+
+.Cancelled{
+  background:#b54a4a;
+}
+
+.Completed{
+  background:#4a8f5c;
+}
