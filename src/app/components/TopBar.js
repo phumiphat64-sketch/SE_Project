@@ -17,25 +17,38 @@ const caveat = Caveat({
 
 export default function TopBar({ showBack = false }) {
   const pathname = usePathname();
-  
+  const [ready, setReady] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUser = localStorage.getItem("user");
+
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (err) {
+          console.error("Invalid user in localStorage");
+        }
+      }
+
+      setReady(true);
+    }
+  }, []);
+
+  if (!ready) return null;
+
   const isBuyerRoot = pathname === "/buyer";
+
   const forceMenuPages = [
     "/seller/profilehide",
     "/seller/dashboard",
     "/seller/products",
   ];
+
   const forceMenu = forceMenuPages.includes(pathname);
+
   const shouldShowBack = showBack && !isBuyerRoot && !forceMenu;
-
-  const router = useRouter();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", {

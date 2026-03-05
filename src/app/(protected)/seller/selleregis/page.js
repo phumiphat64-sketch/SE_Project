@@ -56,7 +56,7 @@ export default function SellerPage() {
   };
 
   useEffect(() => {
-    const init = async () => {
+    const checkSeller = async () => {
       const storedUser = localStorage.getItem("user");
 
       if (!storedUser) {
@@ -64,17 +64,14 @@ export default function SellerPage() {
         return;
       }
 
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
+      const user = JSON.parse(storedUser);
 
       try {
-        const res = await fetch(
-          `/api/auth/seller/verified?userId=${parsedUser.id}`,
-        );
+        const res = await fetch(`/api/auth/seller/verified?userId=${user.id}`);
         const data = await res.json();
 
         if (data.isSeller) {
-          router.push("/seller/profilehide");
+          router.replace("/seller/profilehide");
           return;
         }
       } catch (err) {
@@ -84,7 +81,7 @@ export default function SellerPage() {
       setLoading(false);
     };
 
-    init();
+    checkSeller();
   }, []);
 
   if (loading) {

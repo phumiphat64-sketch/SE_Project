@@ -65,9 +65,18 @@ export default function LoginPage() {
 
       // ตรวจ role
       if (data.user.role === "buyer") {
-        window.location.href = "/buyer";
+        window.location.href = "/buyer/firstpage";
       } else if (data.user.role === "seller") {
-        window.location.href = "/seller/selleregis";
+        const resSeller = await fetch(
+          `/api/auth/seller/verified?userId=${data.user.id}`,
+        );
+        const sellerCheck = await resSeller.json();
+
+        if (sellerCheck.isSeller) {
+          window.location.href = "/seller/profilehide";
+        } else {
+          window.location.href = "/seller/selleregis";
+        }
       } else {
         alert("Invalid user role");
         window.location.href = "/login";

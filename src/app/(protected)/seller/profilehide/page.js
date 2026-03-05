@@ -1,9 +1,36 @@
 "use client";
 import { useState } from "react";
 import styles from "./seller2.module.css";
+import { useEffect } from "react";
 
 export default function ProfilePage() {
     const [showBank, setShowBank] = useState(false);
+    const [profile, setProfile] = useState(null);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+      const storedUser = localStorage.getItem("user");
+
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    }, []);
+
+    useEffect(() => {
+      const loadProfile = async () => {
+        const storedUser = localStorage.getItem("user");
+        if (!storedUser) return;
+
+        const user = JSON.parse(storedUser);
+
+        const res = await fetch(`/api/auth/seller/profile?userId=${user.id}`);
+        const data = await res.json();
+
+        setProfile(data);
+      };
+
+      loadProfile();
+    }, []);
 
   return (
     <div className={styles.pageWrapper}>
@@ -15,8 +42,8 @@ export default function ProfilePage() {
               <div className={styles.avatar}></div>
 
               <div>
-                <p className={styles.name}>Daenerys Targaryen</p>
-                <p className={styles.email}>daenerys@gmail.com</p>
+                <p className={styles.name}>{user?.name || ""}</p>
+                <p className={styles.email}>{user?.email || ""}</p>
               </div>
             </div>
 
@@ -47,18 +74,18 @@ export default function ProfilePage() {
             <div className={styles.formGrid}>
               <div>
                 <label>Name</label>
-                <input defaultValue="Daenerys Targaryen" />
+                <input value={profile?.fullName || ""} readOnly />
               </div>
 
               <div>
                 <label>Email</label>
-                <input defaultValue="daenerys@gmail.com" />
+                <input value={user?.email || ""} readOnly />
               </div>
             </div>
 
             <div className={styles.phoneField}>
               <label>Phone Number</label>
-              <input defaultValue="012 123 1234" />
+              <input value={profile?.phone || ""} readOnly />
 
               <p className={styles.helper}>
                 Thai phone number format: 0XXXXXXXXX (10 digits)
@@ -72,7 +99,12 @@ export default function ProfilePage() {
                   className={styles.eyeBtn}
                   onClick={() => setShowBank(!showBank)}
                 >
-                  {showBank ? "👁" : "🙈"}
+                  <img
+                    src={
+                      showBank ? "/icons/Eye close.svg" : "/icons/Eye open.svg"
+                    }
+                    alt="toggle"
+                  />
                 </button>
               </div>
             </div>
@@ -81,19 +113,22 @@ export default function ProfilePage() {
               <label>Bank Name</label>
               <input
                 type={showBank ? "text" : "password"}
-                placeholder="************"
+                value={profile?.bankName || ""}
+                readOnly
               />
 
               <label>Account Name</label>
               <input
                 type={showBank ? "text" : "password"}
-                placeholder="************"
+                value={profile?.accountName || ""}
+                readOnly
               />
 
               <label>Account Number</label>
               <input
                 type={showBank ? "text" : "password"}
-                placeholder="************"
+                value={profile?.accountNumber || ""}
+                readOnly
               />
             </div>
 
