@@ -91,11 +91,27 @@ export default function TopBar({ showBack = false }) {
       {/* 🔹 แสดงเมนูเฉพาะหน้า protected เท่านั้น */}
       {!isPublicPage && user && !shouldShowBack && (
         <div className={styles.menu}>
-          <Link href="/seller/home">Home</Link>
-          <Link href="/search">Search</Link>
-          <Link href="/seller/profilehide">Profile</Link>
-          <Link href="/sell">Orders</Link>
+          <Link href="/seller/home" className={styles.menuItem}>
+            <img src="/icons/1.svg" className={styles.icon} />
+            Home
+          </Link>
+
+          <Link href="/search" className={styles.menuItem}>
+            <img src="/icons/5.svg" className={styles.icon} />
+            Search
+          </Link>
+
+          <Link href="/seller/profilehide" className={styles.menuItem}>
+            <img src="/icons/4.svg" className={styles.icon} />
+            Profile
+          </Link>
+
+          <Link href="/sell" className={styles.menuItem}>
+            <img src="/icons/3.svg" className={styles.icon} />
+            Orders
+          </Link>
           <button onClick={handleLogout} className={styles.logoutBtn}>
+            <img src="/icons/2.svg" className={styles.icon} />
             Logout
           </button>
         </div>
