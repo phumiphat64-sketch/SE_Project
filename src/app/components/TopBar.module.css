@@ -1,15 +1,18 @@
-.topBar {
-  background-color: #5a4033;
-  height: 70px;
-  padding: 0 40px;
+.topBar{
+  background-color:#5a4033;
+  height:70px;
+  padding:0 40px;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 
-  position: sticky;  
-  top: 0;            
-  z-index: 1000;      
+  position:fixed;   /* เปลี่ยน */
+  top:0;
+  left:0;
+  width:100%;
+  box-sizing:border-box;
+  z-index:1000;
 }
 
 .loginBtn {

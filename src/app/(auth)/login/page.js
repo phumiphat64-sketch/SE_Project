@@ -80,7 +80,7 @@ export default function LoginPage() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const res = await fetch("/api/auth/me", {
+        const res = await fetch("src/app/api/auth/login/route.js", {
           credentials: "include",
         });
 
@@ -100,7 +100,7 @@ export default function LoginPage() {
         const parsed = JSON.parse(user);
 
         if (parsed.role === "seller") {
-          window.location.replace("/seller");
+          window.location.replace("/seller/selleregis");
           return;
         }
 

@@ -1,5 +1,4 @@
 "use client";
-
 import styles from "./seller1.module.css";
 
 export default function SellerPage() {
@@ -28,18 +27,24 @@ export default function SellerPage() {
 
         <div className={styles.cardBody}>
           <div className={styles.fullRow}>
-            <label>Full name *</label>
+            <label>
+              Full name <span className={styles.required}>*</span>
+            </label>
             <input type="text" placeholder="Daenerys Targaryen" />
           </div>
 
           <div className={styles.row}>
             <div style={{ flex: "0 0 35%" }}>
-              <label>Date of Birth *</label>
+              <label>
+                Date of Birth <span className={styles.required}>*</span>
+              </label>
               <input type="date" />
             </div>
 
             <div style={{ flex: "0 0 35%" }}>
-              <label>Phone Number *</label>
+              <label>
+                Phone Number <span className={styles.required}>*</span>
+              </label>
               <input type="text" placeholder="098 987 9876" />
             </div>
           </div>
@@ -55,12 +60,16 @@ export default function SellerPage() {
 
         <div className={styles.cardBody}>
           <div className={styles.fullRow}>
-            <label>Store Name *</label>
+            <label>
+              Store Name <span className={styles.required}>*</span>
+            </label>
             <input type="text" placeholder="Store Name" />
           </div>
 
           <div className={styles.fullRow}>
-            <label>Store Description *</label>
+            <label>
+              Store Description <span className={styles.required}>*</span>
+            </label>
             <textarea placeholder="Tell buyer about your store"></textarea>
           </div>
         </div>
@@ -76,10 +85,12 @@ export default function SellerPage() {
         <div className={styles.cardBody}>
           <div className={styles.row}>
             <div className={`${styles.bankWrapper} ${styles.bankField}`}>
-              <label>Bank Name *</label>
+              <label>
+                Bank Name <span className={styles.required}>*</span>
+              </label>
 
               <div className={styles.bankSelect}>
-                <div className={styles.bankLogo}></div>
+                {/* <div className={styles.bankLogo}></div> */}
 
                 <select>
                   <option>Select a Bank</option>
@@ -92,13 +103,17 @@ export default function SellerPage() {
             </div>
 
             <div className={styles.row1}>
-              <label>Account Name *</label>
+              <label>
+                Account Name <span className={styles.required}>*</span>
+              </label>
               <input type="text" />
             </div>
           </div>
 
           <div className={styles.fullRow}>
-            <label>Account Number *</label>
+            <label>
+              Account Number <span className={styles.required}>*</span>
+            </label>
             <input type="text" />
           </div>
         </div>

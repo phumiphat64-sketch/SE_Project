@@ -20,7 +20,7 @@ export default function TopBar({ showBack = false }) {
   
   const isBuyerRoot = pathname === "/buyer";
   const forceMenuPages = [
-    "/seller/page2",
+    "/seller/profilehide",
     "/seller/dashboard",
     "/seller/products",
   ];

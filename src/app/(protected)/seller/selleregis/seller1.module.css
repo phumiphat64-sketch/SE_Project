@@ -9,6 +9,7 @@
 .header{
   display:flex;
   justify-content:space-between;
+  margin-top:40px;
   align-items:center;
   margin-bottom:40px;
   position:relative;
@@ -26,9 +27,12 @@
 
 .bookRight{
   position:absolute;
-  right:0;
-  width:600px;
-  height:600px;
+
+  left:clamp(900px, 75vw, 1450px);   /* แทน left:1450px */
+
+  width:700px;
+  height:700px;
+
   background-image:url("/books/-_7.png");
   background-size:contain;
   background-repeat:no-repeat;
@@ -37,13 +41,14 @@
 .title{
   font-size:28px;
   font-weight:700;
-  margin-left:clamp(60px, 10vw, 800px);
+
+  margin-left:clamp(280px, 22vw, 280px);
 }
 
 .subtitle{
   color:#666;
   margin-top:5px;
-  margin-left:clamp(60px, 10vw, 800px);
+  margin-left:clamp(280px, 15vw, 280px);
 }
 
 
@@ -180,3 +185,6 @@
   flex:1;
 }
 
+.required{
+  color:red;
+}
