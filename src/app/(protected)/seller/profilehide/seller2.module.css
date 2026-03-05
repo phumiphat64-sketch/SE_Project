@@ -1,0 +1,262 @@
+.pageWrapper {
+  background: #FFFEFA;
+  height: 100vh;      /* ล็อคความสูงพอดีจอ */
+  width: 100%;
+  overflow: hidden;   /* ซ่อน scrollbar */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding-top: 70px;  /* ระยะของ TopBar */
+}
+
+.container {
+  flex: 1;
+  width: 95%;          /* ใช้พื้นที่ความกว้างเกือบเต็มหน้าจอ */
+  max-width: 1400px;   /* เพิ่มจาก 1100px เป็น 1400px เพื่อให้ดูใหญ่เต็มตา */
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start; 
+  gap: 50px;           /* เพิ่มช่องว่างระหว่างซ้าย-ขวาให้ดูไม่แน่น */
+  padding: 20px;
+  margin-top: 40px; 
+  box-sizing: border-box;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 350px;        /* ขยายความกว้าง Sidebar จาก 300px เป็น 350px */
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+}
+
+.profileCard{
+  background:white;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 5px 4px rgba(0,0,0,0.35);
+}
+
+.userInfo{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.avatar{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:#ddd;
+}
+
+.name{
+  font-weight:600;
+}
+
+.email{
+  font-size:13px;
+  color:#666;
+}
+
+/* MODE BUTTONS */
+
+.buyerBtn{
+  width:100%;
+  background:#5f7f6e;
+  color:white;
+  border:none;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:10px;
+  font-weight:500;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.buyerBtn:hover{
+  background:#4e6a5b;
+}
+
+.buyerBtn:active{
+  transform:scale(0.98);
+}
+
+.sellerBtn{
+  width:100%;
+  background:#6c4a45;
+  color:white;
+  border:none;
+  padding:12px;
+  border-radius:10px;
+  position:relative;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.sellerBtn:hover{
+  background:#593a36;
+}
+
+.sellerBtn:active{
+  transform:scale(0.98);
+}
+
+.activeTag{
+  position:absolute;
+  right:10px;
+  top:8px;
+  background:white;
+  color:#333;
+  font-size:11px;
+  padding:2px 6px;
+  border-radius:6px;
+}
+
+/* CONTENT */
+
+.formCard {
+  background: white;
+  border-radius: 24px;
+  padding: 40px; /* ลด padding จาก 60px เหลือ 40px จะช่วยให้พื้นที่ด้านล่างเหลือมากขึ้น */
+  box-shadow:0 5px 4px rgba(0,0,0,0.35);
+}
+
+.sectionHeader {
+  display: inline-block;
+  background: #7a5a55;
+  color: white;
+  padding: 8px 29px; /* ลดขนาดลงเล็กน้อย */
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.sectionHeaderWrapper{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.eyeBtn{
+  border:none;
+  background:#7a5a55;
+  color:white;
+  border-radius:10px;
+  padding:8px 12px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+/* FORM */
+
+.formGrid input, .phoneField input, .bankFields input {
+  width: 100%;
+  padding: 15px;
+  font-size: 15px;
+  border: 1px solid #e0e0e0; /* สีเส้นขอบที่อ่อนลง */
+  border-radius: 8px;
+  background-color: #fafafa;
+  box-sizing: border-box;
+}
+
+.formGrid label{
+    margin-top: 10px;
+  display:block;
+  margin-bottom:10px;
+}
+
+.formGrid input{
+  width:100%;
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:8px;
+}
+
+/* PHONE */
+
+.phoneField{
+  margin-bottom:10px;
+  margin-top: 10px;
+}
+
+.phoneField input{
+  width:100%;
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  margin-top: 10px;
+}
+
+.phoneField label{
+  margin-bottom: 10px;
+}
+
+.helper{
+  font-size:12px;
+  color:#777;
+  margin-top:4px;
+}
+
+/* BANK */
+
+.bankFields{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.bankFields input{
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:8px;
+}
+
+/* UPDATE BUTTON */
+
+.updateBtnWrapper{
+  margin-top:25px;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.updateBtn{
+  background:#5f7f6e;
+  color:white;
+  border:none;
+  padding:12px 30px;
+  font-weight:500;
+  font-size:16px;
+  border-radius:25px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.updateBtn:hover{
+  background:#4e6a5b;
+}
+
+.updateBtn:active{
+  transform:scale(0.97);
+}
+
+.no-scroll-page{
+  overflow:hidden;
+  padding-top:0 !important;
+}
+
+:global(body.no-scroll-profile){
+  padding-top:70px !important;
+  overflow:hidden !important;
+}
+
+:global(html.no-scroll-profile){
+  overflow:hidden !important;
+}

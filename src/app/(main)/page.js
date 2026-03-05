@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Crimson_Text, Caveat } from "next/font/google";
 import BookCarousel from "../components/BookCarousel";
+import styles from "./main.module.css";
 
 const crimson = Crimson_Text({
   subsets: ["latin"],
@@ -15,7 +16,7 @@ const caveat = Caveat({
 
 export default function Home() {
   return (
-    <div className="home-container">
+    <div className={styles.homeContainer}>
       {/* Navbar */}
 
       {/* Hero Section */}

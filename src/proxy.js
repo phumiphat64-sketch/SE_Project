@@ -20,7 +20,7 @@ export async function proxy(request) {
     }
 
     // seller route
-    if (pathname.startsWith("/seller") && payload.role !== "seller") {
+    if (pathname.startsWith("/seller/selleregis") && payload.role !== "seller") {
       return NextResponse.redirect(new URL("/", request.url));
     }
 

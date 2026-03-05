@@ -2,6 +2,7 @@
   width:100%;
   margin:auto;
   max-width:1800px;
+  padding-top: 60px;
 }
 
 /* header */
@@ -23,6 +24,7 @@
   background-image:url("/books/-_5.png");
   background-size:contain;
   background-repeat:no-repeat;
+  pointer-events:none;
 }
 
 .bookRight{
@@ -36,6 +38,7 @@
   background-image:url("/books/-_7.png");
   background-size:contain;
   background-repeat:no-repeat;
+  pointer-events:none;
 }
 
 .title{

@@ -67,7 +67,7 @@ export default function LoginPage() {
       if (data.user.role === "buyer") {
         window.location.href = "/buyer";
       } else if (data.user.role === "seller") {
-        window.location.href = "/seller";
+        window.location.href = "/seller/selleregis";
       } else {
         alert("Invalid user role");
         window.location.href = "/login";
@@ -100,7 +100,7 @@ export default function LoginPage() {
         const parsed = JSON.parse(user);
 
         if (parsed.role === "seller") {
-          window.location.replace("/seller/selleregis");
+          window.location.replace("/seller");
           return;
         }
 

@@ -15,6 +15,7 @@
 }
 
 .container {
+   padding-top:70px;
   min-height: 100vh;
   background-color: white;   /* เปลี่ยนตรงนี้ */
   display: flex;
