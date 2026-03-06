@@ -131,29 +131,37 @@ export default function RegisterPage() {
 
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
-            <label>Full Name *</label>
+            <label>
+              Full Name <span className={styles.required}>*</span>
+            </label>
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
               placeholder="Enter your full name"
+              required
             />
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Email Address *</label>
+            <label>
+              Email Address <span className={styles.required}>*</span>
+            </label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
+              required
             />
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Phone Number *</label>
+            <label>
+              Phone Number <span className={styles.required}>*</span>
+            </label>
             <input
               type="text"
               name="phone"
@@ -167,38 +175,49 @@ export default function RegisterPage() {
                 });
               }}
               placeholder="Enter your phone number"
+              required
             />
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Date of Birth *</label>
+            <label>
+              Date of Birth <span className={styles.required}>*</span>
+            </label>
             <input
               type="date"
               name="dateOfBirth"
               value={formData.dateOfBirth}
               onChange={handleChange}
+              required
             />
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Password *</label>
+            <label>
+              Password <span className={styles.required}>*</span>
+            </label>
             <input
               type="password"
               name="password"
+              maxLength={20}
               value={formData.password}
               onChange={handleChange}
               placeholder="At least 8 characters"
+              required
             />
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Confirm Password *</label>
+            <label>
+              Confirm Password <span className={styles.required}>*</span>
+            </label>
             <input
               type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
               placeholder="At least 8 characters"
+              required
             />
           </div>
 
@@ -213,6 +232,14 @@ export default function RegisterPage() {
                 onClick={() => setSelected("buy")}
               >
                 <h4>Buy Books</h4>
+
+                <img
+                  src={
+                    selected === "buy" ? "/regis role (2).png" : "/regis.png"
+                  }
+                  className={styles.roleIcon}
+                />
+
                 <p>Choose the books you love</p>
               </div>
 
@@ -223,6 +250,14 @@ export default function RegisterPage() {
                 onClick={() => setSelected("sell")}
               >
                 <h4>Sell Books</h4>
+
+                <img
+                  src={
+                    selected === "sell" ? "/regis (3).png" : "/regis (2).png"
+                  }
+                  className={styles.roleIcon}
+                />
+
                 <p>Sell your books to others</p>
               </div>
             </div>

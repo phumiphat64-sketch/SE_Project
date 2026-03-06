@@ -87,6 +87,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  position: relative;
 }
 
 .roleCard h4 {
@@ -104,9 +105,26 @@
   border-color: #2f5d50;
 }
 
+.roleCard::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  background-image: url("/correct.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0;
+}
+
 .active {
-  background-color: #dce9e3;   /* เขียวอ่อน */
-  border: 2px solid #2f5d50;   /* ขอบเขียว */
+  background-color: #e9e1d8;
+  border: 2px solid #7a5c3e;
+}
+
+.active::after {
+  opacity: 1;
 }
 
 .checkboxGroup {
@@ -169,3 +187,11 @@
   color: #666;
   text-align: center;
 }
+
+.roleIcon {
+  width: 140px;
+  height: auto;
+  margin: 20px 0 25px 0;
+  object-fit: contain;
+}
+

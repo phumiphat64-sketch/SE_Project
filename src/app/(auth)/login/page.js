@@ -19,7 +19,7 @@ import styles from "./login.module.css";
 import Link from "next/link";
 import { useEffect } from "react";
 
-import { Crimson_Text, Caveat } from "next/font/google";
+import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
 
 const crimson = Crimson_Text({
   subsets: ["latin"],
@@ -29,6 +29,16 @@ const crimson = Crimson_Text({
 const caveat = Caveat({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
+});
+
+export const afacad = Afacad({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin", "thai"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export default function LoginPage() {
@@ -150,14 +160,14 @@ export default function LoginPage() {
         <input
           type="email"
           placeholder="Email Address"
-          className={styles.input}
+          className={`${styles.input} ${crimson.className}`}
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Password"
-          className={styles.input}
+          className={`${styles.input} ${crimson.className}`}
           onChange={(e) => setPassword(e.target.value)}
         />
 
@@ -174,9 +184,12 @@ export default function LoginPage() {
           Login
         </button>
 
-        <p className={styles.signup}>
+        <p className={`${styles.signup} ${crimson.className}`}>
           Don’t have an account?{" "}
-          <Link href="/register" className={styles.link}>
+          <Link
+            href="/register"
+            className={`${styles.Link} ${crimson.className}`}
+          >
             Sign up
           </Link>
         </p>
