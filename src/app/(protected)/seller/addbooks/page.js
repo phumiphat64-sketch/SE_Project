@@ -34,13 +34,31 @@ export default function AddBookPage() {
     }
 
     try {
+
+        const uploadedImages = [];
+
+        for (const img of images) {
+          const formData = new FormData();
+          formData.append("file", img.file);
+
+          const uploadRes = await fetch("/api/auth/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const uploadData = await uploadRes.json();
+
+          if (uploadData.success) {
+            uploadedImages.push(img.file.name);
+          }
+        }
       const bookData = {
         title,
         author,
         description,
         price: Number(price),
         stock: Number(stock),
-        images: images.map((img) => img.file.name),
+        images: uploadedImages,
       };
 
       const res = await fetch("/api/auth/books", {

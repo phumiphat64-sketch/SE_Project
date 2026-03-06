@@ -15,8 +15,11 @@ export default class Book {
     this.description = description;
     this.price = price;
     this.stock = stock;
-    this.status = status || "available";
     this.images = images || [];
+
+    const validStatus = ["Published", "Out of Stock", "Inactive"];
+    this.status = validStatus.includes(status) ? status : "Published";
+
     this.createdAt = new Date();
   }
 }

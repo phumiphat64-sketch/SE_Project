@@ -14,8 +14,8 @@
   background:#5b3a2e;
   color:white;
   border:none;
-  padding:8px 14px;
-  border-radius:6px;
+  padding:10px 30px;
+  border-radius:25px;
   cursor:pointer;
 }
 
@@ -49,7 +49,7 @@
 }
 
 .table td{
-  padding:58px 14px;
+  padding:10px 30px;
   border-top:1px solid #eee;
   vertical-align:middle;
 }
@@ -62,17 +62,60 @@
   width:300px;
 }
 
+.bookCover{
+  width:70px;
+  height:90px;
+  background:#eee;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:6px;
+}
+
 .bookInfo{
   display:flex;
   align-items:center;
   gap:14px;
+  min-height:200px;
 }
 
+
 .bookImage{
-  width:55px;
-  height:55px;
-  background:#ddd;
-  border-radius:6px;
+  width:200px;
+  height:200px;
+  object-fit:contain;
+  padding:8px;
+  border-radius:8px;
+}
+
+.table th:nth-child(1),
+.table td:nth-child(1){
+  width:20%;
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2){
+  width:25%;
+}
+
+.table th:nth-child(3),
+.table td:nth-child(3){
+  width:10%;
+}
+
+.table th:nth-child(4),
+.table td:nth-child(4){
+  width:20%;
+}
+
+.table th:nth-child(5),
+.table td:nth-child(5){
+  width:10%;
+}
+
+.table th:nth-child(6),
+.table td:nth-child(6){
+  width:5%;
 }
 
 .bookTitle{
@@ -100,4 +143,19 @@
   text-align:right;
   margin-top:10px;
   font-size:14px;
+}
+
+.published{
+color:#2e7d32;
+font-weight:600;
+}
+
+.out{
+color:#e6a700;
+font-weight:600;
+}
+
+.inactive{
+color:#c62828;
+font-weight:600;
 }
