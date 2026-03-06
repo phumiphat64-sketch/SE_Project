@@ -10,6 +10,7 @@ export default function AddBookPage() {
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [stock, setStock] = useState(1);
 
   const handleUploadClick = () => {
     fileInput.current.click();
@@ -38,6 +39,7 @@ export default function AddBookPage() {
         author,
         description,
         price: Number(price),
+        stock: Number(stock),
         images: images.map((img) => img.file.name),
       };
 
@@ -59,6 +61,7 @@ export default function AddBookPage() {
       setAuthor("");
       setDescription("");
       setPrice("");
+      setStock(1);
       setImages([]);
     } catch (error) {
       console.error(error);
@@ -164,17 +167,35 @@ export default function AddBookPage() {
             ></textarea>
           </div>
 
-          <div className={styles.formGroup}>
-            <label>
-              Price <span>*</span>
-            </label>
-            <input
-              type="number"
-              min="0"
-              required
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
+          <div className={styles.row}>
+            <div className={styles.formGroup}>
+              <label>
+                Price <span>*</span>
+              </label>
+              <input
+                type="number"
+                min="0"
+                required
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>
+                Stock <span>*</span>
+              </label>
+              <input
+                type="number"
+                min="1"
+                required
+                value={stock}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  if (value >= 1) setStock(value);
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

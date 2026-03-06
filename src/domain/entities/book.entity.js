@@ -3,20 +3,18 @@ export default class Book {
     bookId,
     sellerId,
     title,
-    category,
     description,
     price,
-    condition,
+    stock,
     status,
     images,
   }) {
     this.bookId = bookId;
     this.sellerId = sellerId;
     this.title = title;
-    this.category = category;
     this.description = description;
     this.price = price;
-    this.condition = condition;
+    this.stock = stock;
     this.status = status || "available";
     this.images = images || [];
     this.createdAt = new Date();

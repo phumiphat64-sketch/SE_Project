@@ -1,7 +1,8 @@
 import { getClient } from "@/infrastructure/database/mongoDB";
+import crypto from "crypto";
 
 function generateBookId() {
-  return "BK-" + Math.floor(100000 + Math.random() * 900000);
+  return "BK-" + crypto.randomBytes(3).toString("hex").toUpperCase();
 }
 
 export default class MongoBookRepository {
@@ -10,8 +11,8 @@ export default class MongoBookRepository {
     const db = client.db("DB_Server");
 
     return await db.collection("books").insertOne({
-      bookId: generateBookId(),
       ...book,
+      bookId: generateBookId(),
     });
   }
 }

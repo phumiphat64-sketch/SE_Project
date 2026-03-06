@@ -1,5 +1,5 @@
 .container{
-  padding:30px;
+  padding:30px 60px;
 }
 
 .header{
@@ -20,12 +20,14 @@
 }
 
 .search{
-  width:97%;
-  padding:15px;
-  padding-left: 30px;
-  border:1px solid #ccc;
-  border-radius:6px;
-  margin-bottom:20px;
+  width:98.33%;
+  padding:12px 14px;
+  border:1px solid #ddd;
+  border-radius:8px;
+
+  box-shadow:0 3px 4px rgba(0,0,0,0.35);
+
+  margin-bottom:45px;
 }
 
 .tableContainer{
