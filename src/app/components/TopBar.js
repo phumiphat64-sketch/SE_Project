@@ -43,7 +43,8 @@ export default function TopBar({ showBack = false }) {
   const forceMenuPages = [
     "/seller/profilehide",
     "/seller/home",
-    "/seller/products",
+    "/seller/addbooks",
+    "/seller/inventory",
   ];
 
   const forceMenu = forceMenuPages.includes(pathname);
@@ -97,8 +98,13 @@ export default function TopBar({ showBack = false }) {
           </Link>
 
           <Link href="/search" className={styles.menuItem}>
-            <img src="/icons/5.svg" className={styles.icon} />
-            Search
+            <img src="/icons/wallet.svg" className={styles.icon} />
+            Wallet
+          </Link>
+
+          <Link href="/seller/inventory" className={styles.menuItem}>
+            <img src="/icons/inventory.svg" className={styles.icon} />
+            Book
           </Link>
 
           <Link href="/seller/profilehide" className={styles.menuItem}>

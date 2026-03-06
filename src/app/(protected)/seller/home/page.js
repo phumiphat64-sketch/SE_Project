@@ -2,8 +2,10 @@
 
 import styles from "./home.module.css";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SellerHome() {
+  const router = useRouter();
   const stats = [
     { icon: "🚚", number: 3, label: "Pending Payment" },
     { icon: "📦", number: 5, label: "To Ship" },
@@ -65,6 +67,10 @@ export default function SellerHome() {
     },
   ];
 
+  const handleAddBook = () => {
+    router.push("/seller/addbooks");
+  };
+
   return (
     <div className={styles.container}>
       {/* HERO */}
@@ -73,7 +79,9 @@ export default function SellerHome() {
           <h1>ReRead Resell Relove.</h1>
           <p>Give Your Books a Second Life.</p>
 
-          <button className={styles.addBtn}>+ Add New Book</button>
+          <button className={styles.addBtn} onClick={handleAddBook}>
+            + Add New Book
+          </button>
         </div>
 
         <img src="/books.png" className={styles.heroImage} />

@@ -1,0 +1,25 @@
+.header{
+    margin-bottom:20px;
+}
+
+.backBar{
+    width:100vw;
+    margin-left:calc(-50vw + 50%);
+    background:#e6ded2;
+    padding:14px 60px;
+    border-bottom:1px solid #d3cbc1;
+}
+
+.back{
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-size:14px;
+    color:#4b3a33;
+}
+
+.title{
+    font-size:28px;
+    font-weight:700;
+    padding:20px 60px;
+}
