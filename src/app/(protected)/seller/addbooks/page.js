@@ -33,6 +33,11 @@ export default function AddBookPage() {
       return;
     }
 
+    if (images.length === 0) {
+      alert("Please upload at least one image");
+      return;
+    }
+
     try {
 
         const uploadedImages = [];
@@ -49,7 +54,7 @@ export default function AddBookPage() {
           const uploadData = await uploadRes.json();
 
           if (uploadData.success) {
-            uploadedImages.push(img.file.name);
+            uploadedImages.push(uploadData.path);
           }
         }
       const bookData = {

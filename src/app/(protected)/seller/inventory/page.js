@@ -70,7 +70,7 @@ export default function InventoryPage() {
                 <td className={styles.bookCell}>
                   <div className={styles.bookInfo}>
                     <img
-                      src={`/uploads/${book.images[0]}`}
+                      src={book.images?.[0] || "/no-image.png"}
                       className={styles.bookImage}
                     />
 
