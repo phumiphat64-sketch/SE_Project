@@ -21,12 +21,12 @@ import { useEffect } from "react";
 
 import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
 
-const crimson = Crimson_Text({
+export const crimson = Crimson_Text({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
 });
 
-const caveat = Caveat({
+export const caveat = Caveat({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
 });
