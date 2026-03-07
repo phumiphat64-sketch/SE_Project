@@ -19,7 +19,10 @@ export default function InventoryPage() {
   }, []);
 
   async function fetchBooks() {
-    const res = await fetch("/api/auth/books");
+    const res = await fetch("/api/auth/books", {
+      cache: "no-store",
+    });
+
     const data = await res.json();
 
     if (data.success) {

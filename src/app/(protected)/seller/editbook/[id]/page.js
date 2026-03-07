@@ -70,7 +70,8 @@ export default function EditBookPage() {
 
       console.log("UPDATE SUCCESS", data);
 
-      router.push("/seller/inventory");
+      router.replace("/seller/inventory");
+      router.refresh();
     } catch (err) {
       console.error("UPDATE FAILED", err);
     }

@@ -34,7 +34,9 @@ export default class MongoBookRepository {
 
     const updateData = { ...data };
 
-    delete updateData._id; // ⭐ สำคัญมาก
+    delete updateData._id;
+    delete updateData.sellerId;
+    delete updateData.bookId;
 
     await db
       .collection("books")
