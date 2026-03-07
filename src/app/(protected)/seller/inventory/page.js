@@ -91,7 +91,12 @@ export default function InventoryPage() {
                 <td className={getStatusClass(book.status)}>{book.status}</td>
 
                 <td>
-                  <button className={styles.editBtn}>Edit</button>
+                  <button
+                    className={styles.editBtn}
+                    onClick={() => router.push(`/seller/editbook/${book._id}`)}
+                  >
+                    Edit
+                  </button>
                 </td>
               </tr>
             ))}

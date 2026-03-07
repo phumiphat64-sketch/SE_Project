@@ -1,0 +1,13 @@
+.backBar{
+  background:#E8DDD1;
+  padding:14px 80px;
+  font-size:15px;
+  cursor:pointer;
+
+  width:calc(100% + 160px);
+  margin-left:-80px;
+}
+
+.backBar:hover{
+  text-decoration:underline;
+}

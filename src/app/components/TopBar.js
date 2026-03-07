@@ -47,7 +47,10 @@ export default function TopBar({ showBack = false }) {
     "/seller/inventory",
   ];
 
-  const forceMenu = forceMenuPages.includes(pathname);
+
+  const forceMenu =
+    pathname.startsWith("/seller/editbook") ||
+    forceMenuPages.includes(pathname);
 
   const shouldShowBack = showBack && !isBuyerRoot && !forceMenu;
 

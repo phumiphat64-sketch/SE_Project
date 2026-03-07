@@ -3,6 +3,7 @@ export default class Book {
     bookId,
     sellerId,
     title,
+    author,
     description,
     price,
     stock,
@@ -12,6 +13,7 @@ export default class Book {
     this.bookId = bookId;
     this.sellerId = sellerId;
     this.title = title;
+    this.author = author;
     this.description = description;
     this.price = price;
     this.stock = stock;
