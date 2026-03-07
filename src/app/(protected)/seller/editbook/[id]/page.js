@@ -7,6 +7,7 @@ import BackBar from "@/app/components/BackBar";
 export default function EditBookPage() {
   const { id } = useParams();
   const router = useRouter();
+  const [newImages, setNewImages] = useState([]);
 
   const [book, setBook] = useState({
     title: "",
@@ -53,6 +54,26 @@ export default function EditBookPage() {
     e.preventDefault();
 
     try {
+        const uploaded = [];
+
+        for (const img of newImages) {
+          const formData = new FormData();
+          formData.append("file", img.file);
+
+          const res = await fetch("/api/auth/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            uploaded.push(data.path);
+          }
+        }
+
+        book.images = [...book.images, ...uploaded];
+
       const res = await fetch(`/api/auth/book/${id}`, {
         method: "PUT",
         headers: {
@@ -86,17 +107,64 @@ export default function EditBookPage() {
       {/* Book Images */}
       <div className={styles.section}>
         <div className={styles.sectionTitle}>Book Images</div>
+        <input
+          type="file"
+          multiple
+          accept="image/png,image/jpeg"
+          hidden
+          id="imageUpload"
+          onChange={(e) => {
+            const files = Array.from(e.target.files);
+            const imgs = files.map((file) => ({
+              file,
+              url: URL.createObjectURL(file),
+            }));
+
+            setNewImages((prev) => [...prev, ...imgs]);
+          }}
+        />
 
         <div className={styles.uploadBox}>
-          {book?.images?.length > 0 && (
-            <img src={book.images[0]} className={styles.imagePreview} />
-          )}
+          {/* OLD IMAGES */}
+          {book?.images?.map((img, index) => (
+            <div className={styles.imageItem}>
+              <img src={img} className={styles.imagePreview} />
 
-          {book?.images?.slice(1, 4).map((img, index) => (
-            <img key={index} src={img} className={styles.smallImage} />
+              <button className={styles.trashBtn}>
+                <img src="/icons/trash.svg" />
+              </button>
+
+              <div className={styles.checkMark}>✓</div>
+            </div>
           ))}
 
-          {book?.images?.length < 4 && <div className={styles.addImage}>+</div>}
+          {/* NEW IMAGES */}
+          {newImages.map((img, index) => (
+            <div key={"new" + index} className={styles.imageItem}>
+              <img src={img.url} className={styles.imagePreview} />
+
+              <button
+                className={styles.trashBtn}
+                onClick={() =>
+                  setNewImages((prev) => prev.filter((_, i) => i !== index))
+                }
+              >
+                <img src="/icons/trash.svg" />
+              </button>
+
+              <div className={styles.checkMark}>✓</div>
+            </div>
+          ))}
+
+          {/* ADD BUTTON */}
+          {book.images.length + newImages.length < 6 && (
+            <div
+              className={styles.addImage}
+              onClick={() => document.getElementById("imageUpload").click()}
+            >
+              +
+            </div>
+          )}
         </div>
       </div>
 
@@ -149,7 +217,6 @@ export default function EditBookPage() {
             <select name="status" value={book.status} onChange={handleChange}>
               <option>Published</option>
               <option>Out of Stock</option>
-              <option>Inactive</option>
             </select>
           </div>
         </div>

@@ -10,7 +10,7 @@ export default function BackBar({
 
   return (
     <div className={styles.backBar} onClick={() => router.push(link)}>
-      ← {text}
+      ⬅ {text}
     </div>
   );
 }

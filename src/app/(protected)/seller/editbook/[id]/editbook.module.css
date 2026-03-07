@@ -32,6 +32,7 @@
   display:flex;
   align-items:center;
   gap:20px;
+  flex-wrap:wrap;
 }
 
 .imagePreview{
@@ -124,4 +125,78 @@
   padding:10px 30px;
   border-radius:20px;
   cursor:pointer;
+}
+
+.imageItem{
+  position:relative;
+  width:120px;
+  height:160px;
+  flex-shrink:0;
+}
+
+.imagePreview{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+.deleteBtn{
+  position:absolute;
+  top:5px;
+  right:5px;
+  background:white;
+  border:none;
+  border-radius:50%;
+  width:24px;
+  height:24px;
+  cursor:pointer;
+}
+
+.checkIcon{
+  position:absolute;
+  bottom:5px;
+  right:5px;
+  background:#22c55e;
+  color:white;
+  width:20px;
+  height:20px;
+  font-size:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+}
+
+.trashBtn{
+  position:absolute;
+  top:6px;
+  right:6px;
+  width:26px;
+  height:26px;
+  background:white;
+  border:none;
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  cursor:pointer;
+}
+
+.trashBtn img{
+  width:18px;
+}
+
+.checkMark{
+  position:absolute;
+  bottom:6px;
+  right:6px;
+  width:24px;
+  height:24px;
+  background:#e5e5e5;
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
