@@ -52,15 +52,28 @@ export default function EditBookPage() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    await fetch(`/api/auth/book/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(book),
-    });
+    try {
+      const res = await fetch(`/api/auth/book/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(book),
+      });
 
-    router.push("/seller/inventory");
+      if (!res.ok) {
+        console.error("UPDATE ERROR", res.status);
+        return;
+      }
+
+      const data = await res.json();
+
+      console.log("UPDATE SUCCESS", data);
+
+      router.push("/seller/inventory");
+    } catch (err) {
+      console.error("UPDATE FAILED", err);
+    }
   }
 
   return (
@@ -117,7 +130,12 @@ export default function EditBookPage() {
         <div className={styles.bottomRow}>
           <div className={styles.field}>
             <label>Price *</label>
-            <input name="price" value={book.price} onChange={handleChange} />
+            <input
+              type="number"
+              name="price"
+              value={book.price}
+              onChange={handleChange}
+            />
           </div>
 
           <div className={styles.field}>

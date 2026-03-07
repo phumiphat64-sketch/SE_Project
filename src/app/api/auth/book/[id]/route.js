@@ -19,7 +19,7 @@ export async function GET(request, context) {
 }
 
 export async function PUT(req, context) {
-  const { id } = context.params;
+  const { id } = await context.params;
 
   const body = await req.json();
 

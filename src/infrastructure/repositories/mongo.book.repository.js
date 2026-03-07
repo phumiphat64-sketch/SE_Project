@@ -32,9 +32,13 @@ export default class MongoBookRepository {
     const client = await getClient();
     const db = client.db("DB_Server");
 
+    const updateData = { ...data };
+
+    delete updateData._id; // ⭐ สำคัญมาก
+
     await db
       .collection("books")
-      .updateOne({ _id: new ObjectId(id) }, { $set: data });
+      .updateOne({ _id: new ObjectId(id) }, { $set: updateData });
 
     return await db.collection("books").findOne({
       _id: new ObjectId(id),
