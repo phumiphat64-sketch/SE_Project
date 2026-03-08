@@ -1,4 +1,6 @@
 "use client";
+export const dynamic = "force-dynamic";
+import { Suspense } from "react";
 import { useState , useEffect} from "react";
 import styles from "./OTP.module.css";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -9,7 +11,7 @@ export const afacad = Afacad({
   weight: ["400", "500", "600", "700"],
 });
 
-export default function OTPPage() {
+function NewOTPContent() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -156,5 +158,13 @@ export default function OTPPage() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function OTPPage() {
+  return (
+    <Suspense fallback={null}>
+      <NewOTPContent />
+    </Suspense>
   );
 }
