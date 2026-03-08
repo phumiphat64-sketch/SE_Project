@@ -1,5 +1,6 @@
 "use client";
-export const dynamic = "force-dynamic"; 
+export const dynamic = "force-dynamic";
+import { Suspense } from "react";
 import { useState } from "react";
 import styles from "./newp.module.css";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -25,7 +26,7 @@ export const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
-export default function NewPassword() {
+function NewPasswordContent() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -105,10 +106,21 @@ export default function NewPassword() {
           />
         </div>
 
-        <button className={`${styles.button} ${afacad.className}`} onClick={handleReset}>
+        <button
+          className={`${styles.button} ${afacad.className}`}
+          onClick={handleReset}
+        >
           Reset Password
         </button>
       </div>
     </div>
+  );
+}
+
+export default function NewPassword() {
+  return (
+    <Suspense fallback={null}>
+      <NewPasswordContent />
+    </Suspense>
   );
 }
