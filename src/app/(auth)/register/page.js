@@ -219,6 +219,7 @@ export default function RegisterPage() {
               name="dateOfBirth"
               value={formData.dateOfBirth}
               onChange={handleChange}
+              max={new Date().toISOString().split("T")[0]}
               required
             />
           </div>
