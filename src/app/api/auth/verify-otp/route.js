@@ -28,6 +28,14 @@ export async function POST(req) {
       );
     }
 
+    if (String(user.resetOTP) !== String(otp)) {
+      return NextResponse.json({ message: "Invalid OTP" }, { status: 400 });
+    }
+
+    if (Date.now() > user.otpExpire) {
+      return NextResponse.json({ message: "OTP expired" }, { status: 400 });
+    }
+
     return NextResponse.json({ message: "OTP verified" });
   } catch (error) {
     console.error(error);

@@ -18,6 +18,7 @@ import Image from "next/image";
 import styles from "./login.module.css";
 import Link from "next/link";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
 
@@ -45,6 +46,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const router = useRouter();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -99,16 +101,6 @@ export default function LoginPage() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const res = await fetch("src/app/api/auth/login/route.js", {
-          credentials: "include",
-        });
-
-        if (!res.ok) {
-          localStorage.removeItem("user");
-          setCheckingAuth(false);
-          return;
-        }
-
         const user = localStorage.getItem("user");
 
         if (!user) {
@@ -134,7 +126,6 @@ export default function LoginPage() {
         setCheckingAuth(false);
       }
     };
-
     checkSession();
   }, []);
 
@@ -172,12 +163,15 @@ export default function LoginPage() {
         />
 
         <div className={styles.forgotWrapper}>
-          <Link
-            href="/forgot-pass"
+          <p
             className={`${styles.forgot} ${crimson.className}`}
+            onClick={() => {
+              sessionStorage.setItem("allowForgot", "true");
+              router.push("/forgot-pass");
+            }}
           >
             Forgot Password ?
-          </Link>
+          </p>
         </div>
 
         <button

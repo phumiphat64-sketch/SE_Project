@@ -1,0 +1,123 @@
+/* Page Wrapper */
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Bar */
+.topBar {
+  background: #5a4033;
+  padding: 18px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: white;
+  font-size: 32px;
+  font-family: "Brush Script MT", cursive;
+}
+
+
+/* Content */
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 200px;
+}
+
+/* Title */
+.title {
+  font-size: 40px;
+}
+
+.subtitle {
+  font-size: 18px;
+  padding-bottom: 30px;
+  margin-top: 10px;
+}
+/* Input */
+.input {
+  width: 100%;
+  padding: 16px 15px;
+  font-size: 18px;
+}
+
+/* Button */
+.button {
+  margin-top: 150px;
+  width: 350px;
+  padding: 12px 18px;
+  border-radius: 28px;
+  border: none;
+  background: #5e7f6c;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.25s ease;
+}
+
+/* hover effect */
+.button:hover {
+  background: #587263;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+/* click effect */
+.button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+.formBox {
+  width: 1600px;
+  max-width: 95%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 400px;
+}
+
+.label {
+  font-size: 25px;
+  margin-bottom: 6px;
+  margin-top: 30px;
+}
+
+.required {
+  color: red;
+}
+
+.title {
+  font-size: 35px;
+  font-weight: 600;
+  margin-bottom: -6px;
+}
+
+.subtitle {
+  font-size: 20px;
+  margin-bottom: 30px;
+  color: #000;
+}
+
+.input {
+  width: 75%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  border: 1px solid #cfcfcf;
+  margin-bottom: 8px;
+}
+
+.description {
+    padding-top: -16px;
+  font-size: 17px;
+  color: #000000;
+}
+

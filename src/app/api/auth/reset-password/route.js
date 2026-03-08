@@ -8,40 +8,27 @@ export async function POST(req) {
 
     if (!email || !newPassword) {
       return NextResponse.json(
-        { message: "Email and new password are required" },
+        { message: "Email and password required" },
         { status: 400 },
       );
     }
 
     const client = await getClient();
-    const db = client.db("DB_Server");
+    const db = client.db();
 
-    // hash password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    const result = await db.collection("users").updateOne(
+    await db.collection("users").updateOne(
       { email },
       {
-        $set: {
-          password: hashedPassword,
-        },
-        $unset: {
-          resetOTP: "",
-          otpExpire: "",
-        },
+        $set: { password: hashedPassword },
+        $unset: { resetOTP: "", otpExpire: "" },
       },
     );
 
-    if (!result.matchedCount) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
-    }
-
-    return NextResponse.json({
-      message: "Password reset successful",
-    });
+    return NextResponse.json({ message: "Password updated" });
   } catch (error) {
     console.error(error);
-
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }

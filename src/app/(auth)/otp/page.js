@@ -60,7 +60,7 @@ export default function OTPPage() {
 
       alert("OTP verified");
 
-      router.push(`/reset-password?email=${email}`);
+      router.push(`/new-pass?email=${email}`);
     } catch (err) {
       setError("Incorrect verification code. Please try again.");
     }

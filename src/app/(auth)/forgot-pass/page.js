@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import styles from "./fp.module.css";
 import { useRouter } from "next/navigation";
 import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
@@ -54,6 +54,20 @@ export default function ForgotPass() {
       alert(err.message);
     }
   };
+
+  useEffect(() => {
+    const allowed = sessionStorage.getItem("allowForgot");
+
+    if (!allowed) {
+      router.replace("/login");
+      return;
+    }
+
+    // ไม่ต้อง remove ทันที
+    setTimeout(() => {
+      sessionStorage.removeItem("allowForgot");
+    }, 0);
+  }, [router]);
 
   return (
     <div className={styles.wrapper}>
