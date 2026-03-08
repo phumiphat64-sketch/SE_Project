@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic"; 
 import { useState } from "react";
 import styles from "./newp.module.css";
 import { useRouter, useSearchParams } from "next/navigation";
