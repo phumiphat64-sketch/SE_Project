@@ -2,11 +2,33 @@
 import { useState } from "react";
 import styles from "./seller2.module.css";
 import { useEffect } from "react";
+import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
+
+export const crimson = Crimson_Text({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const afacad = Afacad({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin", "thai"],
+  weight: ["400", "500", "600", "700"],
+});
 
 export default function ProfilePage() {
     const [showBank, setShowBank] = useState(false);
     const [profile, setProfile] = useState(null);
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
       const storedUser = localStorage.getItem("user");
@@ -32,6 +54,47 @@ export default function ProfilePage() {
       loadProfile();
     }, []);
 
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+
+      setProfile((prev) => ({
+        ...prev,
+        [name]: value.trimStart(),
+      }));
+    };
+
+    const handleUpdate = async () => {
+      if (!profile?.fullName || !profile?.phone) {
+        alert("Please fill required fields");
+        return;
+      }
+      setLoading(true);
+      try {
+        const res = await fetch("/api/auth/seller/profile", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user.id,
+            ...profile,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert("Profile updated successfully");
+        } else {
+          alert(data.error || "Update failed");
+        }
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        alert("Server error");
+      }
+    };
+
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.container}>
@@ -39,27 +102,35 @@ export default function ProfilePage() {
         <div className={styles.sidebar}>
           <div className={styles.profileCard}>
             <div className={styles.userInfo}>
-              <div className={styles.avatar}></div>
+              <div className={styles.avatar}>
+                <img
+                  src="/profile.png"
+                  alt="profile"
+                  className={styles.avatarImg}
+                />
+              </div>
 
               <div>
-                <p className={styles.name}>{user?.name || ""}</p>
-                <p className={styles.email}>{user?.email || ""}</p>
+                <p className={styles.name + " " + afacad.className}>
+                  {user?.name || ""}
+                </p>
+                <p className={styles.email + " " + afacad.className}>
+                  {user?.email || ""}
+                </p>
               </div>
             </div>
 
-            <button
-              className={styles.buyerBtn}
-              onClick={() => console.log("Buyer mode")}
-            >
+            <button className={styles.buyerBtn + " " + afacad.className}>
+              <img src="/shopping_bag.svg" className={styles.btnIcon} />
               Buyer Mode
             </button>
 
-            <button
-              className={styles.sellerBtn}
-              onClick={() => console.log("Seller mode")}
-            >
+            <button className={styles.sellerBtn + " " + afacad.className}>
+              <img src="/storefront.svg" className={styles.btnIcon} />
               Seller Mode
-              <span className={styles.activeTag}>Active</span>
+              <span className={styles.activeTag + " " + afacad.className}>
+                Active
+              </span>
             </button>
           </div>
         </div>
@@ -68,13 +139,20 @@ export default function ProfilePage() {
         <div className={styles.content}>
           <div className={styles.formCard}>
             <div className={styles.sectionHeaderWrapper}>
-              <div className={styles.sectionHeader}>Basic Information</div>
+              <div className={styles.sectionHeader + " " + afacad.className}>
+                Basic Information
+              </div>
             </div>
 
-            <div className={styles.formGrid}>
+            <div className={styles.formGrid + " " + afacad.className}>
               <div>
                 <label>Name</label>
-                <input value={profile?.fullName || ""} readOnly />
+                <input
+                  name="fullName"
+                  maxLength={100}
+                  value={profile?.fullName || ""}
+                  onChange={handleChange}
+                />
               </div>
 
               <div>
@@ -85,7 +163,14 @@ export default function ProfilePage() {
 
             <div className={styles.phoneField}>
               <label>Phone Number</label>
-              <input value={profile?.phone || ""} readOnly />
+              <input
+                name="phone"
+                maxLength={10}
+                pattern="[0-9]*"
+                inputMode="numeric"
+                value={profile?.phone || ""}
+                onChange={handleChange}
+              />
 
               <p className={styles.helper}>
                 Thai phone number format: 0XXXXXXXXX (10 digits)
@@ -93,7 +178,7 @@ export default function ProfilePage() {
             </div>
 
             <div className={styles.sectionHeaderWrapper}>
-              <div className={styles.sectionHeader}>
+              <div className={styles.sectionHeader + " " + afacad.className}>
                 Bank Account Information
                 <button
                   className={styles.eyeBtn}
@@ -109,31 +194,44 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            <div className={styles.bankFields}>
+            <div className={styles.bankFields + " " + afacad.className}>
               <label>Bank Name</label>
               <input
+                name="bankName"
+                maxLength={50}
                 type={showBank ? "text" : "password"}
                 value={profile?.bankName || ""}
-                readOnly
+                onChange={handleChange}
               />
 
               <label>Account Name</label>
               <input
+                name="accountName"
+                maxLength={100}
                 type={showBank ? "text" : "password"}
                 value={profile?.accountName || ""}
-                readOnly
+                onChange={handleChange}
               />
 
               <label>Account Number</label>
               <input
+                name="accountNumber"
+                maxLength={15}
+                pattern="[0-9]*"
+                inputMode="numeric"
                 type={showBank ? "text" : "password"}
                 value={profile?.accountNumber || ""}
-                readOnly
+                onChange={handleChange}
               />
             </div>
 
             <div className={styles.updateBtnWrapper}>
-              <button className={styles.updateBtn}>Update Profile</button>
+              <button
+                onClick={handleUpdate}
+                className={styles.updateBtn + " " + afacad.className}
+              >
+                Update Profile
+              </button>
             </div>
           </div>
         </div>

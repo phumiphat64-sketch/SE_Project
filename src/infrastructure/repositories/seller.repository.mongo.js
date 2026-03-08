@@ -16,4 +16,16 @@ export default class SellerRepositoryMongo {
 
     return await db.collection("seller_profiles").findOne({ userId });
   }
+
+  async updateSellerByUserId(userId, data) {
+    const client = await getClient();
+    const db = client.db("DB_Server");
+
+    const result = await db
+      .collection("seller_profiles")
+      .updateOne({ userId }, { $set: data });
+
+    return result;
+  }
 }
+

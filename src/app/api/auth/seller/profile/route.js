@@ -17,3 +17,30 @@ export async function GET(req) {
 
   return Response.json(seller);
 }
+
+export async function PUT(req) {
+  const body = await req.json();
+
+  const { userId, fullName, phone, bankName, accountName, accountNumber } =
+    body;
+
+  if (!userId) {
+    return Response.json({ message: "User ID required" }, { status: 400 });
+  }
+
+  if (phone.length !== 10) {
+    return Response.json({ message: "Invalid phone" }, { status: 400 });
+  }
+
+  const repo = new SellerRepositoryMongo();
+
+  await repo.updateSellerByUserId(userId, {
+    fullName,
+    phone,
+    bankName,
+    accountName,
+    accountNumber,
+  });
+
+  return Response.json({ message: "Profile updated" });
+}
