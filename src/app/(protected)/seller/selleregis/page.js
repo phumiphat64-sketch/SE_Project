@@ -3,12 +3,34 @@ import styles from "./seller1.module.css";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useEffect } from "react";
+import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
+
+export const crimson = Crimson_Text({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const afacad = Afacad({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin", "thai"],
+  weight: ["400", "500", "600", "700"],
+});
 
 export default function SellerPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [bankOpen, setBankOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     fullName: "",
     dateOfBirth: "",
@@ -19,6 +41,13 @@ export default function SellerPage() {
     accountName: "",
     accountNumber: "",
   });
+
+  useEffect(() => {
+    const handleClick = () => setBankOpen(false);
+    window.addEventListener("click", handleClick);
+
+    return () => window.removeEventListener("click", handleClick);
+  }, []);
 
   const handleChange = (e) => {
     setForm({
@@ -38,14 +67,20 @@ export default function SellerPage() {
       "accountName",
       "accountNumber",
     ];
+    
 
-    if (form.phone.length !== 10) {
+    if (!/^\d{10}$/.test(form.phone)) {
       alert("Phone number must be 10 digits");
       return;
     }
 
     if (form.accountNumber.length > 15) {
       alert("Account number cannot exceed 15 digits");
+      return;
+    }
+
+    if (!/^\d+$/.test(form.accountNumber)) {
+      alert("Account number must contain only numbers");
       return;
     }
 
@@ -56,7 +91,20 @@ export default function SellerPage() {
       }
     }
 
+    if (new Date(form.dateOfBirth) > new Date()) {
+      alert("Invalid date of birth");
+      return;
+    }
+
+    if (submitting) return;
+    setSubmitting(true);
+
     try {
+      if (!user) {
+        alert("User not logged in");
+        return;
+      }
+
       const data = {
         userId: user.id,
         ...form,
@@ -117,7 +165,7 @@ export default function SellerPage() {
   }, []);
 
   if (loading) {
-    return null;
+    return <div>Loading...</div>
   }
 
   return (
@@ -127,8 +175,10 @@ export default function SellerPage() {
         <div className={styles.bookLeft}></div>
 
         <div>
-          <h1 className={styles.title}>Become a Seller</h1>
-          <p className={styles.subtitle}>
+          <h1 className={`${styles.title} ${afacad.className}`}>
+            Become a Seller
+          </h1>
+          <p className={`${styles.subtitle} ${afacad.className}`}>
             Fill in the details below to start selling on ReRead.
           </p>
         </div>
@@ -138,13 +188,13 @@ export default function SellerPage() {
 
       {/* Personal Info */}
       <div className={styles.card}>
-        <div className={styles.cardHeader}>
-          <div className={styles.icon}></div>
+        <div className={`${styles.cardHeader} ${afacad.className}`}>
+          <img src="/icons/profile-circle.svg" className={styles.icon} />
           <span>Personal Information</span>
         </div>
 
         <div className={styles.cardBody}>
-          <div className={styles.fullRow}>
+          <div className={`${styles.fullRow} ${afacad.className}`}>
             <label>
               Full name <span className={styles.required}>*</span>
             </label>
@@ -157,7 +207,7 @@ export default function SellerPage() {
             />
           </div>
 
-          <div className={styles.row}>
+          <div className={`${styles.row} ${afacad.className}`}>
             <div style={{ flex: "0 0 35%" }}>
               <label>
                 Date of Birth <span className={styles.required}>*</span>
@@ -194,9 +244,9 @@ export default function SellerPage() {
       </div>
 
       {/* Store Info */}
-      <div className={styles.card}>
+      <div className={`${styles.card} ${afacad.className}`}>
         <div className={styles.cardHeader}>
-          <div className={styles.icon}></div>
+          <img src="/icons/shop.svg" className={styles.icon} />
           <span>Store Information</span>
         </div>
 
@@ -229,9 +279,9 @@ export default function SellerPage() {
       </div>
 
       {/* Payout */}
-      <div className={styles.card}>
+      <div className={`${styles.card} ${afacad.className}`}>
         <div className={styles.cardHeader}>
-          <div className={styles.icon}></div>
+          <img src="/icons/empty-wallet.svg" className={styles.icon} />
           <span>Payout Information</span>
         </div>
 
@@ -246,9 +296,17 @@ export default function SellerPage() {
                 <div className={styles.bankDropdown}>
                   <div
                     className={styles.bankSelected}
-                    onClick={() => setBankOpen(!bankOpen)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setBankOpen(!bankOpen);
+                    }}
                   >
                     {form.bankName || "Select a Bank"}
+
+                    <img
+                      src={bankOpen ? "/up.svg" : "/down.svg"}
+                      className={styles.dropdownIcon}
+                    />
                   </div>
 
                   {bankOpen && (
@@ -354,7 +412,10 @@ export default function SellerPage() {
       </div>
 
       <div className={styles.buttonWrapper}>
-        <button className={styles.button} onClick={handleSubmit}>
+        <button
+          className={`${styles.button} ${afacad.className}`}
+          onClick={handleSubmit}
+        >
           Start Selling
         </button>
       </div>

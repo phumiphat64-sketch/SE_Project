@@ -1,19 +1,30 @@
 "use client";
 import styles from "./TopBar.module.css";
-import { Crimson_Text, Caveat } from "next/font/google";
+import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const crimson = Crimson_Text({
+export const crimson = Crimson_Text({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
 });
 
-const caveat = Caveat({
+export const caveat = Caveat({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
 });
+
+export const afacad = Afacad({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin", "thai"],
+  weight: ["400", "500", "600", "700"],
+});
+
 
 export default function TopBar({ showBack = false }) {
   const pathname = usePathname();
@@ -77,7 +88,10 @@ export default function TopBar({ showBack = false }) {
     <div className={styles.topBar}>
       <h2 className={`${styles.logo} ${caveat.className}`}>ReRead</h2>
       {shouldShowBack && (
-        <button onClick={handleBack} className={styles.backBtn}>
+        <button
+          onClick={handleBack}
+          className={`${styles.backBtn} ${crimson.className}`}
+        >
           ← Back
         </button>
       )}

@@ -71,22 +71,22 @@
 .roleOptions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 100px;
+  gap: 40px;
 }
 
 .roleCard {
   flex: 0 0 48%;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 16px;
-  padding: 80 80px;
+  padding: 0;              /* เอา padding ออก */
   cursor: pointer;
   transition: all 0.3s ease;
+  overflow: hidden;
 
-  display: flex;
-  flex-direction: column;
+  display: block;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  align-items: stretch;
+
   position: relative;
 }
 
@@ -103,6 +103,8 @@
 
 .roleCard:hover {
   border-color: #2f5d50;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
 }
 
 .roleCard::after {
@@ -112,10 +114,16 @@
   right: 10px;
   width: 26px;
   height: 26px;
-  background-image: url("/correct.svg");
+  background-image: url("/correctr.png");
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0;
+}
+
+.roleFull {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .active {
@@ -189,9 +197,114 @@
 }
 
 .roleIcon {
-  width: 140px;
-  height: auto;
-  margin: 20px 0 25px 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  display: block;
+  margin: 0;        /* เอา margin ออก */
 }
 
+.required {
+  color: red;
+}
+
+.modalOverlay{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.35);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+}
+
+.modal{
+  background:white;
+  width:70%;
+  max-width:900px;
+  max-height:80vh;
+  border-radius:20px;
+  padding:40px;
+  overflow-y:auto;
+  position:relative;
+
+  box-shadow:0 15px 40px rgba(0,0,0,0.15);
+}
+
+.modal h2{
+  position:relative;
+  top:0;
+  background:white;
+}
+
+.modalContent h3{
+  margin-top:30px;
+  font-size:22px;
+  color:#4c3b2e;
+}
+
+.modalContent b{
+  display:block;
+  margin-top:18px;
+  font-size:18px;
+}
+
+.modalContent ul{
+  margin-left:20px;
+  margin-top:10px;
+}
+
+.modalContent li{
+  margin-bottom:6px;
+}
+
+.modalContent hr{
+  margin:35px 0;
+  border:none;
+  border-top:1px solid #ddd;
+}
+
+.closeBtn{
+  position:absolute;
+  top:15px;
+  right:20px;
+  border:none;
+  background:none;
+  font-size:20px;
+  cursor:pointer;
+}
+
+.modalContent{
+  font-family: "Crimson Text", serif;
+  line-height: 1.8;
+  font-size: 16px;
+  color:#333;
+}
+
+.passwordWrapper{
+  position: relative;
+  width: 100%;
+}
+
+.passwordWrapper input{
+  width:100%;
+  padding-right:40px;
+  box-sizing:border-box;
+}
+
+.passwordIcon{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  width:20px;
+  height:20px;
+  cursor:pointer;
+}
+
+.passwordIcon:hover{
+  opacity:1;
+}

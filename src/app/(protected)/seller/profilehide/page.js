@@ -161,7 +161,7 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            <div className={styles.phoneField}>
+            <div className={styles.phoneField + " " + afacad.className}>
               <label>Phone Number</label>
               <input
                 name="phone"
