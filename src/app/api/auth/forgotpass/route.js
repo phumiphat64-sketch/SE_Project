@@ -1,36 +1,71 @@
 import { NextResponse } from "next/server";
-import crypto from "crypto";
-import clientPromise from "@/lib/mongodb";
+import { getClient } from "@/infrastructure/database/mongoDB";
+import nodemailer from "nodemailer";
 
 export async function POST(req) {
-  const { email } = await req.json();
+  try {
+    console.log("EMAIL_USER:", process.env.EMAIL_USER);
 
-  const client = await clientPromise;
-  const db = client.db("reread");
+    const { email } = await req.json();
 
-  const user = await db.collection("users").findOne({ email });
+    if (!email) {
+      return NextResponse.json(
+        { message: "Email is required" },
+        { status: 400 },
+      );
+    }
 
-  if (!user) {
-    return NextResponse.json({ message: "Email not found" }, { status: 404 });
-  }
+    // connect MongoDB
+    const client = await getClient();
+    const db = client.db();
 
-  const token = crypto.randomBytes(32).toString("hex");
+    // generate OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-  await db.collection("users").updateOne(
-    { email },
-    {
-      $set: {
-        resetToken: token,
-        resetExpire: Date.now() + 1000 * 60 * 15,
+    // expire 10 minutes
+    const otpExpire = Date.now() + 10 * 60 * 1000;
+
+    // update user
+    const result = await db.collection("users").updateOne(
+      { email },
+      {
+        $set: {
+          resetOTP: otp,
+          otpExpire: otpExpire,
+        },
       },
-    },
-  );
+    );
 
-  const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+    // debug log
+    console.log("matched:", result.matchedCount);
+    console.log("modified:", result.modifiedCount);
+    console.log("OTP for", email, ":", otp);
 
-  console.log("Reset Link:", resetLink);
+    // =========================
+    // SEND EMAIL
+    // =========================
 
-  return NextResponse.json({
-    message: "Reset link generated",
-  });
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "ReRead Password Reset OTP",
+      text: `Your OTP code is ${otp}. It expires in 10 minutes.`,
+    });
+
+    return NextResponse.json({
+      message: "If the email exists, a reset code has been sent.",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
+  }
 }

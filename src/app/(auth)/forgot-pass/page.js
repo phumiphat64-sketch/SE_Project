@@ -27,11 +27,40 @@ export const ibmPlexMono = IBM_Plex_Mono({
 export default function ForgotPass() {
   const [email, setEmail] = useState("");
 
+  const handleForgotPassword = async () => {
+    if (!email) {
+      alert("Please enter your email");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/auth/forgotpass", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      alert("If the email exists, a reset code has been sent.");
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.formBox}>
-          <h2 className={`${styles.title} ${afacad.className}`}>Forgot your password?</h2>
+          <h2 className={`${styles.title} ${afacad.className}`}>
+            Forgot your password?
+          </h2>
 
           <p className={`${styles.subtitle} ${afacad.className}`}>
             Enter your registered email address and we'll send you a link to
@@ -54,7 +83,12 @@ export default function ForgotPass() {
           </p>
         </div>
 
-        <button className={`${styles.button} ${afacad.className}`}>Send Reset Link</button>
+        <button
+          className={`${styles.button} ${afacad.className}`}
+          onClick={handleForgotPassword}
+        >
+          Send Reset Link
+        </button>
       </div>
     </div>
   );
