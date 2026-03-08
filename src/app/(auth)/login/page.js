@@ -172,9 +172,12 @@ export default function LoginPage() {
         />
 
         <div className={styles.forgotWrapper}>
-          <span className={`${styles.forgot} ${crimson.className}`}>
+          <Link
+            href="/forgot-pass"
+            className={`${styles.forgot} ${crimson.className}`}
+          >
             Forgot Password ?
-          </span>
+          </Link>
         </div>
 
         <button

@@ -1,0 +1,61 @@
+"use client";
+import { useState } from "react";
+import styles from "./fp.module.css";
+import Link from "next/link";
+import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
+
+export const crimson = Crimson_Text({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const afacad = Afacad({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin", "thai"],
+  weight: ["400", "500", "600", "700"],
+});
+
+export default function ForgotPass() {
+  const [email, setEmail] = useState("");
+
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
+        <div className={styles.formBox}>
+          <h2 className={`${styles.title} ${afacad.className}`}>Forgot your password?</h2>
+
+          <p className={`${styles.subtitle} ${afacad.className}`}>
+            Enter your registered email address and we'll send you a link to
+            reset your password.
+          </p>
+
+          <label className={`${styles.label} ${afacad.className}`}>
+            Email Address <span className={styles.required}>*</span>
+          </label>
+
+          <input
+            className={`${styles.input} ${afacad.className}`}
+            type="email"
+            placeholder="enter your email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <p className={`${styles.description} ${afacad.className}`}>
+            We will send a password reset link to this email.
+          </p>
+        </div>
+
+        <button className={`${styles.button} ${afacad.className}`}>Send Reset Link</button>
+      </div>
+    </div>
+  );
+}

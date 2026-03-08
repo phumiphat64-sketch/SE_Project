@@ -1,4 +1,4 @@
-import TopBar from "../components/TopBar";
+import TopBar from "../../components/TopBar";
 import { Crimson_Text, Caveat, Afacad } from "next/font/google";
 
 const crimson = Crimson_Text({
