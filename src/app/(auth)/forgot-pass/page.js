@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import styles from "./fp.module.css";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
 
 export const crimson = Crimson_Text({
@@ -26,6 +26,7 @@ export const ibmPlexMono = IBM_Plex_Mono({
 
 export default function ForgotPass() {
   const [email, setEmail] = useState("");
+  const router = useRouter();
 
   const handleForgotPassword = async () => {
     if (!email) {
@@ -48,7 +49,7 @@ export default function ForgotPass() {
         throw new Error(data.message || "Something went wrong");
       }
 
-      alert("If the email exists, a reset code has been sent.");
+      router.push(`/otp?email=${email}`);
     } catch (err) {
       alert(err.message);
     }

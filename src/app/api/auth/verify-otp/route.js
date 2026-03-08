@@ -13,7 +13,7 @@ export async function POST(req) {
     }
 
     const client = await getClient();
-    const db = client.db("DB_Server");
+    const db = client.db();
 
     const user = await db.collection("users").findOne({
       email,
@@ -28,12 +28,9 @@ export async function POST(req) {
       );
     }
 
-    return NextResponse.json({
-      message: "OTP verified",
-    });
+    return NextResponse.json({ message: "OTP verified" });
   } catch (error) {
     console.error(error);
-
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }

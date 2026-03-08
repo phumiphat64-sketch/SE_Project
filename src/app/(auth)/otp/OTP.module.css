@@ -1,0 +1,134 @@
+/* Wrapper */
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Bar */
+.topBar {
+  background: #5a4033;
+  padding: 18px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: white;
+  font-size: 36px;
+  font-family: "Brush Script MT", cursive;
+}
+
+.backBtn {
+  background: #e6e4d9;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Container */
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 150px;
+}
+
+/* Form */
+.formBox {
+  width: 700px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title */
+.title {
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 18px;
+  margin-bottom: 30px;
+  margin-top: -25px;
+}
+
+.label {
+  margin-top: 25px;
+  font-size: 25px;
+}
+
+.required {
+  color: red;
+}
+
+.description {
+  font-size: 18px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+/* OTP boxes */
+.otpContainer {
+  display: flex;
+  justify-content: center;   /* ทำให้ช่อง OTP อยู่ตรงกลาง */
+  gap: 12px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.otpInput {
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  font-size: 20px;
+  border-radius: 8px;
+  border: 1px solid #cfcfcf;
+}
+
+/* resend */
+.resend {
+  text-align: left;
+  font-size: 18px;
+  margin-top: 35px;
+}
+
+.resendLink {
+  text-align: left;
+  font-size: 18px;
+  color: #5e7f6c;
+  cursor: pointer;
+  margin-top: -3px;
+}
+
+/* Button */
+.button {
+  margin-top: 60px;
+  width: 300px;
+  padding: 10px;
+  border-radius: 28px;
+  border: none;
+  background: #5e7f6c;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.button:hover {
+  background: #4f6d5c;
+}
+
+.errorText {
+  color: red;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: -40px;
+  text-align: center;
+}
