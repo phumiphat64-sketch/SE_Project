@@ -1,6 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./buyer.module.css";
+import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
+
+export const crimson = Crimson_Text({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const afacad = Afacad({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin", "thai"],
+  weight: ["400", "500", "600", "700"],
+});
 
 export default function BuyerPage() {
   const [mounted, setMounted] = useState(false);
@@ -127,46 +148,33 @@ export default function BuyerPage() {
         <div className={styles.searchBar}>
           <input
             type="text"
-            className={styles.searchInput}
+            className={`${styles.searchInput} ${afacad.className}`}
             placeholder="Search by title, author"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button className={styles.searchButton}>Search</button>
+          <button className={`${styles.searchButton} ${afacad.className}`}>Search</button>
         </div>
       </div>
 
       {/* Greeting */}
       <div className={styles.greetingRow}>
         <div className={styles.avatar}>
-          <svg
-            viewBox="0 0 64 64"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            width="56"
-            height="56"
-          >
-            <circle cx="32" cy="32" r="32" fill="#E8D5C0" />
-            <circle cx="32" cy="24" r="10" fill="#C4956A" />
-            <path
-              d="M12 56c0-11.046 8.954-20 20-20s20 8.954 20 20"
-              fill="#C4956A"
-            />
-          </svg>
+          <img src="/boy.png" alt="profile" />
         </div>
-        <div className={styles.greeting}>Hi {user.name} !</div>
+        <div className={`${styles.greeting} ${afacad.className}`}>Hi {user.name} !</div>
       </div>
 
       {/* Recently Added Books */}
-      <div className={styles.sectionTitle}>Recently Added Books</div>
+      <div className={`${styles.sectionTitle} ${afacad.className}`}>Recently Added Books</div>
       <div className={styles.booksGrid}>
         {books.map((book) => (
           <div key={book.id} className={styles.bookCard}>
             <div className={styles.bookCover}></div>
             <div className={styles.bookInfo}>
-              <p className={styles.bookTitle}>{book.title}</p>
-              <p className={styles.bookAuthor}>{book.author}</p>
-              <p className={styles.bookPrice}>฿{book.price}</p>
+              <p className={`${styles.bookTitle} ${afacad.className}`}>{book.title}</p>
+              <p className={`${styles.bookAuthor} ${afacad.className}`}>{book.author}</p>
+              <p className={`${styles.bookPrice} ${afacad.className}`}>฿{book.price}</p>
             </div>
           </div>
         ))}
