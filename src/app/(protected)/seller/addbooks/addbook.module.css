@@ -19,7 +19,7 @@
     font-size:28px;
     font-weight:700;
     margin-bottom:25px;
-    color:#2d2d2d;
+    color:#000;
 }
 
 /* CARD */
@@ -31,6 +31,7 @@
     border:1px solid #000;
     overflow:hidden;
     box-shadow:0 5px 4px rgba(0,0,0,0.15);
+    font-size: 20px;
 }
 
 /* CARD HEADER */
@@ -39,8 +40,8 @@
     background:#e6ded2;
     padding:14px 20px;
     font-weight:600;
-    color:#4b3a33;
-
+    color:#000;
+    font-size: 23px;
     border-bottom:1px solid #000;
 }
 
@@ -55,8 +56,8 @@
 
 .uploadText{
     margin-top: 1px;
-    font-size:14px;
-    margin-bottom:20px;
+    font-size:18px;
+    margin-bottom:13px;
     color:#6a6a6a;
 }
 
@@ -64,8 +65,8 @@
 
 .uploadBox{
     border:2px dashed #bdb7b1;
-    border-radius:12px;
-    min-height:220px;
+    border-radius:16px;
+    min-height:320px;
 
     display:flex;
     align-items:center;
@@ -75,25 +76,31 @@
     background:#fafafa;
 }
 
+.uploadBox.dragActive {
+  background: #f0ede8;
+  border-color: #8b7d6b;
+}
+
 /* UPLOAD BUTTON */
 
 .uploadBtn{
-    background:#f0eeeb;
+    background:#FFFEFA;
     border:1px solid #cfc8c0;
-    padding:10px 18px;
-    border-radius:8px;
-    font-size:14px;
+    padding:16px 28px;
+    border-radius:4px;
+    font-size:20px;
     cursor:pointer;
-    box-shadow:0 3px 4px rgba(0,0,0,0.15);
-
+    box-shadow:0 3px 4px rgba(0,0,0,0.30);
+    color: #777;
+    font-weight: 600;
     display:flex;
     align-items:center;
     gap:6px;
 }
 
 .uploadBtn img{
-    width:27px;
-    height:27px;
+    width:32px;
+    height:32px;
 }
 
 .uploadBtn:hover{
@@ -104,7 +111,7 @@
 
 .dragText{
     color:#777;
-    font-size:14px;
+    font-size:20px;
 }
 
 /* FORM */
@@ -117,7 +124,7 @@
 }
 
 .formGroup label{
-    font-size:14px;
+    font-size:20px;
     margin-bottom:6px;
     color:#333;
 }
@@ -155,12 +162,12 @@
 }
 
 .publishBtn{
-    background:#5b3f36;
+    background:#6D5353;
     color:white;
     border:none;
     padding:12px 100px;
     border-radius:25px;
-    font-size:15px;
+    font-size:20px;
     cursor:pointer;
 }
 

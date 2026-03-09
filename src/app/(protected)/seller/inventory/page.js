@@ -53,8 +53,10 @@ export default function InventoryPage() {
   }
 
   const booksPerPage = 5;
-
-  const sortedBooks = [...books].sort((a, b) => a.title.localeCompare(b.title));
+  const validBooks = books.filter((b) => b.title);
+  const sortedBooks = [...validBooks].sort((a, b) =>
+    (a.title || "").localeCompare(b.title || ""),
+  );
 
   const last = page * booksPerPage;
   const first = last - booksPerPage;

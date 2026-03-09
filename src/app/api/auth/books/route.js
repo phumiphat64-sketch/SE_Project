@@ -21,7 +21,6 @@ export async function POST(req) {
 
     const sellerId = decoded.userId;
     console.log("JWT USER:", sellerId);
-    console.log("BOOK SELLER:", books[0]?.sellerId);
     const repo = new MongoBookRepository();
     const service = new BookService(repo);
 

@@ -15,7 +15,14 @@ export async function POST(req) {
     // ✅ สร้าง response ก่อน
     const response = NextResponse.json({
       message: "Login successful",
-      user,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        dateOfBirth: user.dateOfBirth,
+        role: user.role,
+      },
     });
 
     // ✅ แล้วค่อย set cookie ผ่าน response

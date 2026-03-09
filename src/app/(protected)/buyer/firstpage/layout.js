@@ -1,4 +1,4 @@
-import TopBar from "../../../components/TopBar";
+import Navbar from "../../../components/NavBar";
 import { Crimson_Text, Caveat, Afacad } from "next/font/google";
 
 const crimson = Crimson_Text({
@@ -16,10 +16,10 @@ const afacad = Afacad({
   weight: ["400", "500", "600", "700"],
 });
 
-export default function ProtectedLayout({ children }) {
+export default function Page({ children }) {
   return (
     <div style={{ backgroundColor: "#FFFEFA", minHeight: "100vh" }}>
-      <TopBar />
+      <Navbar />
       {children}
     </div>
   );

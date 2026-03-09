@@ -55,6 +55,7 @@ export default function SellerPage() {
       [e.target.name]: e.target.value,
     });
   };
+  
 
   const handleSubmit = async () => {
     const requiredFields = [
@@ -104,6 +105,7 @@ export default function SellerPage() {
         alert("User not logged in");
         return;
       }
+      
 
       const data = {
         userId: user.id,
@@ -143,6 +145,15 @@ export default function SellerPage() {
 
       const userData = JSON.parse(storedUser);
       setUser(userData);
+
+      setForm((prev) => ({
+        ...prev,
+        fullName: userData.name || "",
+        phone: userData.phone || "",
+        dateOfBirth: userData.dateOfBirth
+          ? userData.dateOfBirth.split("T")[0]
+          : "",
+      }));
 
       try {
         const res = await fetch(
@@ -204,6 +215,7 @@ export default function SellerPage() {
               name="fullName"
               value={form.fullName}
               onChange={handleChange}
+              readOnly
             />
           </div>
 
@@ -217,6 +229,7 @@ export default function SellerPage() {
                 name="dateOfBirth"
                 value={form.dateOfBirth}
                 onChange={handleChange}
+                readOnly
               />
             </div>
 
@@ -230,6 +243,7 @@ export default function SellerPage() {
                 name="phone"
                 value={form.phone}
                 maxLength={10}
+                readOnly
                 onChange={(e) => {
                   const value = e.target.value.replace(/\D/g, ""); // allow only numbers
                   setForm({

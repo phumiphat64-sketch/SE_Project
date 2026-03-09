@@ -2,6 +2,27 @@
 import styles from "./addbook.module.css";
 import { useRef, useState } from "react";
 import PageHeader from "@/app/components/PageHeader";
+import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
+
+export const crimson = Crimson_Text({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const afacad = Afacad({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin", "thai"],
+  weight: ["400", "500", "600", "700"],
+});
 
 export default function AddBookPage() {
   const fileInput = useRef(null);
@@ -25,6 +46,23 @@ export default function AddBookPage() {
     }));
 
     setImages((prev) => [...prev, ...newImages]);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+
+    const files = Array.from(e.dataTransfer.files);
+
+    const newImages = files.map((file) => ({
+      file,
+      url: URL.createObjectURL(file),
+    }));
+
+    setImages((prev) => [...prev, ...newImages]);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
   };
 
   const handlePublish = async () => {
@@ -76,7 +114,10 @@ export default function AddBookPage() {
 
       const data = await res.json();
 
-      console.log("Saved:", data);
+      if (!data.success) {
+        alert(data.error || "Failed to publish book");
+        return;
+      }
 
       alert("Book published successfully!");
 
@@ -102,15 +143,19 @@ export default function AddBookPage() {
       <PageHeader title="Add Book" />
 
       {/* BOOK IMAGES */}
-      <div className={styles.card}>
-        <div className={styles.cardHeader}>Book Images</div>
+      <div className={`${styles.card} ${afacad.className}`}>
+        <div className={`${styles.cardHeader} ${afacad.className}`}>Book Images</div>
 
         <div className={styles.cardBody}>
-          <p className={styles.uploadText}>
+          <p className={`${styles.uploadText} ${afacad.className}`}>
             Upload book cover and sample images PNG,JPG
           </p>
 
-          <div className={styles.uploadBox}>
+          <div
+            className={styles.uploadBox}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+          >
             <input
               type="file"
               ref={fileInput}
@@ -120,12 +165,12 @@ export default function AddBookPage() {
               onChange={handleFiles}
             />
 
-            <button className={styles.uploadBtn} onClick={handleUploadClick}>
+            <button className={`${styles.uploadBtn} ${afacad.className}`} onClick={handleUploadClick}>
               <img src="/icons/upload.svg" alt="upload" />
               Upload images
             </button>
 
-            <span className={styles.dragText}>Drag & Drop images here</span>
+            <span className={`${styles.dragText} ${afacad.className}`}>Drag & Drop images here</span>
           </div>
           {images.length > 0 && (
             <div className={styles.previewGrid}>
@@ -154,9 +199,9 @@ export default function AddBookPage() {
 
       {/* BOOK INFORMATION */}
       <div className={styles.card}>
-        <div className={styles.cardHeader}>Book Information</div>
+        <div className={`${styles.cardHeader} ${afacad.className}`}>Book Information</div>
 
-        <div className={styles.cardBody}>
+        <div className={`${styles.cardBody} ${afacad.className}`}>
           <div className={styles.formGroup}>
             <label>
               Book Title <span>*</span>
@@ -225,7 +270,7 @@ export default function AddBookPage() {
 
       {/* Publish Button */}
       <div className={styles.publishWrap}>
-        <button className={styles.publishBtn} onClick={handlePublish}>
+        <button className={`${styles.publishBtn} ${afacad.className}`} onClick={handlePublish}>
           Publish Book
         </button>
       </div>

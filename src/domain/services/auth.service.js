@@ -52,9 +52,11 @@ export default class AuthService {
     return {
       token,
       user: {
-        id: user._id,
+        _id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
+        dateOfBirth: user.dateOfBirth,
         role: user.role,
       },
     };

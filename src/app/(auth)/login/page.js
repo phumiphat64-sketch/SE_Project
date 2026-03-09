@@ -1,5 +1,3 @@
-"use client";
-
 /*
  * LAYER: Presentation Layer (UI)
  * ARCHITECTURE: Client–Server Architecture (Client Side)
@@ -85,7 +83,7 @@ export default function LoginPage() {
         const sellerCheck = await resSeller.json();
 
         if (sellerCheck.isSeller) {
-          window.location.href = "/seller/profilehide";
+          window.location.replace("/seller/profilehide");
         } else {
           window.location.href = "/seller/selleregis";
         }

@@ -19,6 +19,7 @@ function NewOTPContent() {
   const [error, setError] = useState("");
   const [timer, setTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
+  
 
   const handleChange = (value, index) => {
     if (!/^[0-9]?$/.test(value)) return;
@@ -110,7 +111,7 @@ function NewOTPContent() {
           </h2>
 
           <p className={`${styles.subtitle} ${afacad.className}`}>
-            We sent a 6-digit verification code to example@email.com
+            We sent a 6-digit verification code to {email || "your email"}
           </p>
 
           <label className={`${styles.label} ${afacad.className}`}>
