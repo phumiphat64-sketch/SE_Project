@@ -143,6 +143,13 @@
   width:100%;
   aspect-ratio:2/3;
   background:#ddd;
+  overflow:hidden;
+}
+
+.bookCover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
 /* info */

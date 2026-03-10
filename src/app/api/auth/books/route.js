@@ -3,6 +3,7 @@ import MongoBookRepository from "@/infrastructure/repositories/mongo.book.reposi
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import { getClient } from "@/infrastructure/database/mongoDB";
+import { ObjectId } from "mongodb";
 
 export async function POST(req) {
   try {
@@ -21,12 +22,23 @@ export async function POST(req) {
 
     const sellerId = decoded.userId;
     console.log("JWT USER:", sellerId);
+
+    const client = await getClient();
+    const db = client.db("DB_Server");
+
+    const seller = await db
+      .collection("users")
+      .findOne({ userId: sellerId });
+
+    const sellerName = seller?.fullName || "";
+    
     const repo = new MongoBookRepository();
     const service = new BookService(repo);
 
     // 🔹 เพิ่ม sellerId เข้าไป
     const result = await service.addBook({
       sellerId,
+      sellerName,
       ...body,
     });
 
@@ -59,14 +71,28 @@ export async function GET() {
 
     const books = await db
       .collection("books")
-      .find({ sellerId })
+      .find({ status: "Published" })
       .sort({ createdAt: -1 })
       .toArray();
 
+    const users = await db.collection("users").find().toArray();
+
+    const booksWithSeller = books.map((book) => {
+      const seller = users.find(
+        (u) => String(u.userId) === String(book.sellerId),
+      );
+
+      return {
+        ...book,
+        sellerName: seller?.fullName || "Unknown Seller",
+      };
+    });
+
     return Response.json({
       success: true,
-      data: books,
+      data: booksWithSeller,
     });
+
   } catch (error) {
     return Response.json({
       success: false,
