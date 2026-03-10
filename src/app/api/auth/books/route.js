@@ -64,27 +64,33 @@ export async function GET() {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const sellerId = decoded.userId;
 
     const client = await getClient();
     const db = client.db("DB_Server");
 
+    // 1. ดึงรายการหนังสือที่ Published ทั้งหมด
     const books = await db
       .collection("books")
       .find({ status: "Published" })
       .sort({ createdAt: -1 })
       .toArray();
 
-    const users = await db.collection("users").find().toArray();
+    // 2. เปลี่ยนมาดึงข้อมูลจาก collection 'seller_profiles' แทน 'users'
+    const sellerProfiles = await db
+      .collection("seller_profiles")
+      .find()
+      .toArray();
 
+    // 3. Map ข้อมูลโดยใช้ userId เป็นตัวเชื่อม
     const booksWithSeller = books.map((book) => {
-      const seller = users.find(
-        (u) => String(u.userId) === String(book.sellerId),
+      const profile = sellerProfiles.find(
+        (p) => String(p.userId) === String(book.sellerId),
       );
 
       return {
         ...book,
-        sellerName: seller?.fullName || "Unknown Seller",
+        // ใช้ fullName จาก seller_profiles ถ้าไม่มีให้ใช้ "Unknown Seller"
+        sellerName: profile?.fullName || "Unknown Seller",
       };
     });
 
@@ -92,7 +98,6 @@ export async function GET() {
       success: true,
       data: booksWithSeller,
     });
-
   } catch (error) {
     return Response.json({
       success: false,

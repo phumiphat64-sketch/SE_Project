@@ -27,7 +27,20 @@ export default function BuyerPage() {
   const [mounted, setMounted] = useState(false);
   const [user, setUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeQuery, setActiveQuery] = useState("");
   const [books, setBooks] = useState([]);
+
+  const filteredBooks = books.filter((book) => {
+    const title = book.title?.toLowerCase() || "";
+    const author = book.author?.toLowerCase() || "";
+    const query = activeQuery.toLowerCase();
+    return title.includes(query) || author.includes(query);
+  });
+
+  // 🔹 สร้าง Function สำหรับกดปุ่ม
+  const handleSearch = () => {
+    setActiveQuery(searchQuery);
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -63,7 +76,10 @@ export default function BuyerPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button className={`${styles.searchButton} ${afacad.className}`}>
+          <button
+            className={`${styles.searchButton} ${afacad.className}`}
+            onClick={handleSearch}
+          >
             Search
           </button>
         </div>
@@ -84,27 +100,47 @@ export default function BuyerPage() {
         Recently Added Books
       </div>
       <div className={styles.booksGrid}>
-        {books.map((book) => (
-          <div key={book._id} className={styles.bookCard}>
-            <div className={styles.bookCover}>
-              <img src={book.images?.[0]} alt={book.title} />
+        {/* 🔹 เช็คว่ามีข้อมูลที่กรองออกมาไหม */}
+        {filteredBooks.length > 0 ? (
+          filteredBooks.map((book) => (
+            <div key={book._id} className={styles.bookCard}>
+              {/* ... ไส้ใน Card เหมือนเดิมของคุณ ... */}
+              <div className={styles.bookCover}>
+                <img src={book.images?.[0]} alt={book.title} />
+              </div>
+              <div className={styles.bookInfo}>
+                <p className={`${styles.bookTitle} ${afacad.className}`}>
+                  {book.title}
+                </p>
+                <p className={`${styles.bookAuthor} ${afacad.className}`}>
+                  By {book.author || "Unknown Author"}
+                </p>
+                <p className={`${styles.bookSeller} ${afacad.className}`}>
+                  Seller: {book.sellerName}
+                </p>
+                <p className={`${styles.bookPrice} ${afacad.className}`}>
+                  ฿{book.price}
+                </p>
+              </div>
             </div>
-
-            <div className={styles.bookInfo}>
-              <p className={`${styles.bookTitle} ${afacad.className}`}>
-                {book.title}
-              </p>
-
-              <p className={`${styles.bookAuthor} ${afacad.className}`}>
-                Seller: {book.sellerName}
-              </p>
-
-              <p className={`${styles.bookPrice} ${afacad.className}`}>
-                ฿{book.price}
-              </p>
-            </div>
+          ))
+        ) : (
+          /* 🔹 แสดงส่วนนี้เมื่อ Search แล้วไม่เจออะไรเลย */
+          <div className={styles.noResults}>
+            <div className={styles.noResultsIcon}>📚🔍</div>
+            <h3 className={afacad.className}>Oops! No books found</h3>
+            <p className={afacad.className}>
+              We couldn't find any books matching "
+              <strong>{searchQuery}</strong>"
+            </p>
+            <button
+              className={`${styles.clearButton} ${afacad.className}`}
+              onClick={() => setSearchQuery("")}
+            >
+              Clear Search
+            </button>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

@@ -126,9 +126,9 @@
 ========================= */
 .bookCard{
   background:#ffffff;
-  border-radius:16px;
+  border-radius:30px;
   border:1px solid #e3d6c4;
-  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+  box-shadow:0 3px 2px rgba(0,0,0,0.25);
   overflow:hidden;
   transition:all .18s ease;
 }
@@ -157,22 +157,77 @@
   padding:10px 12px 12px;
 }
 
-.bookTitle{
-  font-size:12.5px;
-  font-weight:700;
-  margin-bottom:3px;
-  color:#2c1a10;
-  line-height:1.3;
+/* ขยายชื่อเรื่องหนังสือ */
+.bookTitle {
+  font-size: 25px;    /* ปรับจาก 12.5px เป็น 18px หรือตามชอบ */
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #2c1a10;
+  line-height: 1.3;
 }
 
-.bookAuthor{
-  font-size:11px;
-  color:#7a6050;
-  margin-bottom:6px;
+/* ขยายชื่อผู้แต่ง และชื่อผู้ขาย */
+.bookAuthor {
+  font-size: 20px;    /* ปรับจาก 11px เป็น 14px */
+  color: #000;
+  margin-bottom: 6px;
 }
 
-.bookPrice{
-  font-size:13px;
-  font-weight:700;
-  color:#2c1a10;
+.bookSeller {
+  font-size: 20px;
+  color: #7F7F7F; /* สีฟ้า RGB(79, 124, 169) ที่คุณชอบ */
+  margin-bottom: 6px;
+}
+
+/* ขยายราคาสินค้า */
+.bookPrice {
+  font-size: 30px;    /* ปรับจาก 13px เป็น 18px */
+  font-weight: 700;
+  color: #4F7CA9;
+  margin-top: 20px;   /* เพิ่มระยะห่างด้านบนราคานิดหน่อย */
+}
+
+/* =========================
+   EMPTY STATE (NO RESULTS)
+========================= */
+.noResults {
+  grid-column: 1 / -1; /* 🔹 ให้กินพื้นที่เต็มความกว้างของ Grid */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0;
+  text-align: center;
+  color: #7F7F7F; /* สีเทาที่คุณเลือก RGB(127,127,127) */
+}
+
+.noResultsIcon {
+  font-size: 60px;
+  margin-bottom: 20px;
+}
+
+.noResults h3 {
+  font-size: 28px;
+  color: #2b1a12;
+  margin-bottom: 10px;
+}
+
+.noResults p {
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+.clearButton {
+  padding: 10px 24px;
+  background: #4F7CA9; /* สีฟ้าที่คุณชอบ RGB(79, 124, 169) */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.clearButton:hover {
+  background: #3d6083;
 }
