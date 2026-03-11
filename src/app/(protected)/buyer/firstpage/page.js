@@ -29,6 +29,43 @@ export default function BuyerPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeQuery, setActiveQuery] = useState("");
   const [books, setBooks] = useState([]);
+  // เพิ่มในส่วน Hook ด้านบน
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [activeImage, setActiveImage] = useState(0);
+
+  // ฟังก์ชันเลื่อนไปรูปถัดไป (Next Image)
+  const nextImage = (e) => {
+    e.stopPropagation(); // กันไม่ให้ Modal ปิด
+    if (selectedBook.images && activeImage < selectedBook.images.length - 1) {
+      setActiveImage((prev) => prev + 1);
+    } else {
+      setActiveImage(0); // วนกลับไปรูปแรก
+    }
+  };
+
+  // ฟังก์ชันย้อนกลับไปรูปก่อนหน้า (Prev Image)
+  const prevImage = (e) => {
+    e.stopPropagation();
+    if (selectedBook.images && activeImage > 0) {
+      setActiveImage((prev) => prev - 1);
+    } else {
+      setActiveImage(selectedBook.images.length - 1); // ไปรูปสุดท้าย
+    }
+  };
+
+  // Function สำหรับเปิด Modal
+  const openModal = (book) => {
+    setSelectedBook(book);
+    setActiveImage(0);
+    setShowModal(true);
+  };
+
+  // Function สำหรับปิด Modal
+  const closeModal = () => {
+    setSelectedBook(null);
+    setShowModal(false);
+  };
 
   const filteredBooks = books.filter((book) => {
     const title = book.title?.toLowerCase() || "";
@@ -63,7 +100,6 @@ export default function BuyerPage() {
   if (!mounted) return null;
   if (!user) return null;
 
-  
   return (
     <div className={styles.page}>
       {/* Search Bar */}
@@ -103,7 +139,12 @@ export default function BuyerPage() {
         {/* 🔹 เช็คว่ามีข้อมูลที่กรองออกมาไหม */}
         {filteredBooks.length > 0 ? (
           filteredBooks.map((book) => (
-            <div key={book._id} className={styles.bookCard}>
+            <div
+              key={book._id}
+              className={styles.bookCard}
+              onClick={() => openModal(book)}
+              style={{ cursor: "pointer" }}
+            >
               {/* ... ไส้ใน Card เหมือนเดิมของคุณ ... */}
               <div className={styles.bookCover}>
                 <img src={book.images?.[0]} alt={book.title} />
@@ -142,6 +183,80 @@ export default function BuyerPage() {
           </div>
         )}
       </div>
+
+      {showModal && selectedBook && (
+        <div className={styles.modalOverlay} onClick={closeModal}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* ส่วนหัวที่มีขีดคั่นด้านล่าง */}
+            <div className={styles.modalHeader}>
+              <button className={styles.closeButton} onClick={closeModal}>
+                {/* 🔹 ใส่รูปไอคอนกากบาทของคุณที่นี่ */}
+                <img src="/cross.png" alt="close" />
+              </button>
+            </div>
+
+            <div className={styles.modalBody}>
+              {/* ฝั่งซ้าย: Gallery รูปภาพ */}
+              <div className={styles.imageGallery}>
+                <div className={styles.mainImage}>
+                  <img
+                    src={selectedBook.images?.[activeImage || 0]}
+                    alt={selectedBook.title}
+                  />
+                </div>
+
+                {/* ส่วน "รูปมุมอื่น" จะแสดงตามจำนวนรูปใน DB */}
+                <div className={styles.thumbnailRow}>
+                  {selectedBook.images?.map((img, index) => (
+                    <div
+                      key={index}
+                      className={`${styles.thumbnail} ${activeImage === index ? styles.activeThumb : ""}`}
+                      onClick={() => setActiveImage(index)}
+                    >
+                      <img src={img} alt={`view ${index}`} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ฝั่งขวา: รายละเอียด (ยืดตามเนื้อหา) */}
+              <div className={styles.bookDetails}>
+                <div className={styles.detailHeader}>
+                  <h2 className={afacad.className}>{selectedBook.title}</h2>
+                  {/* ฿ ย้ายมาอยู่ตรงนี้ เพื่อให้อยู่บรรทัดเดียวกับชื่อ */}
+                  <span className={`${styles.detailPrice} ${afacad.className}`}>
+                    ฿{selectedBook.price}
+                  </span>
+                </div>
+                <p className={`${styles.detailAuthor} ${afacad.className}`}>
+                  By {selectedBook.author || "Unknown Author"}
+                </p>
+
+                <div className={`${styles.descriptionBox} ${afacad.className}`}>
+                  {selectedBook.description}
+                </div>
+
+                <div className={`${styles.sellerInfo} ${afacad.className}`}>
+                  <span className={styles.sellerLabel}>Seller</span>
+                  <div className={styles.sellerNameText}>
+                    {selectedBook.sellerName}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ส่วนท้ายที่มีขีดคั่นด้านบนก่อนถึงปุ่ม Buy Now */}
+            <div className={styles.modalFooter}>
+              <button className={`${styles.buyButton} ${afacad.className}`}>
+                Buy Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

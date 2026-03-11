@@ -231,3 +231,193 @@
 .clearButton:hover {
   background: #3d6083;
 }
+
+.modalOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContent {
+  background: white;
+  width: 100%;
+  max-width: 850px;
+  min-height: 800px; /* 🔹 กำหนดความสูงขั้นต่ำไว้ */
+  max-height: 95vh; /* 🔹 ไม่ให้ยาวเกินหน้าจอ */
+  border-radius: 45px; /* มนพิเศษตามรูป */
+ padding: 20px 40px 40px 40px; 
+  display: flex;
+  flex-direction: column;
+  /* 2. สำคัญ: ป้องกันไม่ให้เส้นที่ยืดออกไปล้นทะลุความโค้งของมุมกล่อง */
+  overflow: hidden; 
+  position: relative;
+}
+
+.modalHeader {
+  /* 3. ใช้ Margin ติดลบเท่ากับ Padding ของกล่องแม่ เพื่อให้เส้นกางจนเต็มขอบ */
+  margin-left: -40px; 
+  margin-right: -40px;
+  margin-top: -20px; /* ดึงขึ้นไปให้ชิดขอบบนด้วย */
+  
+  /* 4. ใส่ Padding กลับเข้าไปข้างใน เพื่อให้ปุ่มกากบาทไม่ชิดขอบเกินไป */
+  padding: 15px 40px 10px 40px; 
+  
+  /* 5. เส้นขีดลากยาวเต็มขอบ */
+  border-bottom: 1.5px solid #8B5E3C; 
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 35px;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.closeButton img {
+  width: 40px;
+  height: 38px;
+}
+
+.modalBody {
+  display: flex;
+  gap: 40px;
+  flex: 1; /* 🔹 ให้ Body ยืดกินพื้นที่ที่เหลือ */
+}
+
+.imageGallery {
+  flex: 0 0 320px;
+}
+
+.mainImage img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 1px;
+}
+
+.thumbnailRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 100px;
+  border: 2px solid transparent;
+  border-radius: 1px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f0f0f0;
+}
+
+.activeThumb {
+  border-color: #74937a; /* ไฮไลท์รูปที่เลือก */
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bookDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* ให้เนื้อหาเรียงจากบนลงมา */
+}
+
+.detailHeader {
+  display: flex;
+  justify-content: space-between; /* ดันชื่อไปซ้าย ดันราคาไปขวา */
+  align-items: baseline; /* ให้ฐานตัวหนังสือตรงกัน */
+  margin-bottom: 5px;
+}
+
+.detailHeader h2 {
+  font-size: 30px; /* ปรับขนาดตรงนี้ */
+  font-weight: 700;
+  margin: 0;
+}
+
+.descriptionBox {
+  /* ลบ flex: 1; ออก */
+  margin-top: -20px;
+  margin-bottom: 25px; /* ปรับระยะห่างจาก Seller ให้พอดีตา */
+  line-height: 1.6;
+  color: #000;
+  font-size: 18px;
+  /* ถ้าอยากให้มีที่ว่างคงที่ ให้ใส่ min-height แทน */
+  min-height: 100px; 
+}
+
+.detailPrice {
+  font-size: 30px;
+  font-weight: 700;
+  color: #5D81BC; /* หรือสีที่คุณต้องการ */
+  white-space: nowrap; /* กันไม่ให้ราคาตกบรรทัด */
+}
+
+.detailAuthor {
+  font-size: 25px; /* ปรับขนาดตรงนี้ */
+  color: #333;
+  margin-bottom: 20px;
+  margin-top: -12px;
+}
+
+.sellerNameText {
+  color: #4a90e2;
+  font-weight: 500;
+}
+
+.modalFooter {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+.buyButton {
+  background: #74937a;
+  color: white;
+  border: none;
+  width: 100%;
+  max-width: 90%;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.activeThumb {
+  border: 3px solid #8B5E3C !important; /* สีเขียวเดียวกับปุ่ม Buy Now */
+  transform: scale(1.05); /* ขยายขึ้นเล็กน้อย */
+  transition: all 0.2s ease;
+}
+
+.thumbnail {
+  cursor: pointer;
+  opacity: 0.6; /* รูปที่ไม่ได้เลือกจะจางลงนิดนึง */
+}
+
+.thumbnail:hover, .activeThumb {
+  opacity: 1; /* รูปที่เลือกหรือเอาเมาส์วางจะชัด 100% */
+}
+
+.sellerInfo {
+  /* ลบ margin-top: auto; ออกถ้าไม่อยากให้มันเด้งไปล่างสุด */
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* ระยะระหว่างคำว่า Seller กับชื่อ */
+  margin-bottom: 20px;
+  font-size: 25px;
+}
