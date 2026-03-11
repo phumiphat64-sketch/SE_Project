@@ -29,12 +29,12 @@ export default function Navbar() {
 
       {/* Menu */}
       <div className={`${styles.menu} ${afacad.className}`}>
-        <Link href="/home" className={styles.menuItem}>
+        <Link href="/buyer/firstpage" className={styles.menuItem}>
           <img src="/icons/1.svg" className={styles.icon} />
           Home
         </Link>
 
-        <Link href="/profile" className={`${styles.menuItem} ${afacad.className}`}>
+        <Link href="/buyer/profilebuyer" className={`${styles.menuItem} ${afacad.className}`}>
           <img src="/icons/4.svg" className={styles.icon} />
           Profile
         </Link>
