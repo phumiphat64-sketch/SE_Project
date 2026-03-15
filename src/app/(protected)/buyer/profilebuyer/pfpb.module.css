@@ -1,0 +1,221 @@
+.pageWrapper {
+  background: #FFFEFA;
+  /* 🔹 หักลบความสูงของ Navbar ด้านบน (สมมติว่าสูง 80px ถ้ายังล้นอยู่ปรับเลข 80 เพิ่มได้ครับ) */
+  min-height: calc(100vh - 170px); 
+  width: 100%;
+  display: flex; 
+  justify-content: center; 
+  align-items: flex-start; /* 🔹 เปลี่ยนจาก center เป็น flex-start เพื่อดันกล่องขึ้นไปข้างบน */
+  padding-top: 150px; /* 🔹 ใช้ตรงนี้ปรับระยะห่างจาก Navbar ถ้าน้อยไป/มากไป ปรับเลขนี้ได้เลย */
+  padding-bottom: 20px; /* เผื่อที่ว่างด้านล่างนิดหน่อย */
+}
+
+.container {
+  width: 90%;
+  max-width: 1500px;
+  margin: 0; /* 🔹 ลบ margin: 40px auto เดิมออก เพื่อไม่ให้มันไปดันกล่องลงมาอีก */
+  display: flex;
+  gap: 60px;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 350px;
+}
+
+.profileCard {
+  background: white;
+  border-radius: 20px;
+  padding: 40px 30px; /* เพิ่มพื้นที่ด้านในให้ดูใหญ่ขึ้น */
+  box-shadow: 0 5px 4px rgba(0,0,0,0.35);
+}
+
+.userInfo{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.avatar {
+  width: 90px; /* ขยายรูปโปรไฟล์ */
+  height: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #ddd;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 26px; /* ขยายชื่อ */
+  margin-bottom: -15px;
+}
+
+.email {
+  font-size: 18px; /* ขยายอีเมล */
+}
+
+/* MODE BUTTON */
+
+.btnIcon{
+  width:25px;
+  height:25px;
+}
+
+.buyerBtn,
+.sellerBtn {
+  width: 100%;
+  border: none;
+  padding: 10px; /* ทำให้ปุ่มหนาขึ้น */
+  font-size: 20px; /* ขยายตัวอักษรในปุ่ม */
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-left: 20px;
+  cursor: pointer;
+  box-shadow: 0 3px 4px rgba(0,0,0,0.35);
+}
+
+.buyerBtn{
+  background:#5f7f6e;
+  color:white;
+  margin-top:40px;
+  margin-bottom:20px;
+}
+
+.sellerBtn{
+  background:#6c4a45;
+  color:white;
+}
+
+.activeTag{
+  margin-left:auto;
+  background:white;
+  color:#6D5353;
+  font-size:12px;
+  padding:2px 8px;
+  border-radius:6px;
+}
+
+/* RIGHT CONTENT */
+
+.content{
+  flex:1;
+}
+
+.formCard {
+  background: white;
+  border-radius: 24px;
+  padding: 60px; /* เพิ่มพื้นที่ด้านในให้ดูโปร่งและใหญ่ขึ้น */
+  box-shadow: 0 5px 4px rgba(0,0,0,0.35);
+}
+
+/* TAB */
+
+/* TAB */
+
+.tabsContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 35px;
+}
+
+.tabs {
+  display: inline-flex;
+  background: #f5f5f5; /* สีพื้นหลังของปุ่มที่ไม่ได้เลือก */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* เงารวมๆ ของทั้งแถบ */
+}
+
+.tab {
+  background: transparent;
+  border: none;
+  padding: 14px 40px; /* ขนาดความกว้าง-สูงของปุ่ม */
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 8px; /* เผื่อความมนตอนปุ่มเป็น Active */
+  transition: all 0.2s ease;
+}
+
+.tabActive {
+  background: #6D5353; /* สีน้ำตาลตามรูป */
+  color: white;
+  font-weight: 600; /* ทำให้ตัวหนังสือหนาขึ้นนิดนึงเวลาถูกเลือก */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* เพิ่มเงาให้ปุ่มที่เลือกดูนูนขึ้นมา */
+}
+
+/* FORM */
+
+.formGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  margin-bottom:20px;
+}
+
+.formGrid label,
+.phoneField label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 20px; 
+}
+
+.formGrid input,
+.phoneField input {
+  width: 90%;
+  padding: 10px; /* เพิ่มความหนาของช่องกรอก */
+  font-size: 18px; /* ขยายขนาดตัวหนังสือเวลาพิมพ์ */
+  border: 1px solid #ddd;
+  border-radius: 15px;
+}
+
+.phoneField label{
+  display:block;
+  margin-bottom:6px;
+}
+
+.phoneField input{
+  width:95%;
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:15px;
+}
+
+.helper {
+  font-size: 14px; /* ขยายคำแนะนำสีเทา */
+  color: #777;
+  margin-top: 8px;
+}
+
+/* BUTTON */
+
+.updateBtnWrapper{
+  margin-top:25px;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.updateBtn {
+  background: #5f7f6e;
+  color: white;
+  border: none;
+  padding: 10px 40px;
+  font-size: 20px; 
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.updateBtn:hover {
+  background: #4e6a5b;
+}

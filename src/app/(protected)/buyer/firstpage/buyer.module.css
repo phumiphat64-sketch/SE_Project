@@ -392,10 +392,27 @@
   border: none;
   width: 100%;
   max-width: 90%;
-  padding: 5px;
+  padding: 5px; /* แนะนำให้เพิ่ม padding นิดหน่อยให้ปุ่มดูหนาขึ้น น่ากดขึ้นครับ */
   border-radius: 10px;
   font-size: 20px;
   cursor: pointer;
+  
+  /* 🔹 เพิ่ม Transition เพื่อให้ Animation นุ่มนวล */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 เพิ่ม Effect ตอนเอาเมาส์ชี้ (Hover) */
+.buyButton:hover {
+  background: #5f7a64; /* สีเข้มขึ้นนิดหน่อย */
+  transform: translateY(-3px); /* ทำให้ปุ่มลอยขึ้น 3px */
+  box-shadow: 0 8px 15px rgba(116, 147, 122, 0.4); /* เพิ่มเงาสีเขียวจางๆ ให้ดูมีมิติ */
+}
+
+/* 🔹 เพิ่ม Effect ตอนกดคลิก (Active) */
+.buyButton:active {
+  transform: translateY(1px); /* กดแล้วยุบลงไปนิดนึง */
+  box-shadow: 0 2px 4px rgba(116, 147, 122, 0.4); /* เงาหดลง */
 }
 
 .activeThumb {

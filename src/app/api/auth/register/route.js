@@ -49,3 +49,36 @@ export async function POST(req) {
     return Response.json({ message: err.message }, { status: 400 });
   }
 }
+
+export async function PUT(req) {
+  try {
+    const body = await req.json();
+
+    // 1. แยก id ออกมาจากข้อมูลที่จะอัปเดต (name, phone, address)
+    const { id, ...data } = body;
+
+    if (!id) {
+      return Response.json({ error: "User id missing" }, { status: 400 });
+    }
+
+    const userRepo = new MongoUserRepository();
+
+    // 2. ส่ง id และข้อมูลไปอัปเดต
+    const updatedUser = await userRepo.update(id, data);
+
+    if (!updatedUser) {
+      return Response.json(
+        { error: "User not found or update failed" },
+        { status: 404 },
+      );
+    }
+
+    return Response.json(
+      { message: "Update success", user: updatedUser },
+      { status: 200 },
+    );
+  } catch (err) {
+    console.error("API PUT Error:", err);
+    return Response.json({ error: err.message }, { status: 500 });
+  }
+}
