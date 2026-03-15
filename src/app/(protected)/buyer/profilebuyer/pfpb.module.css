@@ -1,12 +1,13 @@
 .pageWrapper {
   background: #FFFEFA;
   /* 🔹 หักลบความสูงของ Navbar ด้านบน (สมมติว่าสูง 80px ถ้ายังล้นอยู่ปรับเลข 80 เพิ่มได้ครับ) */
-  min-height: calc(100vh - 170px); 
+  height: calc(100vh - 120px);
+    overflow: hidden;
   width: 100%;
   display: flex; 
   justify-content: center; 
   align-items: flex-start; /* 🔹 เปลี่ยนจาก center เป็น flex-start เพื่อดันกล่องขึ้นไปข้างบน */
-  padding-top: 150px; /* 🔹 ใช้ตรงนี้ปรับระยะห่างจาก Navbar ถ้าน้อยไป/มากไป ปรับเลขนี้ได้เลย */
+  padding-top: 100px; /* 🔹 ใช้ตรงนี้ปรับระยะห่างจาก Navbar ถ้าน้อยไป/มากไป ปรับเลขนี้ได้เลย */
   padding-bottom: 20px; /* เผื่อที่ว่างด้านล่างนิดหน่อย */
 }
 
@@ -16,6 +17,9 @@
   margin: 0; /* 🔹 ลบ margin: 40px auto เดิมออก เพื่อไม่ให้มันไปดันกล่องลงมาอีก */
   display: flex;
   gap: 60px;
+
+  transform: scale(0.88);
+  transform-origin: top center;
 }
 
 /* SIDEBAR */
@@ -218,4 +222,263 @@
 
 .updateBtn:hover {
   background: #4e6a5b;
+}
+
+/* =========================
+   SHIPPING SECTION
+========================= */
+.shippingField {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.shippingTitle {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #333;
+}
+
+/* 🔹 กล่องว่างตอนยังไม่มีที่อยู่ */
+.addressDisplayBox {
+  width: 95%;
+  min-height: 150px;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fcfcfc;
+  padding: 20px;
+}
+
+/* 🔹 การ์ดโชว์ข้อมูลตอนกรอกเสร็จ */
+.addressCard {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.addressName {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.addressDetail {
+  font-size: 16px;
+  color: #666;
+}
+
+/* 🔹 ปุ่ม Add / Edit */
+.addNewBtn {
+  background: transparent;
+  color: #6D5353;
+  border: 1px solid #6D5353;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.addNewBtn:hover {
+  background: #6D5353;
+  color: white;
+}
+
+/* 🔹 ฟอร์ม 2 คอลัมน์ */
+.shippingFormWrapper {
+  width: 95%;
+}
+
+.shippingFormGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup label {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #555;
+}
+
+.inputGroup input,
+.inputGroup textarea {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 16px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  outline: none;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.inputGroup input:focus,
+.inputGroup textarea:focus {
+  border-color: #6D5353;
+  box-shadow: 0 0 5px rgba(109, 83, 83, 0.2);
+}
+
+.inputGroup textarea {
+  resize: none;
+  min-height: 80px;
+}
+
+.fullWidth {
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+/* =========================
+   SHIPPING HEADER & BACK BTN
+========================= */
+.shippingHeader {
+  display: flex;
+  justify-content: space-between; /* ดันข้อความไปซ้ายสุด ดันปุ่มไปขวาสุด */
+  align-items: center; /* ให้อยู่กึ่งกลางแนวตั้ง */
+  margin-bottom: 20px;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #888; /* สีเทาเข้มหน่อย ให้ดูเป็นปุ่มรอง */
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0;
+}
+
+.backBtn:hover {
+  color: #333; /* เข้มขึ้นเมื่อเอาเมาส์ไปชี้ */
+  text-decoration: underline;
+}
+
+/* =========================
+   CHECKBOX & BUTTONS (SHIPPING)
+========================= */
+
+/* ป้าย [Default] สีทองแดง/น้ำตาลอ่อน */
+.defaultTag {
+  color: #c79a63; 
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.defaultAddressWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;   /* ระยะห่างระหว่าง text กับ toggle */
+  margin-top: 15px;
+  margin-bottom: 25px;
+  font-size: 18px;
+  color: #333;
+}
+
+/* ปรับหน้าตา Checkbox นิดหน่อยให้ดูดีขึ้น */
+.defaultAddressWrapper input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #5f7f6e; /* สีเขียวเดียวกับปุ่ม */
+}
+
+.defaultAddressWrapper label {
+  cursor: pointer;
+  margin: 0;
+}
+
+/* กลุ่มปุ่มล่างสุด */
+.formActionButtons {
+  display: flex;
+  justify-content: flex-end; /* ดันปุ่มไปทางขวา */
+  gap: 15px; /* ระยะห่างระหว่าง 2 ปุ่ม */
+}
+
+/* ปุ่ม Cancel (ขอบเขียว พื้นขาว) */
+.cancelBtn {
+  background: white;
+  color: #5f7f6e;
+  border: 1px solid #5f7f6e;
+  padding: 10px 40px;
+  font-size: 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelBtn:hover {
+  background: #f4f6f5; /* สีเทาอมเขียวอ่อนๆ เวลาชี้เมาส์ */
+}
+
+/* =========================
+   TOGGLE SWITCH
+========================= */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* ตัวพื้นหลัง */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 30px;
+}
+
+/* วงกลม */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+/* ตอนเปิด */
+.switch input:checked + .slider {
+  background-color: #5f7f6e;
+}
+
+/* ตอนเลื่อน */
+.switch input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* =========================
+   REQUIRED FIELD *
+========================= */
+
+.required::after {
+  content: " *";
+  color: #d93025;
+  font-weight: 600;
 }
