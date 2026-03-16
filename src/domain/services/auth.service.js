@@ -58,6 +58,7 @@ export default class AuthService {
         phone: user.phone,
         dateOfBirth: user.dateOfBirth,
         role: user.role,
+        addresses: user.addresses || [], // 👈 1. เพิ่มบรรทัดนี้ เพื่อส่งออกจาก Service
       },
     };
   }

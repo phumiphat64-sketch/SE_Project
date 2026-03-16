@@ -244,14 +244,14 @@
 .addressDisplayBox {
   width: 95%;
   min-height: 150px;
-  border: 1px dashed #ccc;
+  border: none;          /* เอาเส้นประออก */
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #fcfcfc;
-  padding: 20px;
+  align-items: flex-start;  /* การ์ดชิดซ้ายเหมือนรูป */
+  justify-content: flex-start;
+  background-color: transparent; /* ไม่มีกล่องเทา */
+  padding: 0;
 }
 
 /* 🔹 การ์ดโชว์ข้อมูลตอนกรอกเสร็จ */
@@ -481,4 +481,120 @@
   content: " *";
   color: #d93025;
   font-weight: 600;
+}
+
+/* Container ของฝั่งขวาทั้งหมด ให้จัดชิดซ้าย */
+.addressContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* บังคับให้ไส้ในชิดซ้ายทั้งหมด */
+  width: 100%;
+}
+
+/* ตัวการ์ดที่อยู่ */
+.addressCard {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  background-color: #ffffff;
+  text-align: left;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.addressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.addressHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1a1a1a;
+}
+
+.addressLabel {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.defaultBadge {
+  background-color: #6a8093; /* สีเทาอมฟ้าแบบในรูป */
+  color: #ffffff;
+  font-size: 0.65rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.addressActions {
+  display: flex;
+  gap: 12px;
+  color: #4a4a4a;
+}
+
+.addressBody {
+  color: #333333;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.addressName {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.addressText {
+  color: #555555;
+  margin-bottom: 4px;
+}
+
+.addressPhone {
+  color: #555555;
+}
+
+/* ปุ่มสีเขียว Add New Address */
+.addNewAddressBtn {
+  background-color: #6b8e73; /* สีเขียวหม่นแบบในรูป */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  transition: opacity 0.2s ease;
+}
+
+.addNewAddressBtn:hover {
+  opacity: 0.9;
+}
+
+/* สไตล์กล่องเปล่า (เส้นประ) สำหรับตอนที่ยังไม่มีที่อยู่ */
+.emptyAddressBox {
+  width: 100%;
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fafafa;
+}
+
+.emptyAddBtn {
+  background: white;
+  border: 1px solid #7c6a61;
+  color: #7c6a61;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
 }

@@ -13,6 +13,7 @@ export async function POST(req) {
     const { token, user } = await authService.login(body);
 
     // ✅ สร้าง response ก่อน
+    // ✅ สร้าง response ก่อน
     const response = NextResponse.json({
       message: "Login successful",
       user: {
@@ -22,6 +23,7 @@ export async function POST(req) {
         phone: user.phone,
         dateOfBirth: user.dateOfBirth,
         role: user.role,
+        addresses: user.addresses || [], // 👈 เพิ่มบรรทัดนี้เข้าไปครับ
       },
     });
 

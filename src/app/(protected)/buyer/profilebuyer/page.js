@@ -51,6 +51,14 @@ export default function BuyerProfilePage() {
     }
   }, []);
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsed = JSON.parse(storedUser);
+      setUser(parsed);
+    }
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -72,9 +80,11 @@ export default function BuyerProfilePage() {
     }));
   };
 
+  
+
   // 🔹 ฟังก์ชันนี้แหละครับที่หายไป! (ดึงข้อมูลไปเซฟลง DB)
   // 🔹 ฟังก์ชันที่แก้บั๊กเรียบร้อยแล้ว
-  const handleUpdate = async () => {
+  const handleUpdate = async (addresses) => {
     if (!user) return;
 
     const trimmedName = (profile.fullName || "").trim();
@@ -103,18 +113,21 @@ export default function BuyerProfilePage() {
           id: userId,
           name: trimmedName,
           phone: trimmedPhone,
-          address: finalAddress, // 🔹 ส่งแบบแพ็กเกจไปเลย
+          address: finalAddress,
+          addresses: addresses || user?.addresses || [],
         }),
       });
 
       if (response.ok) {
+        const data = await response.json();
+
         alert("Profile updated successfully!");
+
         const updatedUser = {
           ...user,
-          name: trimmedName,
-          phone: trimmedPhone,
-          address: finalAddress,
+          ...data.user,
         };
+
         localStorage.setItem("user", JSON.stringify(updatedUser));
         setUser(updatedUser);
       } else {
@@ -204,7 +217,8 @@ export default function BuyerProfilePage() {
     typeof profile.address === "object"
       ? Object.values(profile.address).some((val) => val && val.trim() !== "")
       : !!profile.address;
-
+      
+  const addresses = user?.addresses ?? [];
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.container}>
@@ -218,7 +232,7 @@ export default function BuyerProfilePage() {
 
               <div>
                 <p className={`${styles.name} ${afacad.className}`}>
-                  {user?.name}
+                  {user?.name || ""}
                 </p>
                 <p className={`${styles.email} ${afacad.className}`}>
                   {user?.email}
@@ -307,7 +321,7 @@ export default function BuyerProfilePage() {
                 <div className={styles.updateBtnWrapper}>
                   <button
                     className={`${styles.updateBtn} ${afacad.className}`}
-                    onClick={handleUpdate}
+                    onClick={() => handleUpdate()}
                     disabled={isLoading}
                     style={{
                       opacity: isLoading ? 0.6 : 1,
@@ -327,41 +341,160 @@ export default function BuyerProfilePage() {
 
                 {!isEditingAddress ? (
                   <div className={styles.addressDisplayBox}>
-                    {hasAddress ? (
+                    {addresses.length > 0 ? (
                       <>
-                        {/* 🔹 หน้าตาตอนมีที่อยู่แล้ว */}
-                        <div className={styles.addressCard}>
-                          <p className={styles.addressName}>
-                            {addr.fullName || "-"} | {addr.phone || "-"}
-                            {/* แสดงป้าย [Default] ถ้า Checkbox ถูกติ๊ก */}
-                            {addr.isDefault && (
-                              <span className={styles.defaultTag}>
-                                [Default]
-                              </span>
-                            )}
-                          </p>
-                          <p className={styles.addressDetail}>
-                            {addr.detail} {addr.city} {addr.province}{" "}
-                            {addr.zipCode}
-                          </p>
-                        </div>
+                        {addresses.map((a, index) => (
+                          <div
+                            key={a._id || index}
+                            className={styles.addressCard}
+                          >
+                            <div className={styles.addressHeader}>
+                              <div className={styles.addressHeaderLeft}>
+                                <svg
+                                  width="20"
+                                  height="20"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                >
+                                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                <span
+                                  className={`${styles.addressLabel} ${afacad.className}`}
+                                >
+                                  {a.label || "Home"}
+                                </span>
+                                {a.isDefault && (
+                                  <span
+                                    className={`${styles.defaultBadge} ${afacad.className}`}
+                                  >
+                                    Default
+                                  </span>
+                                )}
+                              </div>
+                              <div className={styles.addressActions}>
+                                <svg
+                                  width="18"
+                                  height="18"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                                <svg
+                                  width="18"
+                                  height="18"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  <polyline points="3 6 5 6 21 6"></polyline>
+                                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                              </div>
+                            </div>
+
+                            <div
+                              className={`${styles.addressBody} ${afacad.className}`}
+                            >
+                              <div className={styles.addressName}>
+                                {a.fullName}
+                              </div>
+                              <div className={styles.addressText}>
+                                {[
+                                  a.detail,
+                                  a.city,
+                                  a.province,
+                                  a.zipCode,
+                                  a.country,
+                                ]
+                                  .filter(Boolean)
+                                  .join(", ")}
+                              </div>
+                              <div className={styles.addressPhone}>
+                                Phone : {a.phone}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+
                         <button
-                          className={`${styles.addNewBtn} ${afacad.className}`}
+                          className={`${styles.addNewAddressBtn} ${afacad.className}`}
                           onClick={() => setIsEditingAddress(true)}
                         >
-                          Edit Address
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                          </svg>
+                          Add New Address
                         </button>
                       </>
                     ) : (
-                      <>
-                        {/* 🔹 หน้าตาตอนยังไม่มีที่อยู่ */}
-                        <button
-                          className={`${styles.addNewBtn} ${afacad.className}`}
-                          onClick={() => setIsEditingAddress(true)}
+                      <div
+                        onClick={() => setIsEditingAddress(true)}
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          padding: "40px 20px",
+                          border: "1px solid #EAEAEA",
+                          borderRadius: "12px",
+                          backgroundColor: "#FAFAFA",
+                          cursor: "pointer",
+                          transition: "0.2s",
+                        }}
+                      >
+                        <span
+                          className={afacad.className}
+                          style={{
+                            fontSize: "16px",
+                            color: "#555",
+                            fontWeight: "500",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                          }}
                         >
-                          + Add New Address
-                        </button>
-                      </>
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                          </svg>
+                          Add New Address
+                        </span>
+                      </div>
                     )}
                   </div>
                 ) : (
@@ -494,7 +627,40 @@ export default function BuyerProfilePage() {
                         className={`${styles.updateBtn} ${afacad.className}`}
                         onClick={async () => {
                           if (!validateAddress()) return;
-                          await handleUpdate();
+
+                          if ((user.addresses || []).length >= 5) {
+                            alert("Maximum 5 addresses allowed");
+                            return;
+                          }
+
+                          const newAddress = {
+                            _id: Date.now().toString(),
+                            label: addr.addressLabel,
+                            fullName: addr.fullName,
+                            phone: addr.phone,
+                            country: addr.country,
+                            province: addr.province,
+                            city: addr.city,
+                            zipCode: addr.zipCode,
+                            detail: addr.detail,
+                            isDefault: addr.isDefault,
+                          };
+
+                          const updatedAddresses = [
+                            ...(user.addresses || []),
+                            newAddress,
+                          ];
+
+                          await handleUpdate(updatedAddresses);
+
+                          const newUser = {
+                            ...user,
+                            addresses: updatedAddresses,
+                          };
+
+                          setUser(newUser);
+                          localStorage.setItem("user", JSON.stringify(newUser));
+
                           setIsEditingAddress(false);
                         }}
                         disabled={isLoading}
