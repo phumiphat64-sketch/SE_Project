@@ -22,6 +22,7 @@ export default function BuyerProfilePage() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isEditingAddress, setIsEditingAddress] = useState(false);
+  const [editingId, setEditingId] = useState(null);
 
   const [addr, setAddr] = useState({
     addressLabel: "", // 🔹 เพิ่มบรรทัดนี้ (เช่น บ้าน, ที่ทำงาน)
@@ -208,6 +209,44 @@ export default function BuyerProfilePage() {
     return true;
   };
 
+  const handleOpenAddAddress = () => {
+    setAddr({
+      addressLabel: "",
+      fullName: "",
+      phone: "",
+      country: "",
+      province: "",
+      city: "",
+      zipCode: "",
+      detail: "",
+      isDefault: false,
+    });
+    setEditingId(null);
+    setIsEditingAddress(true);
+  };
+
+  const handleEditAddress = (addressItem, index) => {
+    setAddr(addressItem); // ดึงข้อมูลเดิมมาใส่ฟอร์ม
+    setEditingId(addressItem._id || index); // จำไว้ว่ากำลังแก้อันไหน
+    setIsEditingAddress(true);
+  };
+
+  const handleDeleteAddress = async (addressItem, index) => {
+    if (!window.confirm("Are you sure you want to delete this address?"))
+      return;
+
+    const targetId = addressItem._id || index;
+    const updatedAddresses = (user.addresses || []).filter(
+      (a, i) => (a._id || i) !== targetId,
+    );
+
+    await handleUpdate(updatedAddresses); // อัปเดตขึ้นฐานข้อมูล
+
+    const newUser = { ...user, addresses: updatedAddresses };
+    setUser(newUser);
+    localStorage.setItem("user", JSON.stringify(newUser));
+  };
+
   // 🔹 2. ตัวแปรช่วยเช็คว่ามีที่อยู่หรือยัง และดึงข้อมูลมาเตรียมโชว์
   const displayAddr =
     typeof profile.address === "object"
@@ -377,6 +416,7 @@ export default function BuyerProfilePage() {
                                 )}
                               </div>
                               <div className={styles.addressActions}>
+                                {/* 🔹 ไอคอนแก้ไข: กดแล้วจะเรียกฟังก์ชัน handleEditAddress */}
                                 <svg
                                   width="18"
                                   height="18"
@@ -387,10 +427,13 @@ export default function BuyerProfilePage() {
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
                                   style={{ cursor: "pointer" }}
+                                  onClick={() => handleEditAddress(a, index)}
                                 >
                                   <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                   <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                 </svg>
+
+                                {/* 🔹 ไอคอนลบ: กดแล้วจะเรียกฟังก์ชัน handleDeleteAddress */}
                                 <svg
                                   width="18"
                                   height="18"
@@ -400,7 +443,11 @@ export default function BuyerProfilePage() {
                                   strokeWidth="2"
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
-                                  style={{ cursor: "pointer" }}
+                                  style={{
+                                    cursor: "pointer",
+                                    color: "#d93025",
+                                  }}
+                                  onClick={() => handleDeleteAddress(a, index)}
                                 >
                                   <polyline points="3 6 5 6 21 6"></polyline>
                                   <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -434,7 +481,7 @@ export default function BuyerProfilePage() {
 
                         <button
                           className={`${styles.addNewAddressBtn} ${afacad.className}`}
-                          onClick={() => setIsEditingAddress(true)}
+                          onClick={handleOpenAddAddress}
                         >
                           <svg
                             width="16"
@@ -455,7 +502,7 @@ export default function BuyerProfilePage() {
                       </>
                     ) : (
                       <div
-                        onClick={() => setIsEditingAddress(true)}
+                        onClick={handleOpenAddAddress}
                         style={{
                           display: "flex",
                           justifyContent: "center",
@@ -619,37 +666,48 @@ export default function BuyerProfilePage() {
                     <div className={styles.formActionButtons}>
                       <button
                         className={`${styles.cancelBtn} ${afacad.className}`}
-                        onClick={() => setIsEditingAddress(false)}
+                        onClick={() => {
+                          setIsEditingAddress(false);
+                          setEditingId(null); // เคลียร์สถานะแก้
+                        }}
                       >
                         Cancel
                       </button>
+
                       <button
                         className={`${styles.updateBtn} ${afacad.className}`}
                         onClick={async () => {
                           if (!validateAddress()) return;
 
-                          if ((user.addresses || []).length >= 5) {
-                            alert("Maximum 5 addresses allowed");
-                            return;
+                          let updatedAddresses = [...(user.addresses || [])];
+
+                          if (editingId !== null) {
+                            // ✏️ กรณี: กดแก้ไขของเดิม (นำข้อมูลใหม่ไปแทนที่ของเดิม)
+                            updatedAddresses = updatedAddresses.map(
+                              (item, i) => {
+                                if ((item._id || i) === editingId) {
+                                  return {
+                                    ...item,
+                                    ...addr,
+                                    label: addr.addressLabel,
+                                  };
+                                }
+                                return item;
+                              },
+                            );
+                          } else {
+                            // ➕ กรณี: เพิ่มที่อยู่ใหม่
+                            if (updatedAddresses.length >= 5) {
+                              alert("Maximum 5 addresses allowed");
+                              return;
+                            }
+                            const newAddress = {
+                              _id: Date.now().toString(),
+                              ...addr,
+                              label: addr.addressLabel,
+                            };
+                            updatedAddresses.push(newAddress);
                           }
-
-                          const newAddress = {
-                            _id: Date.now().toString(),
-                            label: addr.addressLabel,
-                            fullName: addr.fullName,
-                            phone: addr.phone,
-                            country: addr.country,
-                            province: addr.province,
-                            city: addr.city,
-                            zipCode: addr.zipCode,
-                            detail: addr.detail,
-                            isDefault: addr.isDefault,
-                          };
-
-                          const updatedAddresses = [
-                            ...(user.addresses || []),
-                            newAddress,
-                          ];
 
                           await handleUpdate(updatedAddresses);
 
@@ -662,6 +720,7 @@ export default function BuyerProfilePage() {
                           localStorage.setItem("user", JSON.stringify(newUser));
 
                           setIsEditingAddress(false);
+                          setEditingId(null); // รีเซ็ตกลับ
                         }}
                         disabled={isLoading}
                         style={{
