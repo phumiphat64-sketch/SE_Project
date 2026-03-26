@@ -10,7 +10,9 @@ export default function OrderSummaryPage() {
   useEffect(() => {
     const data = localStorage.getItem("checkoutBook");
     if (data) {
-      setOrderData(JSON.parse(data));
+      const parsed = JSON.parse(data);
+      console.log("ORDER DATA:", parsed); // 🔥 ตรงนี้
+      setOrderData(parsed);
     }
   }, []);
 
@@ -203,7 +205,53 @@ export default function OrderSummaryPage() {
                 <p className={styles.totalPrice}>฿ {subtotal}</p>
               </div>
 
-              <button className={styles.placeOrder}>Place Order</button>
+              <button
+                className={styles.placeOrder}
+                onClick={() => {
+                  const newOrder = {
+                    id: "#" + Date.now(),
+                    placedOn: new Date().toLocaleDateString(),
+                    status: "Pending",
+
+                    bookName: orderData?.title,
+                    author: orderData?.author,
+                    store: orderData?.sellerName,
+
+                    price: orderData?.price,
+                    quantity: orderData?.buyQuantity,
+
+                    subtotal: subtotal,
+                    total: subtotal,
+
+                    images: orderData?.images,
+
+                    address: [
+                      defaultAddress?.fullName,
+                      defaultAddress?.detail,
+                      defaultAddress?.city,
+                      defaultAddress?.province,
+                      defaultAddress?.zipCode,
+                      defaultAddress?.country,
+                    ].filter(Boolean),
+                  };
+
+                  // 🔥 เก็บ order ใหม่
+                  const existingOrders =
+                    JSON.parse(localStorage.getItem("orders")) || [];
+
+                  existingOrders.unshift(newOrder);
+
+                  localStorage.setItem(
+                    "orders",
+                    JSON.stringify(existingOrders),
+                  );
+
+                  // 👉 ไปหน้า orders
+                  router.push("/buyer/orderpage");
+                }}
+              >
+                Place Order
+              </button>
             </div>
           </div>
         </div>

@@ -39,7 +39,7 @@ export default function Navbar() {
           Profile
         </Link>
 
-        <Link href="/orders" className={`${styles.menuItem} ${afacad.className}`}>
+        <Link href="/buyer/orderpage" className={`${styles.menuItem} ${afacad.className}`}>
           <img src="/icons/3.svg" className={styles.icon} />
           Orders
         </Link>

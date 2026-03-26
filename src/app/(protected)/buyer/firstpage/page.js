@@ -42,7 +42,11 @@ export default function BuyerPage() {
 
   // Function สำหรับเปิด Modal
   const openModal = (book) => {
-    setSelectedBook(book);
+    console.log("BOOK FROM API:", book);
+    setSelectedBook({
+      ...book,
+      images: book.images || [], // 🔥 บังคับใส่ตรงนี้
+    });
     setActiveImage(0);
     setShowModal(true);
   };
@@ -97,6 +101,8 @@ export default function BuyerPage() {
     const fetchBooks = async () => {
       const res = await fetch("/api/auth/books");
       const data = await res.json();
+
+      console.log("BOOKS:", data.data);
       setBooks(data.data);
     };
 
@@ -282,11 +288,14 @@ export default function BuyerPage() {
               <button
                 className={`${styles.buyButton} ${afacad.className}`}
                 onClick={() => {
-                  // 👈 แก้ไขการส่งข้อมูล: พ่วงจำนวนที่เลือกซื้อ (buyQuantity) ไปด้วย!
+                  console.log("SELECTED BEFORE BUY:", selectedBook); // 🔥 ตรงนี้
+
                   const checkoutData = {
                     ...selectedBook,
                     buyQuantity: buyQuantity,
+                    images: selectedBook.images || [], // 🔥 สำคัญ
                   };
+
                   localStorage.setItem(
                     "checkoutBook",
                     JSON.stringify(checkoutData),
