@@ -681,6 +681,13 @@ export default function BuyerProfilePage() {
 
                           let updatedAddresses = [...(user.addresses || [])];
 
+                          if (addr.isDefault) {
+                            updatedAddresses = updatedAddresses.map((item) => ({
+                              ...item,
+                              isDefault: false,
+                            }));
+                          }
+
                           if (editingId !== null) {
                             // ✏️ กรณี: กดแก้ไขของเดิม (นำข้อมูลใหม่ไปแทนที่ของเดิม)
                             updatedAddresses = updatedAddresses.map(

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import styles from "./buyer.module.css";
 import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
+import { useRouter } from "next/navigation";
 
 export const crimson = Crimson_Text({
   subsets: ["latin"],
@@ -33,26 +34,11 @@ export default function BuyerPage() {
   const [selectedBook, setSelectedBook] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
+  const [buyQuantity, setBuyQuantity] = useState(1);
+  const router = useRouter();
 
   // ฟังก์ชันเลื่อนไปรูปถัดไป (Next Image)
-  const nextImage = (e) => {
-    e.stopPropagation(); // กันไม่ให้ Modal ปิด
-    if (selectedBook.images && activeImage < selectedBook.images.length - 1) {
-      setActiveImage((prev) => prev + 1);
-    } else {
-      setActiveImage(0); // วนกลับไปรูปแรก
-    }
-  };
-
-  // ฟังก์ชันย้อนกลับไปรูปก่อนหน้า (Prev Image)
-  const prevImage = (e) => {
-    e.stopPropagation();
-    if (selectedBook.images && activeImage > 0) {
-      setActiveImage((prev) => prev - 1);
-    } else {
-      setActiveImage(selectedBook.images.length - 1); // ไปรูปสุดท้าย
-    }
-  };
+  
 
   // Function สำหรับเปิด Modal
   const openModal = (book) => {
@@ -80,12 +66,32 @@ export default function BuyerPage() {
   };
 
   useEffect(() => {
+    if (selectedBook) {
+      setBuyQuantity(1);
+    }
+  }, [selectedBook]);
+
+  useEffect(() => {
     setMounted(true);
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
   }, []);
+
+  const stockAvailable = selectedBook?.Quantity || selectedBook?.quantity || 1;
+
+  const handleDecrease = () => setBuyQuantity((prev) => Math.max(1, prev - 1));
+
+  const handleIncrease = () =>
+    setBuyQuantity((prev) => Math.min(stockAvailable, prev + 1));
+
+  const handleInputChange = (e) => {
+    let val = parseInt(e.target.value);
+    if (isNaN(val) || val < 1) val = 1;
+    if (val > stockAvailable) val = stockAvailable; // ห้ามกรอกเกินสต๊อก
+    setBuyQuantity(val);
+  };
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -239,6 +245,29 @@ export default function BuyerPage() {
                   {selectedBook.description}
                 </div>
 
+                <div
+                  className={`${styles.quantitySection} ${afacad.className}`}
+                >
+                  <span className={styles.quantityLabel}>Quantity:</span>
+                  <div className={styles.quantityControl}>
+                    <button className={styles.qtyBtn} onClick={handleDecrease}>
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      className={`${styles.qtyInput} ${afacad.className}`}
+                      value={buyQuantity}
+                      onChange={handleInputChange}
+                    />
+                    <button className={styles.qtyBtn} onClick={handleIncrease}>
+                      +
+                    </button>
+                  </div>
+                  <span className={styles.stockLabel}>
+                    ({stockAvailable} in stock)
+                  </span>
+                </div>
+
                 <div className={`${styles.sellerInfo} ${afacad.className}`}>
                   <span className={styles.sellerLabel}>Seller</span>
                   <div className={styles.sellerNameText}>
@@ -250,7 +279,21 @@ export default function BuyerPage() {
 
             {/* ส่วนท้ายที่มีขีดคั่นด้านบนก่อนถึงปุ่ม Buy Now */}
             <div className={styles.modalFooter}>
-              <button className={`${styles.buyButton} ${afacad.className}`}>
+              <button
+                className={`${styles.buyButton} ${afacad.className}`}
+                onClick={() => {
+                  // 👈 แก้ไขการส่งข้อมูล: พ่วงจำนวนที่เลือกซื้อ (buyQuantity) ไปด้วย!
+                  const checkoutData = {
+                    ...selectedBook,
+                    buyQuantity: buyQuantity,
+                  };
+                  localStorage.setItem(
+                    "checkoutBook",
+                    JSON.stringify(checkoutData),
+                  );
+                  router.push("/buyer/shopbook");
+                }}
+              >
                 Buy Now
               </button>
             </div>
