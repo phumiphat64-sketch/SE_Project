@@ -79,7 +79,7 @@ export default function BuyerPage() {
     }
   }, []);
 
-  const stockAvailable = selectedBook?.Quantity || selectedBook?.quantity || 1;
+  const stockAvailable = selectedBook?.stock || 0;
 
   const handleDecrease = () => setBuyQuantity((prev) => Math.max(1, prev - 1));
 
