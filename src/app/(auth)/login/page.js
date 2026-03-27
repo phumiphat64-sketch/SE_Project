@@ -105,39 +105,15 @@ export default function LoginPage() {
     }
   };
 
+  // ✅ เอาแค่นี้ไปวางแทนที่ครับ
   useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const user = localStorage.getItem("user");
+    // ล้างข้อมูล User เก่าในเครื่องทิ้งทันที เพื่อแก้ปัญหาหน้าจอโหลดวนลูป
+    localStorage.removeItem("user");
 
-        if (!user) {
-          setCheckingAuth(false);
-          return;
-        }
-
-        const parsed = JSON.parse(user);
-
-        if (parsed.role === "seller") {
-          window.location.replace("/seller");
-          return;
-        }
-
-        if (parsed.role === "buyer") {
-          window.location.replace("/buyer");
-          return;
-        }
-
-        setCheckingAuth(false);
-      } catch {
-        localStorage.removeItem("user");
-        setCheckingAuth(false);
-      }
-    };
-    checkSession();
+    // ปิดสถานะกำลังโหลด เพื่อให้ฟอร์ม Login ปรากฏขึ้นมา
+    setCheckingAuth(false);
   }, []);
-
-  if (checkingAuth) return null;
-
+  
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
