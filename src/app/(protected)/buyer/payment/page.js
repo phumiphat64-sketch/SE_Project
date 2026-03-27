@@ -54,23 +54,60 @@ const banks = [
 ];
 
 export default function BuyerPaymentPage() {
-  const [method, setMethod] = useState("internetBanking"); // ✅ เริ่มต้นที่ Internet Banking
-  const [selectedBank, setSelectedBank] = useState("krungthai"); // ✅ เริ่มต้นที่ Krungthai
-  const [orderId, setOrderId] = useState(null);
+  const [method, setMethod] = useState("internetBanking"); 
+  const [selectedBank, setSelectedBank] = useState("krungthai"); 
+  const [order, setOrder] = useState(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setOrderId(params.get("orderId"));
+    const id = params.get("orderId");
+
+    if (!id) return;
+
+    const fetchOrder = async () => {
+      try {
+        // ✅ ดึง userId เหมือนหน้า Orders
+        const userStorage = localStorage.getItem("user");
+        const userData = userStorage ? JSON.parse(userStorage) : null;
+        const userId = userData?.id;
+
+        const res = await fetch(`/api/auth/orders?userId=${userId}`);
+        const data = await res.json();
+
+        console.log("orderId from URL:", id);
+        console.log("orders from API:", data.data);
+
+        // ✅ หา order ที่ตรงกับ id
+        const foundOrder = data.data.find((o) => String(o._id) === String(id));
+        console.log("foundOrder:", foundOrder);
+
+        setOrder(foundOrder);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchOrder();
   }, []);
 
   // ✅ ส่วนสรุปยอดออเดอร์
-  const OrderSummary = () => (
+  const OrderSummary = ({ order }) => (
     <div className={css.orderSummaryCard}>
       <div className={css.orderSummaryHeader}>
-        <span className={css.orderNumberText}>Order #zzz-zzzzzz-zzzz</span>
+        {/* ✅ Order Number */}
+        <div className={css.orderNumberBox}>
+          <span className={css.orderNumberLabel}>Order Number</span>
+          <span className={css.orderNumberText}>
+            {order ? `Order #${order.id}` : "Loading..."}
+          </span>
+        </div>
+
+        {/* ✅ Total */}
         <div className={css.totalAmountContainer}>
-          <span className={css.totalAmountLabel}>Total Amount</span>
-          <span className={css.totalAmountValue}>฿ 190.00</span>
+          <span className={css.totalAmountLabel}>Total Amount : </span>
+          <span className={css.totalAmountValue}>
+            {order ? `฿ ${order.total?.toFixed(2)}` : "Loading..."}
+          </span>
           <Copy size={16} className={css.copyIcon} />
         </div>
       </div>
@@ -180,11 +217,13 @@ export default function BuyerPaymentPage() {
             <div className={`${styles.circle} ${styles.circleDarkBlue}`}>
               <img src="/icons/t1.svg" className={styles.stepIcon} />
             </div>
-            <span className={styles.stepText}>Order Summary</span>
+            <span className={`${styles.stepText} ${css.noWrap}`}>
+              Order Summary
+            </span>
           </div>
 
-          <div className={styles.connectionArrow}>
-            <div className={styles.arrowHead} />
+          <div className={`${styles.connectionArrow} ${css.blueArrow}`}>
+            <div className={`${styles.arrowHead} ${css.blueArrowHead}`} />
           </div>
 
           <div className={styles.step}>
@@ -199,7 +238,7 @@ export default function BuyerPaymentPage() {
 
         <h2 className={css.title}>Complete Your Payment</h2>
 
-        <OrderSummary />
+        <OrderSummary order={order} />
 
         <div className={css.paymentCard}>
           <PaymentMethodsSelector />
@@ -213,8 +252,13 @@ export default function BuyerPaymentPage() {
         </div>
 
         <div className={css.bottomButtons}>
-          <button className={css.cancelButton}>Cancel</button>
-          <button className={css.confirmButton}>Confirm</button>
+          <button className={`${css.cancelButton} ${afacad.className}`}>
+            Cancel
+          </button>
+
+          <button className={`${css.confirmButton} ${afacad.className}`}>
+            Confirm
+          </button>
         </div>
       </section>
     </main>
