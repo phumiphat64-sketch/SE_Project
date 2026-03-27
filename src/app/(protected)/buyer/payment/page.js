@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { Caveat, Afacad } from "next/font/google";
 import { useSearchParams } from "next/navigation";
 import styles from "../shopbook/orderSummary.module.css";
+export const dynamic = "force-dynamic";
 
 import css from "./pay.module.css";
 import {
