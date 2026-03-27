@@ -59,10 +59,19 @@ export default function LoginPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
-        credentials: "include", // 🔥 เพิ่มบรรทัดนี้
+        credentials: "include",
       });
 
-      const data = await res.json();
+      const text = await res.text();
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        console.error("NOT JSON:", text);
+        alert("Server error - check console");
+        return;
+      }
 
       if (!res.ok) {
         throw new Error(data.message);

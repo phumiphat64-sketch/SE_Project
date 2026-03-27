@@ -14,10 +14,21 @@ export default function OrdersPage() {
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-      const data = localStorage.getItem("orders");
-      if (data) {
-        setOrders(JSON.parse(data));
-      }
+      const fetchOrders = async () => {
+        try {
+          const res = await fetch(`/api/auth/orders`); // 🔥 เอา userId ออกก่อน
+          const data = await res.json();
+
+          console.log("API DATA:", data);
+
+          setOrders(data?.data || []);
+        } catch (err) {
+          console.error(err);
+          setOrders([]);
+        }
+      };
+
+      fetchOrders();
     }, []);
 
   return (
@@ -25,8 +36,8 @@ export default function OrdersPage() {
       <section className={styles.container}>
         <h2 className={styles.sectionTitle}>My Orders</h2>
 
-        {orders.map((order) => (
-          <OrderCard key={order.id} order={order} />
+        {orders?.map((order) => (
+          <OrderCard key={order._id} order={order} />
         ))}
       </section>
     </main>
@@ -73,7 +84,9 @@ function OrderCard({ order }) {
         </div>
 
         <div className={styles.productRight}>
-          <div className={styles.priceText}>฿{order.price.toFixed(2)}</div>
+          <div className={styles.priceText}>
+            ฿{(order.price ?? 0).toFixed(2)}
+          </div>
           <div className={styles.qtyText}>Quantity: {order.quantity}</div>
         </div>
       </div>
@@ -84,7 +97,7 @@ function OrderCard({ order }) {
         <div>
           <div className={styles.addressTitle}>Shipping Address</div>
 
-          {order.address.map((line, i) => (
+          {order.address?.map((line, i) => (
             <div key={i} className={styles.addressText}>
               {line}
             </div>

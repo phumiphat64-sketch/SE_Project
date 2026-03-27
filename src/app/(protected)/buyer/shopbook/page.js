@@ -207,7 +207,9 @@ export default function OrderSummaryPage() {
 
               <button
                 className={styles.placeOrder}
-                onClick={() => {
+                onClick={async () => {
+                  const user = JSON.parse(localStorage.getItem("user"));
+
                   const newOrder = {
                     id: "#" + Date.now(),
                     placedOn: new Date().toLocaleDateString(),
@@ -235,18 +237,18 @@ export default function OrderSummaryPage() {
                     ].filter(Boolean),
                   };
 
-                  // 🔥 เก็บ order ใหม่
-                  const existingOrders =
-                    JSON.parse(localStorage.getItem("orders")) || [];
+                  // 🔥 ยิงเข้า DB
+                  await fetch("/api/auth/orders", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      ...newOrder,
+                      userId: user._id,
+                    }),
+                  });
 
-                  existingOrders.unshift(newOrder);
-
-                  localStorage.setItem(
-                    "orders",
-                    JSON.stringify(existingOrders),
-                  );
-
-                  // 👉 ไปหน้า orders
                   router.push("/buyer/orderpage");
                 }}
               >
