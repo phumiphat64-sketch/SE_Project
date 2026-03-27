@@ -33,7 +33,7 @@ export default class MongoUserRepository extends UserRepository {
         );
 
       // รองรับ MongoDB Driver ทั้งเวอร์ชันเก่า (result.value) และใหม่ (result ตัวมันเอง)
-      return result?.value || result?.document || null;
+      return result?.value || result;
     } catch (error) {
       console.error("MongoDB Update Error:", error);
       return null;

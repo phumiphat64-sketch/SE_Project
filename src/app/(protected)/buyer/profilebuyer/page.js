@@ -10,7 +10,6 @@ const afacad = Afacad({
 
 export default function BuyerProfilePage() {
   const [tab, setTab] = useState("basic");
-  
 
   const [profile, setProfile] = useState({
     fullName: "",
@@ -40,23 +39,19 @@ export default function BuyerProfilePage() {
     const storedUser = localStorage.getItem("user");
 
     if (storedUser) {
-      const data = JSON.parse(storedUser);
-      setUser(data);
+      try {
+        const data = JSON.parse(storedUser);
+        setUser(data);
 
-      setProfile({
-        fullName: data.name || "",
-        email: data.email || "",
-        phone: data.phone || "",
-        address: data.address || "",
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const parsed = JSON.parse(storedUser);
-      setUser(parsed);
+        setProfile({
+          fullName: data.name || "",
+          email: data.email || "",
+          phone: data.phone || "",
+          address: data.address || "",
+        });
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+      }
     }
   }, []);
 
@@ -80,8 +75,6 @@ export default function BuyerProfilePage() {
       [name]: value,
     }));
   };
-
-  
 
   // 🔹 ฟังก์ชันนี้แหละครับที่หายไป! (ดึงข้อมูลไปเซฟลง DB)
   // 🔹 ฟังก์ชันที่แก้บั๊กเรียบร้อยแล้ว
@@ -121,19 +114,31 @@ export default function BuyerProfilePage() {
 
       if (response.ok) {
         const data = await response.json();
-
         alert("Profile updated successfully!");
 
+        // สร้าง Object ใหม่ที่รวมข้อมูลเดิมกับข้อมูลใหม่
         const updatedUser = {
           ...user,
-          ...data.user,
+          ...data.user, // ตรวจสอบว่า API ส่ง data.user กลับมาจริงไหม
         };
 
+        // ✅ บันทึกลง LocalStorage ทันที
         localStorage.setItem("user", JSON.stringify(updatedUser));
+        // ✅ อัปเดต State ทันทีเพื่อให้หน้าจอเปลี่ยนตาม
         setUser(updatedUser);
+        setProfile({
+          fullName: updatedUser.name || "",
+          email: updatedUser.email || "",
+          phone: updatedUser.phone || "",
+          address: updatedUser.address || "",
+        });
       } else {
+        // ลองสั่ง console.log ดูว่า backend ส่ง error อะไรมา
         const errorData = await response.json().catch(() => ({}));
-        alert(`Failed to update: ${errorData.error || "Unknown error"}`);
+        console.log("Error from API:", errorData);
+        alert(
+          `Failed to update: ${errorData.message || errorData.error || "Unknown error"}`,
+        );
       }
     } catch (error) {
       console.error("Error:", error);
@@ -256,7 +261,7 @@ export default function BuyerProfilePage() {
     typeof profile.address === "object"
       ? Object.values(profile.address).some((val) => val && val.trim() !== "")
       : !!profile.address;
-      
+
   const addresses = user?.addresses ?? [];
   return (
     <div className={styles.pageWrapper}>

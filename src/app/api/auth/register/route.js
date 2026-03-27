@@ -53,7 +53,7 @@ export async function POST(req) {
 export async function PUT(req) {
   try {
     const body = await req.json();
-
+    console.log("ข้อมูลที่รับมาจาก Frontend:", body);
     // 1. แยก id ออกมาจากข้อมูลที่จะอัปเดต (name, phone, address)
     const { id, ...data } = body;
 
