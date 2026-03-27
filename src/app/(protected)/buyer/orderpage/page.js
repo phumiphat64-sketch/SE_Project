@@ -4,6 +4,7 @@ import styles from "./orders.module.css";
 import { Afacad } from "next/font/google";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
 
 const afacad = Afacad({
   subsets: ["latin"],
@@ -58,7 +59,7 @@ export default function OrdersPage() {
 function OrderCard({ order }) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentOrder, setCurrentOrder] = useState(order);
-
+  const router = useRouter();
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -219,7 +220,7 @@ function OrderCard({ order }) {
             className={styles.payBtn}
             onClick={(e) => {
               e.stopPropagation();
-              console.log("Make Payment:", currentOrder._id);
+              router.push(`/buyer/payment?orderId=${currentOrder._id}`);
             }}
           >
             Make Payment
