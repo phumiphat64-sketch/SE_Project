@@ -219,8 +219,8 @@ export default function OrderSummaryPage() {
                     author: orderData?.author,
                     store: orderData?.sellerName,
 
-                    price: orderData?.price,
-                    quantity: orderData?.buyQuantity,
+                    price: Number(orderData?.price),
+                    quantity: Number(orderData?.buyQuantity),
 
                     subtotal: subtotal,
                     total: subtotal,
@@ -245,7 +245,7 @@ export default function OrderSummaryPage() {
                     },
                     body: JSON.stringify({
                       ...newOrder,
-                      userId: user._id,
+                      userId: user.id,
                     }),
                   });
 

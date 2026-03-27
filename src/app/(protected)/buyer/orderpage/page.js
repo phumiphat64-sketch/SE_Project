@@ -10,26 +10,36 @@ const afacad = Afacad({
 });
 
 export default function OrdersPage() {
+  const [orders, setOrders] = useState([]);
 
-    const [orders, setOrders] = useState([]);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        // ดึงข้อมูลก้อน user ออกมาจาก localStorage แล้วแปลงเป็น Object
+        const userStorage = localStorage.getItem("user");
+        const userData = userStorage ? JSON.parse(userStorage) : null;
 
-    useEffect(() => {
-      const fetchOrders = async () => {
-        try {
-          const res = await fetch(`/api/auth/orders`); // 🔥 เอา userId ออกก่อน
-          const data = await res.json();
+        const userId = userData?.id;
 
-          console.log("API DATA:", data);
-
-          setOrders(data?.data || []);
-        } catch (err) {
-          console.error(err);
-          setOrders([]);
+        if (!userId) {
+          console.warn("ยังไม่ได้เข้าสู่ระบบ");
+          return;
         }
-      };
 
-      fetchOrders();
-    }, []);
+        // 🔥 ส่ง userId ไปพร้อมกับ API (ผ่าน Query String)
+        const res = await fetch(`/api/auth/orders?userId=${userId}`);
+        const data = await res.json();
+
+        console.log("API DATA:", data);
+        setOrders(data?.data || []);
+      } catch (err) {
+        console.error(err);
+        setOrders([]);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   return (
     <main className={`${styles.page} ${afacad.className}`}>
@@ -85,7 +95,7 @@ function OrderCard({ order }) {
 
         <div className={styles.productRight}>
           <div className={styles.priceText}>
-            ฿{(order.price ?? 0).toFixed(2)}
+            ฿{Number(order.price ?? 0).toFixed(2)}
           </div>
           <div className={styles.qtyText}>Quantity: {order.quantity}</div>
         </div>

@@ -28,9 +28,15 @@ export async function GET(req) {
     const client = await getClient();
     const database = client.db("DB_Server"); // ✅ ต้องมีบรรทัดนี้
 
+    // 🔥 สร้างเงื่อนไข Query: ถ้ามี userId ให้หาเฉพาะออเดอร์ของ userId นั้น
+    let query = {};
+    if (userId) {
+      query = { userId: userId }; // สมมติว่าใน DB คุณเก็บฟิลด์ชื่อ 'userId'
+    }
+
     const orders = await database
       .collection("orders")
-      .find({})
+      .find(query) // ✅ เปลี่ยนจาก {} เป็นตัวแปร query
       .sort({ _id: -1 })
       .toArray();
 
