@@ -3,6 +3,7 @@ import styles from "./addbook.module.css";
 import { useRef, useState } from "react";
 import PageHeader from "@/app/components/PageHeader";
 import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
+import { useRouter } from "next/navigation";
 
 export const crimson = Crimson_Text({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function AddBookPage() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState(1);
+  const router = useRouter();
 
   const handleUploadClick = () => {
     fileInput.current.click();
@@ -120,6 +122,7 @@ export default function AddBookPage() {
       }
 
       alert("Book published successfully!");
+      router.replace("/seller/home");
 
       setTitle("");
       setAuthor("");
