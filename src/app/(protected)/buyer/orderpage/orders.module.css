@@ -24,6 +24,19 @@
   margin-bottom: 18px;
   overflow: hidden;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  padding-bottom: 16px;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.card:active {
+  transform: scale(0.99);
 }
 
 .cardTop {
@@ -135,3 +148,65 @@
   margin-top: 15px;
   color: #628AB7;
 }
+
+.actionRow {
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+  margin-top: 12px;
+  animation: fadeSlide 0.25s ease;
+  margin-bottom: 8px;
+}
+
+.cancelBtn,
+.payBtn {
+  padding: 10px 26px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  font-family: inherit; /* ✅ ใช้ Afacad ตาม parent */
+  font-weight: 500;     /* ปรับความหนา */
+
+  width: 40%;       
+  min-width: 120px;  
+}
+
+.cancelBtn {
+  background-color: #8b4a4a;
+  color: white;
+}
+
+.cancelBtn:hover {
+  background-color: #743d3d;
+  transform: translateY(-1px);
+}
+
+.payBtn {
+  background-color: #6d91b9;
+  color: white;
+}
+
+.payBtn:hover {
+  background-color: #5c7ea3;
+  transform: translateY(-1px);
+}
+
+.cancelBtn:active,
+.payBtn:active {
+  transform: scale(0.96);
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

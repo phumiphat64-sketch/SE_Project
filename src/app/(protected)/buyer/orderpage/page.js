@@ -55,6 +55,7 @@ export default function OrdersPage() {
 }
 
 function OrderCard({ order }) {
+  const [isOpen, setIsOpen] = useState(false);
   const colors = getStatusColors(order.status);
 
   function formatOrderId(id) {
@@ -63,7 +64,10 @@ function OrderCard({ order }) {
   }
 
   return (
-    <article className={styles.card}>
+    <article 
+      className={styles.card}
+      onClick={() => setIsOpen(!isOpen)}
+    >
       <div className={styles.cardTop}>
         <div>
           <div className={styles.orderId}>{formatOrderId(order.id)}</div>
@@ -126,6 +130,30 @@ function OrderCard({ order }) {
           </div>
         </div>
       </div>
+
+      {isOpen && (
+        <div className={styles.actionRow }>
+          <button
+            className={styles.cancelBtn}
+            onClick={(e) => {
+              e.stopPropagation(); // กัน card toggle
+              console.log("Cancel Order:", order._id);
+            }}
+          >
+            Cancel Order
+          </button>
+
+          <button
+            className={styles.payBtn}
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log("Make Payment:", order._id);
+            }}
+          >
+            Make Payment
+          </button>
+        </div>
+      )}
     </article>
   );
 }
