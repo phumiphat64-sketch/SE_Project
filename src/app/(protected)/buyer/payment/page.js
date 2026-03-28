@@ -138,6 +138,204 @@ const PromptPayQR = ({
   </div>
 );
 
+const BankTransferPage = ({ order, selectedBank, setShowBankTransfer }) => {
+  const bankData = banks.find((b) => b.id === selectedBank);
+  const [accountNumber, setAccountNumber] = useState("");
+  const [accountName, setAccountName] = useState("");
+  const [copiedField, setCopiedField] = useState("");
+  const router = useRouter();
+
+  const handleCopy = (text, field) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(""), 1500);
+  };
+
+  return (
+    <div className={css.transferContainer}>
+      <div className={css.transferWrapper}>
+        {/* 🔙 Back */}
+        <button
+          className={`${css.transferBack} ${afacad.className}`}
+          onClick={() => setShowBankTransfer(false)}
+        >
+          ← Back
+        </button>
+        {/* 📦 Card */}
+        <div className={css.transferCard}>
+          {/* HEADER */}
+          <div className={css.transferHeader}>
+            <div>
+              <p className={css.label}>Order Number</p>
+              <p className={css.orderText}>Order {order?.id}</p>
+              <p className={css.subText}>
+                Please transfer the exact amount with the trailing digits, since
+                it will be verified using our system.
+              </p>
+            </div>
+
+            <div className={css.amountBox}>
+              <span>Total Amount</span>
+              <div className={css.amountValueBox}>
+                ฿ {order?.total?.toFixed(2)}
+                <Copy
+                  size={16}
+                  className={css.copyIcon}
+                  onClick={() => handleCopy(order?.total?.toFixed(2), "amount")}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Bank */}
+          <div className={css.field}>
+            <p className={css.fieldLabel}>Bank Name</p>
+            <div className={css.fieldBox}>
+              <div className={css.fieldLeft}>
+                <img src={bankData?.logo} className={css.bankIcon} />
+                <span>{bankData?.name}</span>
+              </div>
+              <Copy
+                size={18}
+                className={css.copyIcon}
+                onClick={() => handleCopy(bankData?.name, "bank")}
+              />
+            </div>
+          </div>
+
+          {/* Account Number */}
+          <div className={css.field}>
+            <p className={css.fieldLabel}>Account Number</p>
+            <div className={css.fieldBox}>
+              <input
+                className={css.inputField}
+                placeholder="Enter account number"
+                value={accountNumber}
+                maxLength={15} /* 👈 กันยาวเกิน */
+                onChange={(e) => {
+                  let value = e.target.value.replace(/\D/g, ""); // 👈 เอาเฉพาะเลข
+                  setAccountNumber(value);
+                }}
+              />
+              <Copy
+                size={18}
+                className={css.copyIcon}
+                onClick={() => handleCopy(accountNumber, "acc")}
+              />
+            </div>
+          </div>
+
+          {/* Account Name */}
+          <div className={css.field}>
+            <p className={css.fieldLabel}>Account Name</p>
+            <div className={css.fieldBox}>
+              <input
+                className={css.inputField}
+                placeholder="Enter account name"
+                value={accountName}
+                onChange={(e) => {
+                  let value = e.target.value;
+
+                  // ❌ กัน emoji / symbol
+                  value = value.replace(/[^a-zA-Zก-๙\s]/g, "");
+
+                  setAccountName(value);
+                }}
+              />
+              <Copy
+                size={18}
+                className={css.copyIcon}
+                onClick={() => handleCopy(accountName, "name")}
+              />
+            </div>
+          </div>
+
+          {/* Copied */}
+          {copiedField && <p className={css.copiedText}>Copied!</p>}
+
+          {/* Warning */}
+          <div className={css.warning}>
+            <div className={css.warningRow}>
+              <span className={css.warningIcon}>⚠️</span>
+              <div>
+                <p>
+                  Please transfer the exact amount of{" "}
+                  <b>฿ {order?.total?.toFixed(2)}</b>
+                </p>
+                <p className={css.warningSub}>
+                  If the transferred amount does not exactly match the total
+                  order amount, our system may be unable to automatically verify
+                  your payment.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Button */}
+          <button
+            className={`${css.transferButton} ${afacad.className}`}
+            disabled={
+              accountNumber.length < 10 || accountName.trim().length < 2
+            }
+            onClick={async () => {
+              try {
+                // ❗ validate ก่อน
+                if (accountNumber.length < 10) {
+                  alert("Account number must be at least 10 digits");
+                  return;
+                }
+
+                if (!accountName.trim() || accountName.trim().length < 2) {
+                  alert("Invalid account name");
+                  return;
+                }
+
+                if (!order?._id) {
+                  alert("Order not loaded");
+                  return;
+                }
+
+                // 🔥 ยิง API (เหมือน PromptPay + Card)
+                const res = await fetch("/api/auth/orders", {
+                  method: "PATCH",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    orderId: order._id,
+                    status: "Paid",
+                  }),
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                  throw new Error(data.message || "Payment failed");
+                }
+
+                alert("Payment successful!");
+
+                // 👉 redirect
+                router.push("/buyer/firstpage");
+              } catch (err) {
+                console.error(err);
+                alert("Something went wrong");
+              }
+            }}
+          >
+            I’ve Completed the Payment
+          </button>
+
+          <p className={css.footerText}>
+            Please click this button after completing your bank transfer. Our
+            team will verify your payment and update your order status shortly.
+          </p>
+        </div>
+      </div>
+    </div> 
+  );
+};
+
 const AddCardModal = ({ onClose, onSave, savedCards }) => {
   const [cardNumber, setCardNumber] = useState("");
   const [cardName, setCardName] = useState("");
@@ -417,7 +615,8 @@ const AddCardModal = ({ onClose, onSave, savedCards }) => {
 
 export default function BuyerPaymentPage() {
   const [method, setMethod] = useState("internetBanking");
-  const [selectedBank, setSelectedBank] = useState("krungthai");
+  const [selectedBank, setSelectedBank] = useState(null);
+  const [showBankTransfer, setShowBankTransfer] = useState(false);
   const [order, setOrder] = useState(null);
   const [showPromptPayQR, setShowPromptPayQR] = useState(false);
   const [timeLeft, setTimeLeft] = useState(900); // 15 นาที = 900 วิ
@@ -732,6 +931,12 @@ export default function BuyerPaymentPage() {
             setTimeLeft={setTimeLeft}
             router={router}
           />
+        ) : showBankTransfer ? (
+          <BankTransferPage
+            order={order}
+            selectedBank={selectedBank}
+            setShowBankTransfer={setShowBankTransfer}
+          />
         ) : (
           <>
             <h2 className={css.title}>Complete Your Payment</h2>
@@ -759,7 +964,10 @@ export default function BuyerPaymentPage() {
 
               <button
                 className={`${css.confirmButton} ${afacad.className}`}
-                disabled={method === "card" && !selectedCard}
+                disabled={
+                  (method === "card" && !selectedCard) ||
+                  (method === "internetBanking" && !selectedBank)
+                }
                 onClick={async () => {
                   try {
                     // ✅ PromptPay (เหมือนเดิม)
@@ -811,9 +1019,14 @@ export default function BuyerPaymentPage() {
                       }
                     }
 
-                    // ✅ Internet Banking (ของเดิม)
                     if (method === "internetBanking") {
-                      alert("Handle internet banking...");
+                      if (!selectedBank) {
+                        alert("Please select a bank first");
+                        return;
+                      }
+
+                      setShowBankTransfer(true);
+                      return;
                     }
                   } catch (err) {
                     console.error(err);
