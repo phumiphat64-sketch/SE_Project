@@ -36,21 +36,31 @@ export default function InventoryPage() {
     if (status === "Inactive") return styles.inactive;
   };
 
-  useEffect(() => {
-    fetchBooks();
-  }, []);
-
   async function fetchBooks() {
-    const res = await fetch("/api/auth/books", {
-      cache: "no-store",
-    });
+    try {
+      console.log("FETCHING...");
 
-    const data = await res.json();
+      const res = await fetch("/api/auth/books", {
+        cache: "no-store",
+      });
 
-    if (data.success) {
-      setBooks(data.data);
+      console.log("STATUS:", res.status);
+
+      const data = await res.json();
+      console.log("DATA:", data);
+
+      if (data.success) {
+        setBooks(data.data);
+      }
+    } catch (err) {
+      console.error("FETCH ERROR:", err);
     }
   }
+
+  useEffect(() => {
+    console.log("CALL fetchBooks");
+    fetchBooks();
+  }, []);
 
   const booksPerPage = 5;
   const validBooks = books.filter((b) => b.title);

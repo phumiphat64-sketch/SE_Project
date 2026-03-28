@@ -10,3 +10,7 @@ services:
       - "3000:3000"
     env_file:
       - .env.local
+    environment:
+      - NEXT_DISABLE_TURBOPACK=1
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true

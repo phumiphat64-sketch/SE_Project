@@ -63,15 +63,30 @@ export async function GET() {
       throw new Error("Unauthorized");
     }
 
+    // ✅ 1. decode ก่อน
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const sellerId = decoded.userId;
 
+    // ✅ 2. สร้าง db ก่อนใช้
     const client = await getClient();
     const db = client.db("DB_Server");
+
+    // ✅ 3. debug ตรงนี้
+    console.log("JWT sellerId:", sellerId);
+
+    const allBooks = await db.collection("books").find().toArray();
+    console.log(
+      "All sellerIds:",
+      allBooks.map((b) => b.sellerId),
+    );
 
     // 1. ดึงรายการหนังสือที่ Published ทั้งหมด
     const books = await db
       .collection("books")
-      .find({ status: "Published" })
+      .find({
+        status: "Published",
+        sellerId: sellerId, // ✅ ใส่ตรงนี้เลย
+      })
       .sort({ createdAt: -1 })
       .toArray();
 
