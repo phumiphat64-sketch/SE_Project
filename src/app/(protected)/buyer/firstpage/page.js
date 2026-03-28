@@ -99,7 +99,7 @@ export default function BuyerPage() {
 
   useEffect(() => {
     const fetchBooks = async () => {
-      const res = await fetch("/api/auth/books");
+      const res = await fetch("/api/auth/buyerAPI");
       const data = await res.json();
 
       console.log("BOOKS:", data.data);
