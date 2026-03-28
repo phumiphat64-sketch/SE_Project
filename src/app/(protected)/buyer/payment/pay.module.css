@@ -104,6 +104,13 @@
   color: #757575;
 }
 
+.copiedText {
+  margin-left: 8px;
+  font-size: 13px;
+  color: #4CAF50;
+  font-weight: 500;
+}
+
 /* ✅ ส่วนตัวเลือกวิธีการชำระเงิน - ปรับสี Inactive/Active ให้เหมือนรูปต้นฉบับ */
 .paymentCard {
   background-color: #fff;
@@ -439,3 +446,216 @@
 }
 
 
+.addCardButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 18px;
+  border-radius: 18px; /* 👈 โค้งมนสุด */
+  border: 2px solid #2D2D2D;
+
+  background-color: #fff;
+  color: #2D2D2D;
+
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+/* hover effect */
+.addCardButton:hover {
+  background-color: #f5f5f5;
+}
+
+/* เครื่องหมาย + */
+.addIcon {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.25);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+}
+
+.modalCard {
+  background: #fff;
+  width: 600px;            /* 👈 จาก 500 → 600 */
+  padding: 32px;           /* 👈 เพิ่ม padding */
+  border-radius: 20px;     /* 👈 โค้งขึ้นนิด */
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+}
+
+.modalTitle {
+  font-size: 26px;   /* 👈 จาก 22 → 26 */
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.modalDesc {
+  font-size: 15px;   /* 👈 จาก 14 → 15 */
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.formGroup label {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.formGroup input {
+  padding: 12px;        /* 👈 ใหญ่ขึ้น */
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;      /* 👈 ตัวหนังสือใหญ่ขึ้น */
+}
+
+.row {
+  display: flex;
+  gap: 16px;   /* 👈 กว้างขึ้นนิด */
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  gap: 10px;
+  margin: 10px 0 18px;
+}
+
+.modalButtons {
+  display: flex;
+  flex-direction: column; /* 👈 เรียงลง */
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* ปุ่ม Confirm */
+.modalConfirm {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+
+  background-color: #668970;
+  color: #fff;
+
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.modalConfirm:hover {
+  background-color: #5a7a62;
+}
+
+/* ปุ่ม Cancel */
+.modalCancel {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+
+  background-color: #984E4E;
+  color: #fff;
+
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.modalCancel:hover {
+  background-color: #7f3f3f;
+}
+
+.cardList {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.cardItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  width: 220px;
+  padding: 14px;
+
+  background: #fff;
+  border-radius: 5px;
+  border: 2px solid transparent;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cardItem:hover {
+  transform: translateY(-2px);
+}
+
+.selectedCard {
+  border: 2px solid red; /* 👈 highlight */
+}
+
+.cardLogo {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardType {
+  font-size: 13px;
+  color: #666;
+}
+
+.cardNumber {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.cardLogo img {
+  width: 60px;
+  height: auto;
+}
+
+.selectCardTitle {
+  font-size: 18px;
+  margin-bottom: 8px;   /* ลดลง */
+  margin-top: -25px;      /* 👈 เพิ่ม */
+}
+
+.selectedOptionText {
+  color: #E53935 !important;
+}

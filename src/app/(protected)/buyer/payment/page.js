@@ -138,12 +138,294 @@ const PromptPayQR = ({
   </div>
 );
 
+const AddCardModal = ({ onClose, onSave, savedCards }) => {
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardName, setCardName] = useState("");
+  const [expiry, setExpiry] = useState("");
+  const [cvv, setCvv] = useState("");
+  const [saveCard, setSaveCard] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const isValidExpiry = (exp) => {
+    if (!/^\d{2}\/\d{2}$/.test(exp)) return false;
+
+    const [month, year] = exp.split("/").map(Number);
+
+    if (month < 1 || month > 12) return false;
+
+    const currentYear = new Date().getFullYear() % 100;
+    const currentMonth = new Date().getMonth() + 1;
+
+    if (year < currentYear) return false;
+    if (year === currentYear && month < currentMonth) return false;
+
+    return true;
+  };
+
+  const isValidCVV = (cvv) => {
+    return /^\d{3}$/.test(cvv);
+  };
+
+  const isValidLuhn = (num) => {
+    let sum = 0;
+    let shouldDouble = false;
+
+    for (let i = num.length - 1; i >= 0; i--) {
+      let digit = parseInt(num[i]);
+
+      if (shouldDouble) {
+        digit *= 2;
+        if (digit > 9) digit -= 9;
+      }
+
+      sum += digit;
+      shouldDouble = !shouldDouble;
+    }
+
+    return sum % 10 === 0;
+  };
+
+  return (
+    <div
+      className={css.modalOverlay}
+      onClick={onClose} // 👈 กดพื้นหลังปิดได้
+    >
+      <div
+        className={css.modalCard}
+        onClick={(e) => e.stopPropagation()} // 👈 กันคลิกทะลุ
+      >
+        <h2 className={css.modalTitle}>Add Credit/Debit Card</h2>
+
+        <p className={css.modalDesc}>
+          To verify that you are the real cardholder. The system will
+          temporarily charge a small amount and refund it later
+        </p>
+
+        {/* Card Number */}
+        <div className={css.formGroup}>
+          <label>Card Number</label>
+          <input
+            placeholder="Enter card number"
+            value={cardNumber}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, "").slice(0, 16);
+              setCardNumber(value);
+            }}
+          />
+        </div>
+
+        {/* Name */}
+        <div className={css.formGroup}>
+          <label>Cardholder Name</label>
+          <input
+            placeholder="Enter cardholder name"
+            value={cardName}
+            maxLength={40}
+            onChange={(e) => setCardName(e.target.value)}
+          />
+        </div>
+
+        {/* Expiry + CVV */}
+        <div className={css.row}>
+          <div className={css.formGroup}>
+            <label>Expiry Date</label>
+            <input
+              placeholder="MM/YY"
+              value={expiry}
+              onChange={(e) => {
+                let value = e.target.value.replace(/\D/g, "").slice(0, 4);
+
+                if (value.length >= 3) {
+                  value = value.slice(0, 2) + "/" + value.slice(2);
+                }
+
+                setExpiry(value);
+              }}
+            />
+          </div>
+
+          <div className={css.formGroup}>
+            <label>CVV</label>
+            <input
+              placeholder="Enter CVV"
+              value={cvv}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "").slice(0, 3);
+                setCvv(value);
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Checkbox */}
+        <div className={css.checkboxRow}>
+          <input
+            type="checkbox"
+            checked={saveCard}
+            onChange={(e) => setSaveCard(e.target.checked)}
+            className={css.bankCheckboxInput}
+          />
+          <span>Save card information</span>
+        </div>
+
+        {/* Buttons */}
+        <div className={css.modalButtons}>
+          <button
+            disabled={loading || savedCards.length >= 3}
+            className={`${css.modalConfirm} ${afacad.className}`}
+            onClick={async () => {
+              if (loading) return;
+
+              try {
+                if (!cardNumber || !cardName || !expiry || !cvv) {
+                  alert("Please fill all fields");
+                  return;
+                }
+
+                const name = cardName.trim();
+                const isValidName = /^[A-Za-z\s]+$/.test(name);
+
+                if (!isValidName) {
+                  alert("Name must contain only letters");
+                  return;
+                }
+
+                if (name.length < 2) {
+                  alert("Name must be at least 2 characters");
+                  return;
+                }
+
+                if (name.length > 40) {
+                  alert("Name must be less than 40 characters");
+                  return;
+                }
+
+                if (!isValidLuhn(cardNumber)) {
+                  alert("Invalid card number");
+                  return;
+                }
+
+                if (cardNumber.length !== 16) {
+                  alert("Card number must be 16 digits");
+                  return;
+                }
+
+                if (!isValidExpiry(expiry)) {
+                  alert("Invalid expiry date (MM/YY)");
+                  return;
+                }
+
+                if (expiry.length !== 5) {
+                  alert("Expiry must be in MM/YY format");
+                  return;
+                }
+
+                if (!isValidCVV(cvv)) {
+                  alert("Invalid CVV");
+                  return;
+                }
+
+                if (savedCards.length >= 3) {
+                  alert("You can add up to 3 cards only");
+                  return;
+                }
+
+                const isDuplicate = savedCards.some(
+                  (c) => c.last4 === cardNumber.slice(-4),
+                );
+
+                if (isDuplicate) {
+                  alert("This card is already added");
+                  return;
+                }
+
+                const last4 = cardNumber.slice(-4);
+
+                let brand = null;
+
+                if (/^4/.test(cardNumber)) {
+                  brand = "VISA";
+                } else if (/^5[1-5]/.test(cardNumber)) {
+                  brand = "Mastercard";
+                } else {
+                  alert("Only VISA and Mastercard are supported");
+                  return;
+                }
+
+                setLoading(true);
+
+                const newCard = {
+                  id: Date.now().toString(),
+                  brand,
+                  last4,
+                  expiry,
+                  cardholderName: cardName,
+                };
+
+                const userStorage = localStorage.getItem("user");
+                const userData = userStorage ? JSON.parse(userStorage) : null;
+
+                // ✅ ถ้าติ๊ก → ค่อย save DB
+                if (saveCard && userData?.id) {
+                  await fetch("/api/auth/cards", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      userId: userData.id,
+                      card: newCard,
+                    }),
+                  });
+                }
+
+                // ✅ localStorage (เฉพาะ saveCard)
+                if (userData && saveCard) {
+                  userData.savedCards = [
+                    ...(userData.savedCards || []),
+                    newCard,
+                  ];
+                  localStorage.setItem("user", JSON.stringify(userData));
+                }
+
+                // 🔥 สำคัญ: เรียกแค่ครั้งเดียว
+                onSave(newCard);
+
+                onClose();
+              } catch (err) {
+                console.error(err);
+                alert("Something went wrong");
+              } finally {
+                setTimeout(() => setLoading(false), 500);
+              }
+            }}
+          >
+            {loading ? "Processing..." : "Confirm"}
+          </button>
+
+          <button
+            className={`${css.modalCancel} ${afacad.className}`}
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function BuyerPaymentPage() {
   const [method, setMethod] = useState("internetBanking");
   const [selectedBank, setSelectedBank] = useState("krungthai");
   const [order, setOrder] = useState(null);
   const [showPromptPayQR, setShowPromptPayQR] = useState(false);
   const [timeLeft, setTimeLeft] = useState(900); // 15 นาที = 900 วิ
+  const [showAddCardModal, setShowAddCardModal] = useState(false);
+  const [savedCards, setSavedCards] = useState([]);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -202,12 +484,37 @@ export default function BuyerPaymentPage() {
     }
   }, [timeLeft, router]);
 
+  useEffect(() => {
+    const fetchCards = async () => {
+      const userStorage = localStorage.getItem("user");
+      const userData = userStorage ? JSON.parse(userStorage) : null;
+
+      if (!userData?.id) return;
+
+      try {
+        const res = await fetch(`/api/auth/cards?userId=${userData.id}`);
+        const data = await res.json();
+
+        if (res.ok) {
+          setSavedCards(data.cards.slice(0, 3)); // 👈 ใช้จาก DB
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchCards();
+  }, []);
+
   const formatTime = (sec) => {
     const m = String(Math.floor(sec / 60)).padStart(2, "0");
     const s = String(sec % 60).padStart(2, "0");
     return `${m}:${s}`;
   };
 
+  const handleSaveCard = (card) => {
+    setSavedCards((prev) => [...prev, card]);
+  };
 
   // ✅ ส่วนสรุปยอดออเดอร์
   const OrderSummary = ({ order }) => (
@@ -227,7 +534,21 @@ export default function BuyerPaymentPage() {
           <span className={css.totalAmountValue}>
             {order ? `฿ ${order.total?.toFixed(2)}` : "Loading..."}
           </span>
-          <Copy size={16} className={css.copyIcon} />
+
+          <Copy
+            size={16}
+            className={css.copyIcon}
+            onClick={() => {
+              if (!order) return;
+
+              const text = `${order.total?.toFixed(2)}`;
+              navigator.clipboard.writeText(text);
+
+              setCopied(true);
+              setTimeout(() => setCopied(false), 1500);
+            }}
+          />
+          {copied && <span className={css.copiedText}>Copied!</span>}
         </div>
       </div>
     </div>
@@ -259,8 +580,59 @@ export default function BuyerPaymentPage() {
           onChange={() => setMethod("card")}
           className={css.paymentMethodInput}
         />
-        <span className={css.methodText}>Credit / Debit Card</span>
+        <span
+          className={`${css.methodText} ${
+            method === "card" ? css.selectedOptionText : ""
+          }`}
+        >
+          Credit / Debit Card
+        </span>
       </label>
+
+      {method === "card" && (
+        <div style={{ marginLeft: "34px", marginTop: "0px" }}>
+          {savedCards.length > 0 && (
+            <p className={css.selectCardTitle}>Select card for payment</p>
+          )}
+
+          <div className={css.cardList}>
+            {savedCards.map((card) => (
+              <div
+                key={card.id}
+                className={`${css.cardItem} ${
+                  selectedCard === card.id ? css.selectedCard : ""
+                }`}
+                onClick={() => setSelectedCard(card.id)}
+              >
+                {/* logo */}
+                <div className={css.cardLogo}>
+                  {card.brand === "VISA" ? (
+                    <img src="/Visa.svg" />
+                  ) : (
+                    <img src="/MC.svg" />
+                  )}
+                </div>
+
+                {/* text */}
+                <div className={css.cardInfo}>
+                  <span className={css.cardType}>Credit Card</span>
+                  <span className={css.cardNumber}>
+                    **** **** **** {card.last4}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+          {savedCards.length < 3 && (
+            <button
+              className={`${css.addCardButton} ${afacad.className}`}
+              onClick={() => setShowAddCardModal(true)}
+            >
+              + Add credit/debit card
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Internet Banking - ✅ Active (สีฟอนต์แดงสดและพื้นหลังชมพูอ่อน) */}
       <label
@@ -369,6 +741,7 @@ export default function BuyerPaymentPage() {
             <div className={css.paymentCard}>
               <PaymentMethodsSelector />
 
+              {/* ของเดิม */}
               {method === "internetBanking" && (
                 <div className={css.internetBankingContainer}>
                   <BankList />
@@ -377,17 +750,74 @@ export default function BuyerPaymentPage() {
             </div>
 
             <div className={css.bottomButtons}>
-              <button className={`${css.cancelButton} ${afacad.className}`}>
+              <button
+                className={`${css.cancelButton} ${afacad.className}`}
+                onClick={() => router.push("/buyer/orderpage")}
+              >
                 Cancel
               </button>
 
               <button
                 className={`${css.confirmButton} ${afacad.className}`}
-                onClick={() => {
-                  if (method === "promptPay") {
-                    setShowPromptPayQR(true);
-                  } else {
-                    alert("Handle other payment...");
+                disabled={method === "card" && !selectedCard}
+                onClick={async () => {
+                  try {
+                    // ✅ PromptPay (เหมือนเดิม)
+                    if (method === "promptPay") {
+                      setShowPromptPayQR(true);
+                      return;
+                    }
+
+                    // ✅ Credit Card
+                    if (method === "card") {
+                      if (!selectedCard) {
+                        alert("Please select a card first");
+                        return;
+                      }
+
+                      if (!order?._id) {
+                        alert("Order not loaded");
+                        return;
+                      }
+
+                      if (loading) return;
+                      setLoading(true);
+
+                      try {
+                        const res = await fetch("/api/auth/orders", {
+                          method: "PATCH",
+                          headers: {
+                            "Content-Type": "application/json",
+                          },
+                          body: JSON.stringify({
+                            orderId: order._id,
+                            status: "Paid",
+                          }),
+                        });
+
+                        const data = await res.json();
+
+                        if (!res.ok) {
+                          throw new Error(data.message || "Payment failed");
+                        }
+
+                        alert("Payment successful!");
+                        router.push("/buyer/firstpage");
+                      } catch (err) {
+                        console.error(err);
+                        alert("Something went wrong");
+                      } finally {
+                        setLoading(false);
+                      }
+                    }
+
+                    // ✅ Internet Banking (ของเดิม)
+                    if (method === "internetBanking") {
+                      alert("Handle internet banking...");
+                    }
+                  } catch (err) {
+                    console.error(err);
+                    alert("Something went wrong");
                   }
                 }}
               >
@@ -395,6 +825,14 @@ export default function BuyerPaymentPage() {
               </button>
             </div>
           </>
+        )}
+
+        {showAddCardModal && (
+          <AddCardModal
+            onClose={() => setShowAddCardModal(false)}
+            onSave={handleSaveCard}
+            savedCards={savedCards}
+          />
         )}
       </section>
     </main>
