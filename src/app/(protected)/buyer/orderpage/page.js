@@ -123,7 +123,14 @@ function OrderCard({ order }) {
   };
 
   return (
-    <article className={styles.card} onClick={() => setIsOpen(!isOpen)}>
+    <article
+      className={styles.card}
+      onClick={() => {
+        if (currentOrder.status === "Paid") return; // 👈 กันกด
+        if (currentOrder.status === "Canceled") return; // (ของเดิมคุณก็กันอยู่แล้ว)
+        setIsOpen(!isOpen);
+      }}
+    >
       {/* ... (โค้ดส่วนแสดงผล Card ด้านบนเหมือนเดิมทุกอย่าง) ... */}
       <div className={styles.cardTop}>
         <div>
@@ -233,6 +240,7 @@ function OrderCard({ order }) {
         mounted &&
         createPortal(
           <div
+            className={afacad.className}
             onClick={(e) => {
               e.stopPropagation();
               setIsCancelModalOpen(false);
@@ -301,6 +309,7 @@ function OrderCard({ order }) {
                 }}
               >
                 <button
+                  className={afacad.className}
                   onClick={(e) => {
                     e.stopPropagation();
                     setIsCancelModalOpen(false);
@@ -319,6 +328,7 @@ function OrderCard({ order }) {
                   Back
                 </button>
                 <button
+                  className={afacad.className}
                   onClick={handleConfirmCancel}
                   disabled={isSubmitting}
                   style={{
