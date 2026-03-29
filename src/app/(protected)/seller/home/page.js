@@ -110,7 +110,7 @@ export default function SellerHome() {
 
         {/* เว้นให้คุณใส่รูปเอง */}
         <div className={styles.heroImageWrapper}>
-          <img src="/books.png" className={styles.heroImage} />
+          <img src="/Group 53.svg" className={styles.heroImage} />
         </div>
       </div>
 

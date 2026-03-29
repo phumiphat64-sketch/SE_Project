@@ -80,7 +80,7 @@ export default function TopBar({ showBack = false }) {
   };
 
   // 🔥 หน้า public ที่ไม่ควรแสดง menu
-  const publicPages = ["/", "/login", "/register"];
+  const publicPages = ["/", "/login", "/register" , "/seller/wallet"];
 
   const isPublicPage = publicPages.includes(pathname);
 
@@ -114,7 +114,7 @@ export default function TopBar({ showBack = false }) {
             Home
           </Link>
 
-          <Link href="/search" className={styles.menuItem}>
+          <Link href="/seller/wallet" className={styles.menuItem}>
             <img src="/icons/wallet.svg" className={styles.icon} />
             Wallet
           </Link>
