@@ -114,7 +114,7 @@ export default function TopBar({ showBack = false }) {
             Home
           </Link>
 
-          <Link href="/seller/wallet" className={styles.menuItem}>
+          <Link href="/seller/walletBase" className={styles.menuItem}>
             <img src="/icons/wallet.svg" className={styles.icon} />
             Wallet
           </Link>

@@ -39,5 +39,8 @@ export async function GET(req, context) {
 
   return NextResponse.json({
     availableBalance: balance,
+    totalEarnings: income,
+    totalPayouts: expense,
   });
 }
+
