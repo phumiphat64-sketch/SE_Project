@@ -3,16 +3,37 @@
 import styles from "./home.module.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
+
+export const crimson = Crimson_Text({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const afacad = Afacad({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin", "thai"],
+  weight: ["400", "500", "600", "700"],
+});
 
 export default function SellerHome() {
   const router = useRouter();
   const stats = [
-    { icon: "🚚", number: 3, label: "Pending Payment" },
-    { icon: "📦", number: 5, label: "To Ship" },
-    { icon: "🚛", number: 2, label: "In Transit" },
-    { icon: "📦", number: 1, label: "Cancel Items" },
-    { icon: "❓", number: 0, label: "Restricted Items" },
-    { icon: "📚", number: 4, label: "Out of Stock" },
+    { icon: "/icons/ew.svg", number: 3, label: "Pending Payment" },
+    { icon: "/icons/3dc.svg", number: 5, label: "To Ship" },
+    { icon: "/icons/tf.svg", number: 2, label: "In Transit" },
+    { icon: "/icons/br.svg", number: 1, label: "Cancel Items" },
+    { icon: "/icons/mq.svg", number: 0, label: "Restricted Items" },
+    { icon: "/icons/bk.svg", number: 4, label: "Out of Stock" },
   ];
 
   const orders = [
@@ -72,19 +93,25 @@ export default function SellerHome() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${afacad.className}`}>
       {/* HERO */}
-      <div className={styles.hero}>
+      <div className={`${styles.hero} ${styles.heroFull}`}>
         <div className={styles.heroText}>
-          <h1>ReRead Resell Relove.</h1>
-          <p>Give Your Books a Second Life.</p>
+          <h1 className={crimson.className}>ReRead Resell Relove.</h1>
+          <p className={crimson.className}>Give Your Books a Second Life.</p>
 
-          <button className={styles.addBtn} onClick={handleAddBook}>
+          <button
+            className={`${styles.addBtn} ${afacad.className}`}
+            onClick={handleAddBook}
+          >
             + Add New Book
           </button>
         </div>
 
-        <img src="/books.png" className={styles.heroImage} />
+        {/* เว้นให้คุณใส่รูปเอง */}
+        <div className={styles.heroImageWrapper}>
+          <img src="/books.png" className={styles.heroImage} />
+        </div>
       </div>
 
       {/* DASHBOARD */}
@@ -93,11 +120,14 @@ export default function SellerHome() {
       <div className={styles.statsGrid}>
         {stats.map((s, i) => (
           <div key={i} className={styles.statCard}>
-            <div className={styles.statIcon}>{s.icon}</div>
-            <div>
+            <div className={styles.statTop}>
+              <div className={styles.statIcon}>
+                <img src={s.icon} alt="icon" />
+              </div>
               <h3>{s.number}</h3>
-              <p>{s.label}</p>
             </div>
+
+            <p className={styles.statLabel}>{s.label}</p>
           </div>
         ))}
       </div>

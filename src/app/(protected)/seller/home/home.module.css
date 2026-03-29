@@ -9,34 +9,69 @@
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:30px;
-  border-bottom:2px solid #d5cfc8;
+
+  padding:50px 40px;
+  
+  background:white;          /* เพิ่ม */
+  border-bottom:none;        /* เอาเส้นออก */
+  box-shadow:0 4px 3px rgba(0,0,0,0.20); /* เงาเบาๆ */
+
+  margin-bottom:30px;        /* เว้นด้านล่าง */
+  text-align:center;          /* ✅ เพิ่ม */
+  flex-direction:row;      /* ✅ ทำให้เรียงลง */
+}
+
+.heroFull{
+  margin-left:-80px;
+  margin-right:-80px;
+  padding-left:80px;
+  padding-right:80px;
+}
+
+/* TEXT */
+.heroText{
+  max-width:600px;
+  margin:0; /* ✅ จัดกลาง */
 }
 
 .heroText h1{
-  font-size:36px;
+  font-size:42px;
+  font-weight:700;
   margin-bottom:10px;
 }
 
 .heroText p{
-  font-size:18px;
+  font-size:20px;
   color:#555;
-  margin-bottom:20px;
+  margin-bottom:25px;
 }
 
 .addBtn{
   background:#5b4636;
   color:white;
-  padding:10px 20px;
-  border-radius:20px;
+  padding:8px 36px;
+  border-radius:25px;
   border:none;
   cursor:pointer;
+  font-size:14px;
+  transition:0.2s;
+}
+
+.addBtn:hover{
+  opacity:0.85;
+}
+
+.heroImageWrapper{
+  flex:1;
+  display:flex;
+  justify-content:flex-end;
 }
 
 .heroImage{
-  width:250px;
+  width:320px;
+  height:auto;
+  object-fit:contain;
 }
-
 /* SECTION */
 
 .sectionTitle{
@@ -46,25 +81,55 @@
 
 /* STATS */
 
+.statTop{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
 .statsGrid{
   margin-top:20px;
+  margin:20px auto;
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:25px;
+  gap:55px;
+  max-width:none;
 }
 
 .statCard{
   display:flex;
-  align-items:center;
-  gap:15px;
+  flex-direction:column;   /* ✅ เปลี่ยนเป็นแนวตั้ง */
+  align-items:flex-start;  /* ✅ ชิดซ้าย */
+  gap:6px;
+
   background:white;
   padding:20px;
-  border-radius:10px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  border-radius:2px;
+  box-shadow:0 2px 4px rgba(0,0,0,0.30);
+}
+
+.statCard h3{
+  font-size:25px;   /* ปรับใหญ่ขึ้น */
+  font-weight:600;
+  margin:0;
+}
+
+.statCard p{
+  margin-top: -5px;
+  font-size:25px;
+  margin-left:50px;
+  color:#000000;
+  font-weight: 600;
 }
 
 .statIcon{
   font-size:28px;
+}
+
+.statIcon img{
+  width:40px;
+  height:40px;
+  object-fit:contain;
 }
 
 /* ORDERS */
@@ -88,7 +153,7 @@
   background:white;
   border-radius:10px;
   overflow:hidden;
-  border:1px solid #ddd;
+  border:1px solid #000000;
 }
 
 .table{
@@ -104,14 +169,18 @@
 
 .table td{
   padding:12px;
-  border-top:1px solid #eee;
+  border-top:1px solid #000000;
 }
 
 /* STATUS */
 
 .status{
-  padding:4px 10px;
-  border-radius:10px;
+  display:inline-block;
+  width:110px;          /* 👈 กำหนดความกว้างเท่ากัน */
+  text-align:center;
+
+  padding:6px 0;
+  border-radius:20px;
   font-size:12px;
   color:white;
 }
@@ -134,4 +203,26 @@
 
 .Completed{
   background:#4a8f5c;
+}
+
+@media (max-width: 768px){
+  .container{
+    padding:20px;
+  }
+
+  .heroFull{
+    margin-left:-20px;
+    margin-right:-20px;
+    padding-left:20px;
+    padding-right:20px;
+  }
+
+  .hero{
+    max-width:1200px;
+    margin:0 auto 30px auto;
+  }
+
+  .heroImage{
+    width:220px;
+  }
 }
