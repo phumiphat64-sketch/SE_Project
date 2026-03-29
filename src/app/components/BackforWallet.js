@@ -29,9 +29,10 @@ export default function BackforWallet({ title }) {
 
   return (
     <>
-      <div className={styles.backBar}>
+      {/* แทรก afacad.className เข้าไปที่ div คลุมด้านนอกสุด */}
+      <div className={`${styles.backBar} ${afacad.className}`}>
         <button className={styles.back} onClick={() => router.back()}>
-          ← Back
+          ← Back To Wallet
         </button>
       </div>
     </>

@@ -1,6 +1,13 @@
+/* บังคับให้ input และ button ทุกตัวในหน้านี้ ใช้ฟอนต์เดียวกับที่ครอบไว้ด้านนอก (Afacad) */
+input, button {
+  font-family: inherit;
+  /* เพิ่มบรรทัดนี้ลงไปเพื่อให้มี Animation ตอนกด */
+  transition: transform 0.15s ease-in-out, opacity 0.1s ease-in-out, background-color 0.2s ease;
+}
+
 .page {
   min-height: 100vh;
-  background-color: #F7F5F1;
+  background-color: #FDFBFC; /* ปรับสีพื้นหลังให้สว่างขึ้นเหมือนในรูป */
 }
 
 .topBar {
@@ -45,8 +52,8 @@
 }
 
 .contentCardStack {
-  width: 100%;
-  max-width: 470px;
+  width: 90%; /* ให้การ์ดกินพื้นที่ 90% ของหน้าจอ (ทำให้ดูสมส่วนในจอเล็ก/มือถือ) */
+  max-width: 968px; /* ปรับขยายความกว้างสูงสุดบนจอคอม จาก 500px เป็น 768px หรือ 800px */
   margin: 0 auto;
 }
 
@@ -65,58 +72,59 @@
   margin: 0 0 18px;
   font-size: 30px;
   font-weight: 700;
-  color: #221A17;
+  color: #000000;
 }
 
 .card {
   background-color: #FFFFFF;
-  border: 1px solid #CBBFB6;
-  border-radius: 20px;
+  border: 1px solid #000000c4; /* สีขอบเทาอมน้ำตาล */
+  border-radius: 28px; /* ขอบมนขึ้นเหมือนใน Mockup */
   overflow: hidden;
-  margin-bottom: 16px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.18); /* เพิ่มเงา (Drop Shadow) ที่ชัดเจนขึ้น */
 }
 
 .cardHeader {
-  background-color: #EEE6DA;
-  padding: 14px 18px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #2F2420;
-  border-bottom: 1px solid #D6CBC2;
+  background-color: #F8EFE5; 
+  padding: 16px 24px; /* เพิ่มพื้นที่ขอบให้สมดุลกับความกว้าง */
+  font-size: 18px; /* ขยายจาก 14px */
+  font-weight: 700;
+  color: #111111;
+  border-bottom: 1px solid #000000c4;
 }
 
 .cardBody {
-  padding: 18px 18px 20px;
+  padding: 20px 20px;
 }
 
 .balanceAmount {
-  font-size: 22px;
+  font-size: 36px; /* ขยายจาก 28px ให้เด่นขึ้น */
   font-weight: 700;
-  color: #111111;
+  color: #000000;
   margin-bottom: 4px;
 }
 
 .balanceSubtext {
-  font-size: 11px;
-  color: #6C6460;
+  font-size: 14px; /* ขยายจาก 10px */
+  color: #333333;
 }
 
 .amountRow {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 .amountInputWrap {
   flex: 1;
   display: flex;
   align-items: center;
-  height: 44px;
-  border: 1px solid #D8D0C8;
-  border-radius: 5px;
+  height: 56px; /* เพิ่มความสูงช่องกรอกจาก 44px เป็น 56px */
+  border: 1px solid #AFA59D;
+  border-radius: 6px;
   overflow: hidden;
   background-color: #FFFFFF;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.28);
 }
 
 .amountInputWrap.error {
@@ -124,16 +132,17 @@
 }
 
 .currencyBox {
-  width: 36px;
-  min-width: 36px;
+  width: 56px; /* ขยายกล่องสัญลักษณ์ ฿ ให้กว้างขึ้นตาม */
+  min-width: 56px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-right: 1px solid #D8D0C8;
-  color: #7A625B;
-  font-size: 18px;
-  font-weight: 500;
+  border-right: 1px solid #AFA59D;
+  background-color: #F8EFE5;
+  color: #555555;
+  font-size: 20px; /* ขยายจาก 16px */
+  font-weight: 600;
 }
 
 .amountInput {
@@ -142,83 +151,92 @@
   border: none;
   outline: none;
   background-color: transparent;
-  padding: 0 14px;
-  font-size: 28px;
-  font-weight: 600;
-  color: #8D6E68;
+  padding: 0 20px;
+  font-size: 24px; /* ขยายตัวเลขตอนพิมพ์จาก 20px */
+  font-weight: 700;
+  color: #000000;
 }
 
 .amountInput.error {
-  color: #CB4242;
+  color: #D32F2F; /* ปรับสีแดงให้สดและเข้มขึ้นเหมือนในรูปตอน Error */
 }
 
 .payoutAllButton {
-  height: 44px;
-  padding: 0 16px;
-  border-radius: 5px;
-  border: 1px solid #E2D8CF;
-  background-color: #F7EFE7;
-  color: #6C544D;
-  font-size: 14px;
-  font-weight: 600;
+  height: 56px; /* เพิ่มความสูงปุ่มให้เท่ากับช่องกรอก */
+  padding: 0 28px;
+  border-radius: 8px;
+  border: none;
+  background-color: #E1E1E1;
+  color: #000000; 
+  font-size: 20px; /* ขยายจาก 16px */
+  font-weight: 700; 
   cursor: pointer;
   white-space: nowrap;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.22);
+}
+
+.payoutAllButton:hover {
+  opacity: 0.9;
+}
+
+.payoutAllButton:active {
+  transform: translateY(1px) scale(0.97); /* ยุบตัวลงตอนกด */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
 }
 
 .helperText {
-  margin-top: 8px;
-  font-size: 10px;
+  margin-top: 10px;
+  font-size: 13px; /* ขยายจาก 11px */
   font-style: italic;
-  color: #5E5652;
+  color: #000000;
 }
 
 .bankTopRow {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  border-bottom: 1px solid #D9D1CA;
+  gap: 16px;
+  padding: 20px 24px; /* เพิ่มพื้นที่ขอบ */
+  border-bottom: 1px solid #AFA59D;
 }
 
 .bankLogoBox {
-  width: 34px;
-  height: 34px;
+  width: 56px; /* ขยายโลโก้จาก 48px */
+  height: 56px;
   border-radius: 8px;
-  background-color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   flex-shrink: 0;
-  border: 1px solid #E3DBD3;
+  border: none;
 }
 
 .bankLogoImage {
-  width: 70%;
-  height: 70%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
 .bankName {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1F1714;
+  font-size: 18px; /* ขยายจาก 16px */
+  font-weight: 700;
+  color: #000000;
   margin-bottom: 4px;
 }
 
 .bankMeta {
-  font-size: 13px;
-  color: #352C28;
+  font-size: 15px; /* ขยายจาก 13px */
+  color: #000000;
 }
 
 .bankBottomRow {
-  padding: 12px 16px;
-  font-size: 14px;
-  color: #241815;
+  padding: 20px 24px;
+  font-size: 16px; /* ขยายจาก 14px */
+  color: #000000;
 }
 
 .bankNumberLabel {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .bankNumberValue {
@@ -226,17 +244,17 @@
 }
 
 .summaryBody {
-  padding: 10px 16px 14px;
+  padding: 20px 24px 24px;
 }
 
 .summaryRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
-  color: #2F2420;
-  padding: 8px 0;
-  border-bottom: 1px solid #D9D1CA;
+  font-size: 16px; /* ขยายข้อความสรุปยอดจาก 13px */
+  color: #000000;
+  padding: 14px 0; /* เพิ่มช่องไฟระหว่างบรรทัด */
+  border-bottom: 1px solid #EAE1D9;
 }
 
 .summaryRow.noBorder {
@@ -245,26 +263,51 @@
 
 .confirmButton {
   width: 100%;
-  height: 34px;
+  height: 50px; /* เพิ่มความหนาปุ่มยืนยันจาก 40px */
   border: none;
-  border-radius: 999px;
+  border-radius: 999px; 
   color: #FFFFFF;
-  font-weight: 600;
-  font-size: 14px;
-  margin-top: 14px;
-  background-color: #6A9073;
+  font-weight: 700;
+  font-size: 18px; /* ขยายฟอนต์ปุ่มจาก 14px */
+  margin-top: 24px;
+  background-color: #6A9073; 
   cursor: pointer;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.28);
 }
 
 .confirmButton.disabled {
-  background-color: #CFCFCF;
+  background-color: #D9D9D9; /* สีเทาตามรูปตอนที่ปุ่มถูก Disabled */
+  color: #000000;
   cursor: not-allowed;
 }
 
+.confirmButton:not(.disabled):hover {
+  background-color: #5B7F62; /* เปลี่ยนสีให้เข้มขึ้นนิดนึงตอนเอาเมาส์ชี้ */
+  transform: scale(1.02); 
+}
+
+.confirmButton:not(.disabled):active {
+  background-color: #4A6A50; /* สีเข้มสุดตอนกด */
+  transform: scale(0.98); /* ยุบตัวลงตอนกด */
+}
+
 .summaryNote {
-  margin-top: 8px;
+  margin-top: 16px;
   text-align: center;
-  font-size: 10px;
+  font-size: 15px; /* ขยายจาก 10px */
   font-style: italic;
-  color: #5D5450;
+  color: #333333;
+}
+
+.amountInput {
+  color: black; /* ปกติ */
+}
+
+.amountInput.error {
+  color: red; /* ตอน error */
+}
+
+.confirmButton.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

@@ -1,7 +1,7 @@
 .backBar{
-  background:#E8DDD1;
+  background:#000000;
   padding:14px 80px;
-  font-size:15px;
+  font-size:20px;
   cursor:pointer;
     font-size:18px;
   width:calc(100% + 160px);
@@ -9,7 +9,7 @@
 }
 
 .arrow{
-  font-size:16px;
+  font-size:20px;
 }
 
 .backBar:hover{

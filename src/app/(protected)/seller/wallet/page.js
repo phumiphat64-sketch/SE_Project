@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Caveat, Afacad } from "next/font/google";
 import PageHeader from "@/app/components/BackforWallet";
+import { useEffect } from "react";
 import "./request-payout.css";
 
 const caveat = Caveat({
@@ -19,19 +20,55 @@ const afacad = Afacad({
 const MIN_PAYOUT = 100;
 const TRANSACTION_FEE = 0;
 
-const wallet = {
-  availableBalance: 2450,
-};
+const getBankLogo = (bankName) => {
+  if (!bankName) return "/default.png";
 
-const bankAccount = {
-  bankName: "Krung Thai Bank",
-  accountName: "Daenerys Targaryen",
-  accountNumber: "222-XXXXX-22",
+  const name = bankName.toLowerCase();
+
+  if (name.includes("bangkok")) return "/Bk.png";
+  if (name.includes("krung thai")) return "/Ks.png";
+  if (name.includes("kasikorn")) return "/Kb.png";
+  if (name.includes("siam")) return "/SCBR.png";
+
+  return "/default.png";
 };
 
 export default function RequestPayoutPage() {
   const router = useRouter();
-  const [amountInput, setAmountInput] = useState("99.00");
+  const [amountInput, setAmountInput] = useState("");
+  const [bankAccount, setBankAccount] = useState(null);
+  const [wallet, setWallet] = useState(null);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log("USER:", user);
+
+    if (!user?.id) {
+      console.log("NO USER ID ❌");
+      return;
+    }
+
+    console.log("HAS USER ID ✅");
+
+    const sellerId = user.id;
+
+    console.log("FETCHING WALLET...");
+
+    fetch(`/api/auth/walletSeller/${sellerId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("WALLET:", data);
+        setWallet(data);
+      });
+
+    console.log("FETCHING SELLER PROFILE...");
+    fetch(`/api/auth/seller/profile?userId=${sellerId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("SELLER PROFILE:", data);
+        setBankAccount(data);
+      });
+  }, []);
 
   const payoutAmount = useMemo(() => {
     const cleaned = amountInput.replace(/,/g, "").trim();
@@ -40,14 +77,48 @@ export default function RequestPayoutPage() {
     return Number.isNaN(parsed) ? 0 : parsed;
   }, [amountInput]);
 
+  // Logic สำหรับซ่อนเลขบัญชี (Censor) ให้เหลือแค่ 3 ตัวหน้า กับ 2 ตัวหลัง
+  const maskedAccountNumber = useMemo(() => {
+    if (!bankAccount?.accountNumber) return "-";
+    const visibleStart = bankAccount.accountNumber.slice(0, 3);
+    const visibleEnd = bankAccount.accountNumber.slice(-2);
+    return `${visibleStart}-XXXXX-${visibleEnd}`;
+  }, [bankAccount?.accountNumber]);
+
+  const handlePayout = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const sellerId = user.id;
+
+    const res = await fetch("/api/auth/PayOut", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sellerId,
+        amount: Number(payoutAmount),
+      }),
+    });
+
+    const data = await res.json();
+
+    alert(data.message);
+
+    // 🔥 refresh หน้า
+    window.location.reload();
+  };
+
   const isEmpty = amountInput.trim() === "";
   const isBelowMinimum = payoutAmount < MIN_PAYOUT;
-  const isOverBalance = payoutAmount > wallet.availableBalance;
+  const isOverBalance = payoutAmount > (wallet?.availableBalance || 0);
   const hasError = isEmpty || isBelowMinimum || isOverBalance;
 
   const fee = TRANSACTION_FEE;
   const netAmount = Math.max(payoutAmount - fee, 0);
-  const remainingBalance = Math.max(wallet.availableBalance - payoutAmount, 0);
+  const remainingBalance = Math.max(
+    (wallet?.availableBalance || 0) - payoutAmount,
+    0,
+  );
 
   const handleAmountChange = (e) => {
     const value = e.target.value;
@@ -57,7 +128,9 @@ export default function RequestPayoutPage() {
   };
 
   const handlePayoutAll = () => {
-    setAmountInput(wallet.availableBalance.toFixed(2));
+    if (wallet?.availableBalance) {
+      setAmountInput(wallet.availableBalance.toFixed(2));
+    }
   };
 
   const helperText = isOverBalance
@@ -66,7 +139,7 @@ export default function RequestPayoutPage() {
 
   return (
     <main className={`${afacad.className} page`}>
-      <PageHeader/>
+      <PageHeader />
 
       <div className="frame">
         <div className="mainContainer">
@@ -78,7 +151,7 @@ export default function RequestPayoutPage() {
               <div className="cardHeader">Available Balance</div>
               <div className="cardBody">
                 <div className="balanceAmount">
-                  ฿ {wallet.availableBalance.toFixed(2)}
+                  ฿ {wallet?.availableBalance?.toFixed(2) || "0.00"}
                 </div>
                 <div className="balanceSubtext">
                   Balance available for payout
@@ -99,7 +172,7 @@ export default function RequestPayoutPage() {
                       inputMode="decimal"
                       value={amountInput}
                       onChange={handleAmountChange}
-                      placeholder="0.00"
+                      placeholder="100.00"
                       className={`amountInput ${hasError ? "error" : ""}`}
                     />
                   </div>
@@ -125,25 +198,26 @@ export default function RequestPayoutPage() {
                 <div className="bankTopRow">
                   <div className="bankLogoBox">
                     <img
-                      src="/Ks.png"
-                      alt="Krungthai Bank"
+                      src={getBankLogo(bankAccount?.bankName)}
                       className="bankLogoImage"
                     />
                   </div>
 
                   <div>
-                    <div className="bankName">{bankAccount.bankName}</div>
+                    <div className="bankName">
+                      {bankAccount?.bankName || "-"}
+                    </div>
+
                     <div className="bankMeta">
-                      Account Name: {bankAccount.accountName}
+                      Account Name: {bankAccount?.accountName || "-"}
                     </div>
                   </div>
                 </div>
 
+                {/* ของเดิมที่เป็น bankAccount?.accountNumber ให้เปลี่ยนมาเรียกใช้ตัวแปรใหม่ */}
                 <div className="bankBottomRow">
                   <span className="bankNumberLabel">Account Number:</span>{" "}
-                  <span className="bankNumberValue">
-                    {bankAccount.accountNumber}
-                  </span>
+                  <span className="bankNumberValue">{maskedAccountNumber}</span>
                 </div>
               </div>
             </section>
@@ -173,6 +247,7 @@ export default function RequestPayoutPage() {
 
                 <button
                   type="button"
+                  onClick={handlePayout}
                   disabled={hasError}
                   className={`confirmButton ${hasError ? "disabled" : ""}`}
                 >

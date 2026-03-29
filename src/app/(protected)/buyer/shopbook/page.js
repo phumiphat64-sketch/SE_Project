@@ -215,6 +215,8 @@ export default function OrderSummaryPage() {
                     placedOn: new Date().toLocaleDateString(),
                     status: "Pending",
 
+                    bookId: orderData?._id, // 🔥🔥🔥 เพิ่มตรงนี้
+
                     bookName: orderData?.title,
                     author: orderData?.author,
                     store: orderData?.sellerName,
