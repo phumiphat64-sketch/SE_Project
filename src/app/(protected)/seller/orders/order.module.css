@@ -1,0 +1,302 @@
+.page {
+  min-height: 100vh;
+  background: #FFFEFA;
+  font-size: 18px;
+}
+
+/* HEADER */
+.header {
+  background: #4e3b34;
+  border-bottom: 1px solid #3d2d27;
+}
+
+.headerInner {
+  max-width: 1360px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.logo {
+  color: #fffefa;
+  font-size: 54px;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+}
+
+.navItem {
+  color: white;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.active {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+}
+
+/* CONTENT */
+.content {
+  max-width: 1360px;
+  margin: auto;
+  padding: 24px;
+  margin-top: 50px;
+
+}
+
+.title {
+  font-size: 36px;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 60px; /* 👈 คุมระยะเอง */
+  border-bottom: 2px solid #4e3b34;
+}
+
+.tab {
+  flex: 1;                 
+  text-align: center;      
+  background: none;
+  border: none;
+  padding-bottom: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  font-family: inherit;
+}
+
+.tab:hover {
+  opacity: 0.7;
+}
+
+.tabActive {
+  font-weight: 700;
+  border-bottom: 3px solid #4e3b34;
+  margin-bottom: -2px; /* 👈 ดันให้เส้นชนพอดี */
+}
+
+/* SEARCH */
+.search {
+  width: 100%;
+  margin-top: 25px;
+  height: 50px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1px solid #cfc6be;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.38);
+
+  box-sizing: border-box;
+}
+
+/* TABLE */
+.table {
+  margin-top: 24px;
+  border: 1px solid #64534D;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tableCard {
+  margin-top: 44px;
+  border: 1px solid #64534D;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fffdfc;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.38);
+}
+
+.headerRow {
+  display: grid;
+  grid-template-columns: 1.3fr 1.7fr 1.2fr 1.1fr 1fr;
+  background: #FFF6EA;
+  padding: 14px;
+  font-weight: 700;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1.3fr 1.7fr 1.2fr 1.1fr 1fr;
+  padding: 38px 26px;   /* 👈 เพิ่มตรงนี้ */
+  border-top: 1px solid #64534D;
+  align-items: center;
+}
+
+.row:hover {
+  background: #f9f5f1;
+}
+
+.book {
+  display: flex;
+  align-items: flex-start; /* 👈 ทำให้ข้อความอยู่ด้านบน */
+  gap: 14px;
+}
+
+.thumb {
+  width: 80px;     /* ใหญ่ขึ้น */
+  height: 110px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.thumb:hover {
+  transform: scale(1.05);
+  transition: 0.2s;
+}
+
+.link {
+  font-size: 12px;
+  border: none;
+  background: none;
+  border-bottom: 1px solid #8b8078;
+  color: #6f645d;
+  cursor: pointer;
+}
+
+/* STATUS */
+.status {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: none;
+  font-size: 18px;
+  font-family: inherit;
+}
+
+.Pending {
+  background: #d6c35c;
+  color: black;
+}
+
+.ToShip {
+  background: #5f7f9f;
+  color: white;
+}
+
+.InTransit {
+  background: #c47c54;
+  color: white;
+}
+
+
+.Completed {
+  background: #5c7f6e;
+  color: white;
+}
+
+
+.Canceled {
+  background: #a45a5a;
+  color: white;
+}
+
+
+.statusColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tracking {
+  margin-top: 6px;
+  font-size: 18px;
+  font-family: inherit;
+  color: #5f7f9f;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* === Pagination แบบเดียวกับ payout === */
+
+.paginationRow {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.pageText {
+  font-size: 15px;
+  font-weight: 500;
+  color: #241815;
+}
+
+.paginationButtons {
+  display: flex;
+  gap: 4px;
+}
+
+.pageButton {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #ccbfb6;
+  background: #fffaf6;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.pageButton:hover:not(:disabled) {
+  background: #f5efe9;
+}
+
+.pageButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pageButton:hover {
+  transform: translateY(-1px);
+}
+
+.rightHeader {
+  display: flex;
+  align-items: center;
+}
+
+.backBtn {
+  background: #f3eadf;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.orderId {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.date {
+  font-size: 12px;
+  color: #6f645d;
+  margin-top: 4px;
+}
+
+.bookInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.bookTitle {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.quantity {
+  font-size: 15px;
+  color: #666;
+  margin-top: 6px;
+}

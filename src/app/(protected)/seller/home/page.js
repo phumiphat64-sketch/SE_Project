@@ -151,7 +151,7 @@ export default function SellerHome() {
       {/* ORDERS */}
       <div className={styles.ordersHeader}>
         <h2>Recent Orders</h2>
-        <Link href="#">View All →</Link>
+        <Link href="/seller/orders">View All →</Link>
       </div>
 
       <div className={styles.tableWrapper}>
@@ -168,7 +168,7 @@ export default function SellerHome() {
           </thead>
 
           <tbody>
-            {sellerOrders.map((o, i) => (
+            {sellerOrders.slice(0, 10).map((o, i) => (
               <tr key={i}>
                 <td>{o.id}</td>
                 <td>{o.bookName}</td>

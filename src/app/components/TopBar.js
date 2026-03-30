@@ -135,7 +135,7 @@ export default function TopBar({ showBack = false }) {
             Profile
           </Link>
 
-          <Link href="/sell" className={styles.menuItem}>
+          <Link href="/seller/orders" className={styles.menuItem}>
             <img src="/icons/3.svg" className={styles.icon} />
             Orders
           </Link>
