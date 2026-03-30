@@ -84,7 +84,6 @@ export async function GET() {
     const books = await db
       .collection("books")
       .find({
-        status: "Published",
         sellerId: sellerId, // ✅ ใส่ตรงนี้เลย
       })
       .sort({ createdAt: -1 })
