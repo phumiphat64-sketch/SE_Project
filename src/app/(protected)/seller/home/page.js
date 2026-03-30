@@ -4,6 +4,7 @@ import styles from "./home.module.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
+import { useEffect, useState } from "react";
 
 export const crimson = Crimson_Text({
   subsets: ["latin"],
@@ -27,66 +28,81 @@ export const ibmPlexMono = IBM_Plex_Mono({
 
 export default function SellerHome() {
   const router = useRouter();
+  const [ordersData, setOrdersData] = useState([]);
+  const [booksData, setBooksData] = useState([]);
+
+  console.log("ORDERS:", ordersData);
+  console.log("BOOKS:", booksData);
+
+  const sellerBookIds = booksData.map((b) => String(b._id));
+
+  // 2. filter order ให้เหลือของเรา
+  const sellerOrders = ordersData.filter((order) =>
+    sellerBookIds.includes(String(order.bookId)),
+  );
+
+  // 3. debug
+  console.log("SELLER ORDERS:", sellerOrders);
+
+  const pendingCount = sellerOrders.filter(
+    (o) => o.status === "Pending",
+  ).length;
+
+  const cancelCount = sellerOrders.filter(
+    (o) => o.status === "Cancelled",
+  ).length;
+
+  const toShipCount = sellerOrders.filter((o) => o.status === "Paid").length;
+
+  const outOfStockCount = booksData.filter((b) => b.stock === 0).length;
+
+  // 🔥 แปลง status ให้ตรง UI
+  const formatStatus = (status) => {
+    switch (status) {
+      case "Pending":
+        return "Pending";
+      case "Paid":
+        return "To Ship";
+      case "Shipped":
+        return "In Transit";
+      case "Completed":
+        return "Completed";
+      case "Canceled":
+        return "Cancelled";
+      default:
+        return status;
+    }
+  };
+
   const stats = [
-    { icon: "/icons/ew.svg", number: 3, label: "Pending Payment" },
-    { icon: "/icons/3dc.svg", number: 5, label: "To Ship" },
+    { icon: "/icons/ew.svg", number: pendingCount, label: "Pending Payment" },
+    { icon: "/icons/3dc.svg", number: toShipCount, label: "To Ship" },
     { icon: "/icons/tf.svg", number: 2, label: "In Transit" },
-    { icon: "/icons/br.svg", number: 1, label: "Cancel Items" },
+    { icon: "/icons/br.svg", number: cancelCount, label: "Cancel Items" },
     { icon: "/icons/mq.svg", number: 0, label: "Restricted Items" },
-    { icon: "/icons/bk.svg", number: 4, label: "Out of Stock" },
+    { icon: "/icons/bk.svg", number: outOfStockCount, label: "Out of Stock" },
   ];
 
-  const orders = [
-    {
-      id: "#zz-zzzzz-zzz",
-      book: "book name",
-      buyer: "Buyername",
-      status: "Pending",
-      date: "20/02/2026",
-    },
-    {
-      id: "#zz-zzzzz-zzz",
-      book: "book name",
-      buyer: "Buyername",
-      status: "To Ship",
-      date: "20/02/2026",
-    },
-    {
-      id: "#zz-zzzzz-zzz",
-      book: "book name",
-      buyer: "Buyername",
-      status: "In Transit",
-      date: "20/02/2026",
-    },
-    {
-      id: "#zz-zzzzz-zzz",
-      book: "book name",
-      buyer: "Buyername",
-      status: "To Ship",
-      date: "20/02/2026",
-    },
-    {
-      id: "#zz-zzzzz-zzz",
-      book: "book name",
-      buyer: "Buyername",
-      status: "Pending",
-      date: "20/02/2026",
-    },
-    {
-      id: "#zz-zzzzz-zzz",
-      book: "book name",
-      buyer: "Buyername",
-      status: "Cancelled",
-      date: "20/02/2026",
-    },
-    {
-      id: "#zz-zzzzz-zzz",
-      book: "book name",
-      buyer: "Buyername",
-      status: "Completed",
-      date: "20/02/2026",
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        const ordersRes = await fetch("/api/auth/orders");
+        const booksRes = await fetch("/api/auth/books");
+
+        const ordersJson = await ordersRes.json();
+        const booksJson = await booksRes.json();
+
+        setOrdersData(ordersJson.data || []);
+        setBooksData(booksJson.data || []);
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleAddBook = () => {
     router.push("/seller/addbooks");
@@ -152,19 +168,19 @@ export default function SellerHome() {
           </thead>
 
           <tbody>
-            {orders.map((o, i) => (
+            {sellerOrders.map((o, i) => (
               <tr key={i}>
                 <td>{o.id}</td>
-                <td>{o.book}</td>
-                <td>{o.buyer}</td>
+                <td>{o.bookName}</td>
+                <td>{o.buyerName || "Unknown"}</td>
                 <td>
                   <span
-                    className={`${styles.status} ${styles[o.status.replace(" ", "")]}`}
+                    className={`${styles.status} ${styles[formatStatus(o.status).replace(" ", "")]}`}
                   >
-                    {o.status}
+                    {formatStatus(o.status)}
                   </span>
                 </td>
-                <td>{o.date}</td>
+                <td>{new Date(o.createdAt).toLocaleDateString()}</td>
                 <td>›</td>
               </tr>
             ))}

@@ -248,6 +248,7 @@ export default function OrderSummaryPage() {
                     body: JSON.stringify({
                       ...newOrder,
                       userId: user.id,
+                      buyerName: user.name,
                     }),
                   });
 

@@ -57,6 +57,13 @@ export async function PATCH(request) {
   try {
     const { orderId, status, cancelReason } = await request.json();
 
+    // 🔥 ใส่ตรงนี้เลย
+    if (!ObjectId.isValid(orderId)) {
+      return NextResponse.json({ message: "Invalid orderId" }, { status: 400 });
+    }
+
+    const objectId = new ObjectId(orderId);
+
     if (!orderId) {
       return NextResponse.json(
         { message: "Order ID is required" },
@@ -70,7 +77,7 @@ export async function PATCH(request) {
 
     // ✅ 1. หา order ก่อน
     const order = await collection.findOne({
-      _id: new ObjectId(orderId),
+      _id: objectId,
     });
 
     if (!order) {
@@ -87,8 +94,19 @@ export async function PATCH(request) {
       const booksCollection = database.collection("books");
 
       if (order.bookId) {
+        // 🔥 เพิ่ม 2 บรรทัดนี้ก่อน
+        if (!ObjectId.isValid(order.bookId)) {
+          return NextResponse.json(
+            { message: "Invalid bookId" },
+            { status: 400 },
+          );
+        }
+
+        const bookObjectId = new ObjectId(order.bookId);
+
+        // 🔥 แล้วใช้ตัวนี้แทน
         const book = await booksCollection.findOne({
-          _id: new ObjectId(order.bookId),
+          _id: bookObjectId,
         });
 
         if (!book) {
@@ -106,9 +124,9 @@ export async function PATCH(request) {
         }
 
         await booksCollection.updateOne(
-          { _id: new ObjectId(order.bookId) },
+          { _id: bookObjectId },
           {
-            $inc: { stock: -order.quantity },
+            $inc: { stock: -Number(order.quantity) },
           },
         );
       } else {
@@ -116,7 +134,7 @@ export async function PATCH(request) {
         await booksCollection.updateOne(
           { title: order.bookName },
           {
-            $inc: { stock: -order.quantity },
+            $inc: { stock: -Number(order.quantity) },
           },
         );
       }
@@ -124,7 +142,7 @@ export async function PATCH(request) {
 
     // ✅ 4. ค่อย update order (สำคัญ: ต้องอยู่หลัง stock)
     const result = await collection.updateOne(
-      { _id: new ObjectId(orderId) },
+      { _id: objectId },
       {
         $set: {
           status: status,

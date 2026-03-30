@@ -293,7 +293,7 @@ export default function BuyerPage() {
                   const checkoutData = {
                     ...selectedBook,
                     buyQuantity: buyQuantity,
-                    images: selectedBook.images || [], // 🔥 สำคัญ
+                    images: selectedBook.images || [],
                   };
 
                   localStorage.setItem(

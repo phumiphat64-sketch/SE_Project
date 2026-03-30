@@ -106,6 +106,9 @@ const PromptPayQR = ({
       className={`${css.qrDoneButton} ${afacad.className}`}
       onClick={async () => {
         try {
+          console.log("ORDER BEFORE PAY:", order);
+          console.log("ORDER ID:", order?._id);
+
           const res = await fetch("/api/auth/orders", {
             method: "PATCH",
             headers: {
@@ -118,6 +121,9 @@ const PromptPayQR = ({
           });
 
           const data = await res.json();
+
+          console.log("PAYMENT RESPONSE:", data);
+          console.log("STATUS:", res.status);
 
           if (!res.ok) {
             throw new Error(data.message || "Payment failed");
@@ -295,6 +301,10 @@ const BankTransferPage = ({ order, selectedBank, setShowBankTransfer }) => {
                   return;
                 }
 
+                console.log("ORDER BEFORE PAY:", order);
+                console.log("ORDER ID:", order?._id);
+
+
                 // 🔥 ยิง API (เหมือน PromptPay + Card)
                 const res = await fetch("/api/auth/orders", {
                   method: "PATCH",
@@ -308,6 +318,9 @@ const BankTransferPage = ({ order, selectedBank, setShowBankTransfer }) => {
                 });
 
                 const data = await res.json();
+
+                console.log("PAYMENT RESPONSE:", data);
+                console.log("STATUS:", res.status);
 
                 if (!res.ok) {
                   throw new Error(data.message || "Payment failed");
@@ -645,6 +658,11 @@ export default function BuyerPaymentPage() {
 
         console.log("orderId from URL:", id);
         console.log("orders from API:", data.data);
+        console.log(
+          "order IDs:",
+          data.data.map((o) => o._id),
+        );
+
 
         // ✅ หา order ที่ตรงกับ id
         const foundOrder = data.data.find((o) => String(o._id) === String(id));
@@ -988,10 +1006,15 @@ export default function BuyerPaymentPage() {
                         return;
                       }
 
+                      console.log("ORDER BEFORE PAY:", order);
+                      console.log("ORDER ID:", order?._id);
+
                       if (loading) return;
                       setLoading(true);
 
                       try {
+                        console.log("ORDER BEFORE PAY:", order);
+                        console.log("ORDER ID:", order?._id);
                         const res = await fetch("/api/auth/orders", {
                           method: "PATCH",
                           headers: {
@@ -1004,6 +1027,9 @@ export default function BuyerPaymentPage() {
                         });
 
                         const data = await res.json();
+
+                        console.log("PAYMENT RESPONSE:", data);
+                        console.log("STATUS:", res.status);
 
                         if (!res.ok) {
                           throw new Error(data.message || "Payment failed");

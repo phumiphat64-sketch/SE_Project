@@ -226,3 +226,13 @@
     width:220px;
   }
 }
+
+.Paid {
+  background-color: #4a7bd1;
+  color: white;
+}
+
+.Cancelled {
+  background-color: #d9534f;
+  color: white;
+}
