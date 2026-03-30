@@ -58,7 +58,7 @@ export default function OrderDetailPage() {
   }, [orderId]);
 
   const handleAddTracking = () => {
-    router.push("/seller/orderDetail");
+    router.push("/seller/addTracking");
   };
 
   if (!order) {

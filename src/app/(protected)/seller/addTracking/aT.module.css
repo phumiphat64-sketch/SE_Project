@@ -1,0 +1,269 @@
+.page {
+  min-height: 100vh;
+  background: #fffefa;
+}
+
+/* ===== Layout ===== */
+.content {
+  display: flex;
+  justify-content: center;
+  padding: 60px 40px;
+  margin-top: -50px;
+}
+
+.centerWrap {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ===== Title ===== */
+.title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 28px;
+  color: #1f1a17;
+}
+
+/* ===== Card ===== */
+.card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #bcaea3;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.cardTopBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  background: #eee6da;
+  border-bottom: 1px solid #d6c8be;
+}
+
+.orderNumberWrap {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.orderNumberLabel {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.orderNumberValue {
+  font-size: 14px;
+  color: #4a403a;
+}
+
+.toShipBadge {
+  background: #6287ac;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ===== Card Body ===== */
+.cardBody {
+  display: flex;
+  gap: 28px;
+  padding: 28px;
+  align-items: center;
+}
+
+.bookThumb {
+  width: 110px;
+  height: 150px;
+  background: #ccc;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.orderInfo {
+  flex: 1;
+}
+
+.bookName {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.addressRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.addressLabel {
+  font-weight: 600;
+}
+
+.addressText {
+  font-size: 14px;
+  color: #3f3732;
+}
+
+.buyerRow {
+  font-size: 15px;
+}
+
+.buyerLabel {
+  font-weight: 600;
+}
+
+/* ===== Form ===== */
+.formSection {
+  margin-top: 40px;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.mt {
+  margin-top: 18px;
+}
+
+.required {
+  color: #d64b4b;
+}
+
+/* ===== Select ===== */
+.dropdownWrapper {
+  position: relative;
+}
+
+.selectButton,
+.input {
+  width: 100%;
+  height: 52px;
+  border-radius: 12px;
+  border: 1.5px solid #bfaea4;
+  padding: 0 16px;
+  font-size: 16px;
+  background: white;
+  box-sizing: border-box;
+}
+
+.selectedContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.placeholderText {
+  color: #777;
+}
+
+/* ===== Dropdown ===== */
+.dropdownMenu {
+  border: 1.5px solid #bfaea4;
+  border-radius: 12px;
+  margin-top: 6px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+
+.dropdownOption {
+  width: 100%;
+  height: 52px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  border: none;
+  background: white;
+  cursor: pointer;
+  padding: 0 14px;
+  font-size: 15px;
+}
+
+.dropdownOption:hover {
+  background: #f3ebe5;
+}
+
+.active {
+  background: #f6eee8;
+}
+
+/* ===== Button ===== */
+.buttonWrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 26px;
+}
+
+.submitButton {
+  background: #8d6b67;
+  color: white;
+  border-radius: 999px;
+  padding: 12px 28px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.submitButton:hover {
+  opacity: 0.9;
+}
+
+/* ===== Note ===== */
+.note {
+  font-size: 12px;
+  text-align: right;
+  margin-top: 10px;
+  color: #4a403a;
+  font-style: italic;
+}
+
+/* ===== Logo image ===== */
+.carrierLogo {
+  width: 28px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.selectButton {
+  width: 100%;
+  height: 52px;
+  border-radius: 12px;
+  border: 1.5px solid #bfaea4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: white;
+  box-sizing: border-box;
+}
+
+/* 👇 ตัวนี้แหละแก้ปัญหา */
+.leftContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ลูกศรชิดขวา */
+.arrow {
+  font-size: 14px;
+}
