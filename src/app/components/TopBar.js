@@ -80,7 +80,13 @@ export default function TopBar({ showBack = false }) {
   };
 
   // 🔥 หน้า public ที่ไม่ควรแสดง menu
-  const publicPages = ["/", "/login", "/register" , "/seller/wallet"];
+  const publicPages = [
+    "/",
+    "/login",
+    "/register",
+    "/seller/wallet",
+    "/seller/Payout-history",
+  ];
 
   const isPublicPage = publicPages.includes(pathname);
 

@@ -1,6 +1,38 @@
 import { NextResponse } from "next/server";
 import { getClient } from "@/infrastructure/database/mongoDB";
 
+export async function GET(req) {
+  try {
+    const client = await getClient();
+    const db = client.db("DB_Server");
+
+    // เช็คว่ามีการส่ง sellerId มาใน URL ไหม (เช่น /api/auth/PayOut?sellerId=123)
+    const { searchParams } = new URL(req.url);
+    const sellerId = searchParams.get("sellerId");
+
+    // สร้างเงื่อนไขการค้นหา
+    const query = {};
+    if (sellerId) {
+      query.sellerId = sellerId; // ดึงเฉพาะของ seller คนนั้น
+    }
+
+    // ดึงข้อมูลจาก collection payouts และเรียงล่าสุดขึ้นบน (createdAt: -1)
+    const payouts = await db
+      .collection("payouts")
+      .find(query)
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    return NextResponse.json(payouts, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching payouts:", error);
+    return NextResponse.json(
+      { message: "ดึงข้อมูลประวัติไม่สำเร็จ" },
+      { status: 500 },
+    );
+  }
+}
+
 export async function POST(req) {
   const body = await req.json();
   const { sellerId, amount } = body;
