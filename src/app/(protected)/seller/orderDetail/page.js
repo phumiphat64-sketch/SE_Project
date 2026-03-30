@@ -57,9 +57,9 @@ export default function OrderDetailPage() {
     if (orderId) fetchOrder();
   }, [orderId]);
 
-//   const handleAddTracking = () => {
-//     router.push("/seller/addtrack");
-//   };
+  const handleAddTracking = () => {
+    router.push("/seller/orderDetail");
+  };
 
   if (!order) {
     return <div>Loading...</div>;
