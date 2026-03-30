@@ -40,6 +40,18 @@ export async function PUT(req) {
     const client = await getClient();
     const db = client.db("DB_Server");
 
+    const existing = await db.collection("orders").findOne({
+      trackingNumber: body.trackingNumber,
+      _id: { $ne: new ObjectId(id) }, // ❗ กันชนตัวเอง
+    });
+
+    if (existing) {
+      return NextResponse.json(
+        { message: "Tracking number already exists" },
+        { status: 400 },
+      );
+    }
+
     const result = await db.collection("orders").updateOne(
       { _id: new ObjectId(id) },
       {

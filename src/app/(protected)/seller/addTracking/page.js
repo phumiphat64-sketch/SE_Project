@@ -6,11 +6,6 @@ import { Caveat, Afacad } from "next/font/google";
 import styles from "./aT.module.css";
 import BacktoOrder from "@/app/components/BacktoOrder";
 
-const caveat = Caveat({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
 const afacad = Afacad({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -34,6 +29,37 @@ const carriers = [
   },
 ];
 
+const validateTracking = (carrier, number) => {
+  if (!number) return ""; // ถ้ายังไม่พิมพ์อะไร ไม่ต้องเตือน
+
+  switch (carrier) {
+    case "thailand-post":
+      // ขึ้นต้นอักษร 2 ตัว + เลข 9 ตัว + ลงท้าย TH (ตัวเล็กหรือใหญ่ก็ได้)
+      const thaiPostRegex = /^[A-Z]{2}[0-9]{9}TH$/i;
+      return thaiPostRegex.test(number)
+        ? ""
+        : "Invalid format. Example: EF123456789TH";
+
+    case "flash-express":
+      // ขึ้นต้นด้วย TH + ตัวเลข/อักษร 11-13 ตัว
+      const flashRegex = /^TH[A-Z0-9]{11,13}$/i;
+      return flashRegex.test(number)
+        ? ""
+        : "Invalid format. Example: TH012345678912A";
+
+    case "kerry-express":
+      // ตัวอักษรหรือเลข 10 ถึง 15 ตัว
+      const kerryRegex = /^[A-Z0-9]{10,15}$/i;
+      return kerryRegex.test(number)
+        ? ""
+        : "Invalid format. Usually 10-15 characters.";
+
+    default:
+      return "";
+  }
+};
+
+
 export default function AddTrackPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -54,36 +80,6 @@ export default function AddTrackPage() {
   const selectedCarrierData = useMemo(() => {
     return carriers.find((c) => c.value === selectedCarrier) || null;
   }, [selectedCarrier]);
-
-  const validateTracking = (carrier, number) => {
-    if (!number) return ""; // ถ้ายังไม่พิมพ์อะไร ไม่ต้องเตือน
-
-    switch (carrier) {
-      case "thailand-post":
-        // ขึ้นต้นอักษร 2 ตัว + เลข 9 ตัว + ลงท้าย TH (ตัวเล็กหรือใหญ่ก็ได้)
-        const thaiPostRegex = /^[A-Z]{2}[0-9]{9}TH$/i;
-        return thaiPostRegex.test(number)
-          ? ""
-          : "Invalid format. Example: EF123456789TH";
-
-      case "flash-express":
-        // ขึ้นต้นด้วย TH + ตัวเลข/อักษร 11-13 ตัว
-        const flashRegex = /^TH[A-Z0-9]{11,13}$/i;
-        return flashRegex.test(number)
-          ? ""
-          : "Invalid format. Example: TH012345678912A";
-
-      case "kerry-express":
-        // ตัวอักษรหรือเลข 10 ถึง 15 ตัว
-        const kerryRegex = /^[A-Z0-9]{10,15}$/i;
-        return kerryRegex.test(number)
-          ? ""
-          : "Invalid format. Usually 10-15 characters.";
-
-      default:
-        return "";
-    }
-  };
 
   // ✅ fetch order
   useEffect(() => {
@@ -136,8 +132,16 @@ export default function AddTrackPage() {
         }),
       });
 
+      const data = await res.json(); // 👈 เพิ่มบรรทัดนี้
+
       if (!res.ok) {
-        throw new Error("Failed to update order");
+        if (data.message === "Tracking number already exists") {
+          alert("❌ Tracking number นี้ถูกใช้ไปแล้ว");
+        } else {
+          alert("Something went wrong");
+        }
+        setIsSubmitting(false);
+        return;
       }
 
       alert("Order status updated to In Transit!");
