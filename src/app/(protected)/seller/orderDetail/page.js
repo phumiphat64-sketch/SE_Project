@@ -1,10 +1,11 @@
 "use client";
-
+export const dynamic = "force-dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Caveat, Afacad } from "next/font/google";
 import styles from "./oD.module.css";
 import BacktoOrder from "@/app/components/BacktoOrder";
 import { useEffect, useState } from "react";
+
 
 const caveat = Caveat({
   subsets: ["latin"],
@@ -19,7 +20,7 @@ const afacad = Afacad({
 export default function OrderDetailPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const orderId = searchParams.get("id");
+  const orderId = searchParams?.get("id");
   const [book, setBook] = useState(null);
 
   const [order, setOrder] = useState(null);
@@ -64,6 +65,8 @@ export default function OrderDetailPage() {
   if (!order) {
     return <div>Loading...</div>;
   }
+
+  if (!orderId) return <div>Loading...</div>;
 
   return (
     <main className={`${afacad.className} ${styles.page}`}>
