@@ -1,21 +1,9 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Caveat, Afacad } from "next/font/google";
 import PageHeader from "@/app/components/BackforWallet";
-import { useEffect } from "react";
-import "./request-payout.css";
-
-const caveat = Caveat({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
-const afacad = Afacad({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
+import styles from "./request-payout.module.css";
 
 const MIN_PAYOUT = 100;
 const TRANSACTION_FEE = 0;
@@ -41,33 +29,17 @@ export default function RequestPayoutPage() {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log("USER:", user);
-
-    if (!user?.id) {
-      console.log("NO USER ID ❌");
-      return;
-    }
-
-    console.log("HAS USER ID ✅");
+    if (!user?.id) return;
 
     const sellerId = user.id;
 
-    console.log("FETCHING WALLET...");
-
     fetch(`/api/auth/walletSeller/${sellerId}`)
       .then((res) => res.json())
-      .then((data) => {
-        console.log("WALLET:", data);
-        setWallet(data);
-      });
+      .then(setWallet);
 
-    console.log("FETCHING SELLER PROFILE...");
     fetch(`/api/auth/seller/profile?userId=${sellerId}`)
       .then((res) => res.json())
-      .then((data) => {
-        console.log("SELLER PROFILE:", data);
-        setBankAccount(data);
-      });
+      .then(setBankAccount);
   }, []);
 
   const payoutAmount = useMemo(() => {
@@ -77,7 +49,6 @@ export default function RequestPayoutPage() {
     return Number.isNaN(parsed) ? 0 : parsed;
   }, [amountInput]);
 
-  // Logic สำหรับซ่อนเลขบัญชี (Censor) ให้เหลือแค่ 3 ตัวหน้า กับ 2 ตัวหลัง
   const maskedAccountNumber = useMemo(() => {
     if (!bankAccount?.accountNumber) return "-";
     const visibleStart = bankAccount.accountNumber.slice(0, 3);
@@ -101,10 +72,8 @@ export default function RequestPayoutPage() {
     });
 
     const data = await res.json();
-
     alert(data.message);
 
-    // 🔥 refresh หน้า
     window.location.reload();
   };
 
@@ -138,34 +107,38 @@ export default function RequestPayoutPage() {
     : `Minimum payout amount: ฿${MIN_PAYOUT}`;
 
   return (
-    <main className={`${afacad.className} page`}>
+    <main className={styles.page}>
       <PageHeader />
 
-      <div className="frame">
-        <div className="mainContainer">
-          <section className="contentCardStack">
-            <h1 className="pageTitle">Request Payout</h1>
+      <div className={styles.frame}>
+        <div className={styles.mainContainer}>
+          <section className={styles.contentCardStack}>
+            <h1 className={styles.pageTitle}>Request Payout</h1>
 
             {/* Available Balance */}
-            <section className="card">
-              <div className="cardHeader">Available Balance</div>
-              <div className="cardBody">
-                <div className="balanceAmount">
+            <section className={styles.card}>
+              <div className={styles.cardHeader}>Available Balance</div>
+              <div className={styles.cardBody}>
+                <div className={styles.balanceAmount}>
                   ฿ {wallet?.availableBalance?.toFixed(2) || "0.00"}
                 </div>
-                <div className="balanceSubtext">
+                <div className={styles.balanceSubtext}>
                   Balance available for payout
                 </div>
               </div>
             </section>
 
             {/* Payout Amount */}
-            <section className="card">
-              <div className="cardHeader">Payout Amount</div>
-              <div className="cardBody">
-                <div className="amountRow">
-                  <div className={`amountInputWrap ${hasError ? "error" : ""}`}>
-                    <div className="currencyBox">฿</div>
+            <section className={styles.card}>
+              <div className={styles.cardHeader}>Payout Amount</div>
+              <div className={styles.cardBody}>
+                <div className={styles.amountRow}>
+                  <div
+                    className={`${styles.amountInputWrap} ${
+                      hasError ? styles.error : ""
+                    }`}
+                  >
+                    <div className={styles.currencyBox}>฿</div>
 
                     <input
                       type="text"
@@ -173,60 +146,65 @@ export default function RequestPayoutPage() {
                       value={amountInput}
                       onChange={handleAmountChange}
                       placeholder="100.00"
-                      className={`amountInput ${hasError ? "error" : ""}`}
+                      className={`${styles.amountInput} ${
+                        hasError ? styles.error : ""
+                      }`}
                     />
                   </div>
 
                   <button
                     type="button"
                     onClick={handlePayoutAll}
-                    className="payoutAllButton"
+                    className={styles.payoutAllButton}
                   >
                     Payout All
                   </button>
                 </div>
 
-                <div className="helperText">{helperText}</div>
+                <div className={styles.helperText}>{helperText}</div>
               </div>
             </section>
 
             {/* Bank */}
-            <section className="card">
-              <div className="cardHeader">Bank Account</div>
+            <section className={styles.card}>
+              <div className={styles.cardHeader}>Bank Account</div>
 
               <div>
-                <div className="bankTopRow">
-                  <div className="bankLogoBox">
+                <div className={styles.bankTopRow}>
+                  <div className={styles.bankLogoBox}>
                     <img
                       src={getBankLogo(bankAccount?.bankName)}
-                      className="bankLogoImage"
+                      className={styles.bankLogoImage}
                     />
                   </div>
 
                   <div>
-                    <div className="bankName">
+                    <div className={styles.bankName}>
                       {bankAccount?.bankName || "-"}
                     </div>
 
-                    <div className="bankMeta">
+                    <div className={styles.bankMeta}>
                       Account Name: {bankAccount?.accountName || "-"}
                     </div>
                   </div>
                 </div>
 
-                {/* ของเดิมที่เป็น bankAccount?.accountNumber ให้เปลี่ยนมาเรียกใช้ตัวแปรใหม่ */}
-                <div className="bankBottomRow">
-                  <span className="bankNumberLabel">Account Number:</span>{" "}
-                  <span className="bankNumberValue">{maskedAccountNumber}</span>
+                <div className={styles.bankBottomRow}>
+                  <span className={styles.bankNumberLabel}>
+                    Account Number:
+                  </span>{" "}
+                  <span className={styles.bankNumberValue}>
+                    {maskedAccountNumber}
+                  </span>
                 </div>
               </div>
             </section>
 
             {/* Summary */}
-            <section className="card">
-              <div className="cardHeader">Summary</div>
+            <section className={styles.card}>
+              <div className={styles.cardHeader}>Summary</div>
 
-              <div className="summaryBody">
+              <div className={styles.summaryBody}>
                 <SummaryRow
                   label="Payout Amount"
                   value={`฿${payoutAmount.toFixed(2)}`}
@@ -249,12 +227,14 @@ export default function RequestPayoutPage() {
                   type="button"
                   onClick={handlePayout}
                   disabled={hasError}
-                  className={`confirmButton ${hasError ? "disabled" : ""}`}
+                  className={`${styles.confirmButton} ${
+                    hasError ? styles.disabled : ""
+                  }`}
                 >
                   Confirm Payout
                 </button>
 
-                <div className="summaryNote">
+                <div className={styles.summaryNote}>
                   Funds will be transferred within 1-3 business days.
                 </div>
               </div>
@@ -268,7 +248,7 @@ export default function RequestPayoutPage() {
 
 function SummaryRow({ label, value, noBorder = false }) {
   return (
-    <div className={`summaryRow ${noBorder ? "noBorder" : ""}`}>
+    <div className={`${styles.summaryRow} ${noBorder ? styles.noBorder : ""}`}>
       <span>{label}</span>
       <span>{value}</span>
     </div>

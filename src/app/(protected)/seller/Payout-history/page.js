@@ -179,27 +179,21 @@ export default function PayoutHistoryPage() {
               Page {Math.min(page, totalPages)} of {totalPages}
             </span>
 
-            <div className={styles.paginationButtons}>
-              <button
-                onClick={goPrev}
-                disabled={page === 1}
-                className={`${styles.pageButton} ${
-                  page === 1 ? styles.disabled : ""
-                }`}
-              >
-                {"<"}
-              </button>
+            <button
+              onClick={goPrev}
+              disabled={page === 1}
+              className={styles.pageButton}
+            >
+              {"<"}
+            </button>
 
-              <button
-                onClick={goNext}
-                disabled={page === totalPages}
-                className={`${styles.pageButton} ${
-                  page === totalPages ? styles.disabled : ""
-                }`}
-              >
-                {">"}
-              </button>
-            </div>
+            <button
+              onClick={goNext}
+              disabled={page === totalPages}
+              className={styles.pageButton}
+            >
+              {">"}
+            </button>
           </div>
         </div>
       </section>

@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Caveat, Afacad } from "next/font/google";
 import styles from "./Sh.module.css";
+import PageHeader from "@/app/components/BackforWallet";
 
 const caveat = Caveat({
   subsets: ["latin"],
@@ -15,40 +16,74 @@ const afacad = Afacad({
   weight: ["400", "500", "600", "700"],
 });
 
-const sales = [
-  {
-    date: "18 Feb 2026",
-    book: "Atomic Habits",
-    buyer: "Emma",
-    amount: 200,
-    orderNumber: "#zzz-zzzzzz-0001",
-    status: "Completed",
-  },
-  {
-    date: "17 Feb 2026",
-    book: "Harry Potter and the Philosopher's Stone",
-    buyer: "Sharron",
-    amount: 180,
-    orderNumber: "#zzz-zzzzzz-0002",
-    status: "Canceled",
-  },
-  {
-    date: "16 Feb 2026",
-    book: "The Alchemist",
-    buyer: "Michael",
-    amount: 250,
-    orderNumber: "#zzz-zzzzzz-0003",
-    status: "Pending",
-  },
-];
-
 const ITEMS_PER_PAGE = 10;
 
 export default function SalesHistoryPage() {
   const router = useRouter();
+
+  // 1. เพิ่ม State สำหรับเก็บข้อมูลและสถานะการโหลด
+  const [sales, setSales] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
+  const goPrev = () => setPage((p) => Math.max(1, p - 1));
+  const goNext = () => setPage((p) => Math.min(totalPages, p + 1));
+
+  // 2. ใช้ useEffect ดึงข้อมูลประวัติการขายเมื่อเปิดหน้า
+  useEffect(() => {
+    const fetchSales = async () => {
+      try {
+        setIsLoading(true);
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        // ถ้าไม่มีไอดี user ให้หยุดทำงาน
+        if (!user?.id) {
+          console.error("User not found in localStorage");
+          setIsLoading(false);
+          return;
+        }
+
+        // ดึงข้อมูลจาก API ประวัติการขาย (อ้างอิงจากหน้า WalletPage เดิมของคุณ)
+        const res = await fetch(`/api/auth/salesHistory/${user.id}`);
+        if (!res.ok) throw new Error("Failed to fetch sales history");
+
+        const data = await res.json();
+
+        // 3. แปลงข้อมูลให้ตรงกับตาราง และเรียงวันที่ล่าสุดขึ้นบน
+        const formattedData = data.map((item) => {
+          const dateObj = new Date(item.createdAt);
+
+          return {
+            date: dateObj.toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            }),
+            book: item.bookName || "-", // ชื่อหนังสือ
+            buyer: item.buyer?.name || "-", // ชื่อคนซื้อ
+            amount: Number(item.total || 0), // ยอดเงิน
+            orderNumber: item.id || item.orderNumber || "-", // หมายเลขคำสั่งซื้อ
+            status: "Completed", // สถานะ
+            rawDate: dateObj, // เก็บไว้ใช้เรียงลำดับ
+          };
+        });
+
+        // เรียงลำดับวันที่ (มากไปน้อย = ล่าสุดอยู่บน)
+        formattedData.sort((a, b) => b.rawDate - a.rawDate);
+
+        setSales(formattedData);
+      } catch (error) {
+        console.error("Error fetching sales:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSales();
+  }, []);
+
+  // 4. ระบบค้นหา (Search)
   const filteredSales = useMemo(() => {
     const keyword = search.trim().toLowerCase();
     if (!keyword) return sales;
@@ -66,8 +101,9 @@ export default function SalesHistoryPage() {
         .toLowerCase()
         .includes(keyword),
     );
-  }, [search]);
+  }, [search, sales]); // อย่าลืมใส่ sales เป็น dependency
 
+  // 5. ระบบแบ่งหน้า (Pagination)
   const totalPages = Math.max(
     1,
     Math.ceil(filteredSales.length / ITEMS_PER_PAGE),
@@ -82,32 +118,9 @@ export default function SalesHistoryPage() {
     setPage(1);
   }, [search]);
 
-  const getStatusClass = (status) => {
-    if (status === "Completed") return styles.completed;
-    if (status === "Canceled") return styles.canceled;
-    if (status === "Pending") return styles.pending;
-    return "";
-  };
-
   return (
     <main className={`${afacad.className} ${styles.page}`}>
-      <header className={styles.topBar}>
-        <div className={styles.topBarInner}>
-          <div className={`${caveat.className} ${styles.logo}`}>ReRead</div>
-        </div>
-      </header>
-
-      <div className={styles.backBar}>
-        <div className={styles.backBarInner}>
-          <button
-            className={styles.backButton}
-            onClick={() => router.push("/seller/Wallet")}
-          >
-            ← Back To Wallet
-          </button>
-        </div>
-      </div>
-
+      <PageHeader />
       <section className={styles.frame}>
         <div className={styles.content}>
           <h1 className={styles.pageTitle}>Sales History</h1>
@@ -115,7 +128,7 @@ export default function SalesHistoryPage() {
           <div className={styles.searchWrap}>
             <input
               className={styles.searchInput}
-              placeholder="Search..."
+              placeholder="Search by Date, Book or Order number...."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -135,27 +148,29 @@ export default function SalesHistoryPage() {
               </thead>
 
               <tbody>
-                {paginatedSales.length > 0 ? (
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={6} className={styles.emptyTd}>
+                      Loading history...
+                    </td>
+                  </tr>
+                ) : paginatedSales.length > 0 ? (
                   paginatedSales.map((item, i) => (
                     <tr key={i}>
                       <td className={styles.td}>{item.date}</td>
                       <td className={styles.td}>{item.book}</td>
                       <td className={styles.td}>{item.buyer}</td>
-                      <td className={styles.td}>+฿{item.amount}</td>
+                      <td className={styles.td}>+฿{item.amount.toFixed(2)}</td>
                       <td className={styles.td}>{item.orderNumber}</td>
                       <td className={`${styles.td} ${styles.noBorder}`}>
-                        <span
-                          className={`${styles.badge} ${getStatusClass(item.status)}`}
-                        >
-                          {item.status}
-                        </span>
+                        <span className={styles.statusText}>{item.status}</span>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
                     <td colSpan={6} className={styles.emptyTd}>
-                      No data
+                      No sales records found.
                     </td>
                   </tr>
                 )}
@@ -164,19 +179,27 @@ export default function SalesHistoryPage() {
           </div>
 
           <div className={styles.paginationRow}>
-            <span>
-              Page {page} / {totalPages}
+            <span className={styles.pageText}>
+              Page {Math.min(page, totalPages)} of {totalPages}
             </span>
 
-            <button onClick={() => setPage(page - 1)} disabled={page === 1}>
-              {"<"}
-            </button>
-            <button
-              onClick={() => setPage(page + 1)}
-              disabled={page === totalPages}
-            >
-              {">"}
-            </button>
+            <div className={styles.paginationButtons}>
+              <button
+                onClick={goPrev}
+                disabled={page === 1}
+                className={styles.pageButton}
+              >
+                {"<"}
+              </button>
+
+              <button
+                onClick={goNext}
+                disabled={page === totalPages}
+                className={styles.pageButton}
+              >
+                {">"}
+              </button>
+            </div>
           </div>
         </div>
       </section>

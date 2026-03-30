@@ -129,12 +129,14 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   padding-top: 18px;
 }
 
 .pageText {
-  font-size: 11px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #241815;
 }
 
 .paginationButtons {
@@ -143,15 +145,21 @@
 }
 
 .pageButton {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   border: 1px solid #ccbfb6;
   background: #fffaf6;
-  font-size: 11px;
+  font-size: 14px;
   cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.15s ease;
 }
 
-.disabled {
+.pageButton:hover:not(:disabled) {
+  background: #f5efe9;
+}
+
+.pageButton:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }

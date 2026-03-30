@@ -11,12 +11,14 @@
     border-bottom:1px solid #d3cbc1;
 }
 
-.back{
-    background:none;
-    border:none;
-    cursor:pointer;
-    font-size:14px;
-    color:#4b3a33;
+.back {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #4b3a33;
+
+    font-family: inherit; /* 🔥 เพิ่มตัวนี้ */
 }
 
 .title{

@@ -1,5 +1,6 @@
-/* บังคับให้ input และ button ทุกตัวในหน้านี้ ใช้ฟอนต์เดียวกับที่ครอบไว้ด้านนอก (Afacad) */
-input, button {
+
+.page input,
+.page button {
   font-family: inherit;
   /* เพิ่มบรรทัดนี้ลงไปเพื่อให้มี Animation ตอนกด */
   transition: transform 0.15s ease-in-out, opacity 0.1s ease-in-out, background-color 0.2s ease;

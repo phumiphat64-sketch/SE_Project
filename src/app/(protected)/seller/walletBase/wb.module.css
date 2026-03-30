@@ -64,7 +64,7 @@
 }
 
 .viewAll {
-  font-size: 13px;
+  font-size: 15px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -73,10 +73,15 @@
   border: none;
   color: #4e3b34;
   padding: 0;
+  font-family: inherit;
 }
 
 .viewArrow {
-  font-size: 12px;
+  font-size: 15px;
+}
+
+.viewAll:hover {
+  text-decoration: underline;
 }
 
 .balanceCard {
@@ -120,9 +125,10 @@
   border: none;
   background-color: #6b4a45;
   color: #fff;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-
+  font-size: 18px;
+  font-family: inherit;
   transition: all 0.25s ease;
   box-shadow: 0 2px 4px rgba(0,0,0,0.08);
 }
