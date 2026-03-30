@@ -109,6 +109,10 @@ const PromptPayQR = ({
           console.log("ORDER BEFORE PAY:", order);
           console.log("ORDER ID:", order?._id);
 
+          const userStorage = localStorage.getItem("user");
+          const userData = userStorage ? JSON.parse(userStorage) : null;
+          const userId = userData?.id;
+
           const res = await fetch("/api/auth/orders", {
             method: "PATCH",
             headers: {
@@ -117,6 +121,8 @@ const PromptPayQR = ({
             body: JSON.stringify({
               orderId: order._id,
               status: "Paid",
+              userId,
+              paymentMethod: "promptpay",
             }),
           });
 
@@ -304,7 +310,9 @@ const BankTransferPage = ({ order, selectedBank, setShowBankTransfer }) => {
                 console.log("ORDER BEFORE PAY:", order);
                 console.log("ORDER ID:", order?._id);
 
-
+                const userStorage = localStorage.getItem("user");
+                const userData = userStorage ? JSON.parse(userStorage) : null;
+                const userId = userData?.id;
                 // 🔥 ยิง API (เหมือน PromptPay + Card)
                 const res = await fetch("/api/auth/orders", {
                   method: "PATCH",
@@ -314,6 +322,14 @@ const BankTransferPage = ({ order, selectedBank, setShowBankTransfer }) => {
                   body: JSON.stringify({
                     orderId: order._id,
                     status: "Paid",
+                    userId,
+
+                    paymentMethod: "bank_transfer",
+                    paymentDetail: {
+                      bank: selectedBank,
+                      accountNumber,
+                      accountName,
+                    },
                   }),
                 });
 
@@ -1015,6 +1031,13 @@ export default function BuyerPaymentPage() {
                       try {
                         console.log("ORDER BEFORE PAY:", order);
                         console.log("ORDER ID:", order?._id);
+
+                        const userStorage = localStorage.getItem("user");
+                        const userData = userStorage
+                          ? JSON.parse(userStorage)
+                          : null;
+                        const userId = userData?.id;
+
                         const res = await fetch("/api/auth/orders", {
                           method: "PATCH",
                           headers: {
@@ -1023,6 +1046,12 @@ export default function BuyerPaymentPage() {
                           body: JSON.stringify({
                             orderId: order._id,
                             status: "Paid",
+                            userId,
+
+                            paymentMethod: "card",
+                            paymentDetail: {
+                              cardId: selectedCard,
+                            },
                           }),
                         });
 

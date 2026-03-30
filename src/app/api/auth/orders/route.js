@@ -55,7 +55,14 @@ export async function GET(req) {
 
 export async function PATCH(request) {
   try {
-    const { orderId, status, cancelReason } = await request.json();
+    const {
+      orderId,
+      status,
+      cancelReason,
+      paymentMethod,
+      paymentDetail,
+      userId,
+    } = await request.json();
 
     // 🔥 ใส่ตรงนี้เลย
     if (!ObjectId.isValid(orderId)) {
@@ -140,6 +147,18 @@ export async function PATCH(request) {
       }
     }
 
+    let phone = null;
+
+    if (userId && ObjectId.isValid(userId)) {
+      const user = await database.collection("users").findOne({
+        _id: new ObjectId(userId),
+      });
+
+      if (user) {
+        phone = user.phone;
+      }
+    }
+
     // ✅ 4. ค่อย update order (สำคัญ: ต้องอยู่หลัง stock)
     const result = await collection.updateOne(
       { _id: objectId },
@@ -147,6 +166,12 @@ export async function PATCH(request) {
         $set: {
           status: status,
           cancelReason: cancelReason,
+          paymentMethod: paymentMethod || null,
+          paymentDetail: paymentDetail || null,
+
+          ...(phone && { phone }), // ✅ update เฉพาะตอนมีค่า
+
+          paidAt: status === "Paid" ? new Date() : null,
         },
       },
     );

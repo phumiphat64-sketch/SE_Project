@@ -1,0 +1,274 @@
+.page {
+  min-height: 100vh;
+  background-color: #f7f3ee;
+  margin: 0;
+}
+
+.header {
+  background-color: #4e3b34;
+}
+
+.headerInner {
+  max-width: 1360px;
+  margin: 0 auto;
+  height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.logo {
+  color: #fff;
+  font-size: 54px;
+  line-height: 1;
+  margin: 0;
+}
+
+.nav {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.navItem {
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.navItemActive {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.topBar {
+  background-color: #e8ded2;
+  padding: 12px 24px;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #2f2622;
+  padding: 0;
+}
+
+.content {
+  padding: 20px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.title {
+  align-self: flex-start;
+  max-width: 1600px;
+  width: 100%;
+  font-size: 38px;
+  font-weight: 700;
+  color: #1f1a17;
+  margin: 0 0 26px 0;
+  /* 🔥 จัดตำแหน่งให้ตรงกับ card */
+  padding-left: 80px; /* ต้องเท่ากับ cardsRow padding */
+  box-sizing: border-box;
+}
+
+.cardsWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.cardsRow {
+  display: grid;
+  grid-template-columns: 320px 1fr 280px; /* 🔥 3 คอลัมน์ */
+  gap: 28px;
+  padding: 0 80px;
+  width: 100%;
+  align-items: start;
+}
+
+.infoCard {
+  width: 320px;
+  height: 375px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #d9d9d9;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 3px 4px rgba(0,0,0,0.28);
+}
+
+.infoTop {
+  padding: 22px 20px 28px 25px;
+  border-bottom: 1px solid #e5ddd6;
+}
+
+.infoBottom {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.productCard {
+  flex: 1;
+  min-height: auto;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #cfc3bb;
+  box-shadow: 0 3px 4px rgba(0,0,0,0.28);
+}
+
+.addressCard {
+  width: 280px;
+  height: 350px;
+  background: #fff;
+  padding: 18px 16px;
+  border-radius: 12px;
+  border: 1px solid #d9d9d9;
+  box-shadow: 0 3px 4px rgba(0,0,0,0.28);
+}
+
+
+.cardTitle {
+  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 28px;
+  margin-top: -10px;
+}
+
+.infoLine {
+  margin-top: 8px;
+  font-size: 20px;
+}
+
+.toShipBadge {
+  background: #6287ac;
+  color: #fff;
+  padding: 1px 35px;
+  border-radius: 999px;
+  font-size: 18px;
+}
+
+.trackButton {
+  background: #ce8a63;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  width: 240px;
+  height: 48px;
+  cursor: pointer;
+  font-size: 17px;
+  font-family: inherit;
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.trackButton:hover {
+  transform: translateY(-2px);   /* 🔥 ลอยขึ้น */
+  box-shadow: 0 6px 16px rgba(206, 138, 99, 0.4);
+}
+
+.trackButton:active {
+  transform: translateY(0);  /* กดลง */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.productHeader {
+  padding: 24px 24px 14px;
+  border-bottom: 1px solid #e5ddd6;
+}
+
+.productBody {
+  display: flex;
+  gap: 16px;
+  padding: 22px 24px 26px;
+  border-bottom: 1px solid #e5ddd6;
+}
+
+.bookThumb {
+  width: 140px;
+  height: 175px;
+  object-fit: cover;   /* 🔥 ตัวนี้สำคัญ */
+  border-radius: 10px;
+}
+
+.bookName {
+  font-size: 20px; /* 🔥 จาก 17 → 20 */
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.byAuthor {
+  font-size: 20px;
+  margin-top: 4px;
+}
+
+.buyerName {
+  font-size: 20px;
+  margin-top: 55px;
+}
+
+.priceSection {
+  padding: 20px 24px 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.priceBox {
+  text-align: right;   /* 🔥 จัดกึ่งกลาง */
+}
+
+.priceBox div {
+  font-size: 25px;
+}
+
+.qtyText {
+  font-size: 20px;
+}
+
+.totalRow {
+  padding: 22px 24px 24px;
+  font-size: 32px;
+  font-weight: 500;
+  color: #6c93c8;
+}
+
+.addressSection {
+  margin-top: 8px;
+  font-size: 18px;
+  line-height: 1.8;
+  border-bottom: 1px solid #e5ddd6;
+  padding-bottom: 14px;
+
+  /* 🔥 เพิ่ม 3 บรรทัดนี้ */
+  margin-left: -16px;
+  margin-right: -16px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.buyerSection {
+  margin-top: 18px;
+  font-size: 18px;
+}
+
+.productOrderId {
+  font-size: 20px; /* 🔥 จาก 15 → 18 */
+  font-weight: 600;
+}
+
+.placedDate {
+  font-size: 18px; /* 🔥 จาก 14 → 15 */
+  margin-top: 4px;
+}
+

@@ -186,7 +186,14 @@ export default function OrdersPage() {
                 </button>
 
                 {formatStatus(o.status) === "To Ship" && (
-                  <button className={styles.tracking}>+ Add Tracking</button>
+                  <button
+                    className={styles.tracking}
+                    onClick={() =>
+                      router.push(`/seller/orderDetail?id=${o._id}`)
+                    }
+                  >
+                    + Add Tracking
+                  </button>
                 )}
               </div>
             </div>
