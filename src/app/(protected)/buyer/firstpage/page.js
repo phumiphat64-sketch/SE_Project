@@ -61,7 +61,11 @@ export default function BuyerPage() {
     const title = book.title?.toLowerCase() || "";
     const author = book.author?.toLowerCase() || "";
     const query = activeQuery.toLowerCase();
-    return title.includes(query) || author.includes(query);
+
+    return (
+      (title.includes(query) || author.includes(query)) &&
+      Number(book.stock) > 0 // ✅ เพิ่มบรรทัดนี้
+    );
   });
 
   // 🔹 สร้าง Function สำหรับกดปุ่ม
