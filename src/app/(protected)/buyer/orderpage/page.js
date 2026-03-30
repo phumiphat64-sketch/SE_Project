@@ -126,8 +126,14 @@ function OrderCard({ order }) {
     <article
       className={styles.card}
       onClick={() => {
-        if (currentOrder.status === "Paid") return; // 👈 กันกด
-        if (currentOrder.status === "Canceled") return; // (ของเดิมคุณก็กันอยู่แล้ว)
+        if (currentOrder.status === "Paid") return;
+        if (currentOrder.status === "Canceled") return;
+
+        if (currentOrder.status === "In Transit") {
+          router.push(`/buyer/TrackDelivery/${currentOrder._id}`); // ✅ ไปหน้าใหม่
+          return;
+        }
+
         setIsOpen(!isOpen);
       }}
     >
@@ -360,6 +366,8 @@ function getStatusColors(status) {
       return { badge: "#6D91B9" };
     case "Shipped":
       return { badge: "#D28C59" };
+    case "In Transit": // ✅ เพิ่มอันนี้
+      return { badge: "#F2994A" };
     case "Completed":
       return { badge: "#6A9073" };
     case "Canceled":

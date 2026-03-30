@@ -46,6 +46,11 @@ export default function AddTrackPage() {
   const dropdownRef = useRef(null);
   const [trackingError, setTrackingError] = useState("");
 
+  const isFormValid =
+    selectedCarrier !== "" &&
+    trackingNumber.trim() !== "" &&
+    trackingError === "";
+
   const selectedCarrierData = useMemo(() => {
     return carriers.find((c) => c.value === selectedCarrier) || null;
   }, [selectedCarrier]);
@@ -143,13 +148,6 @@ export default function AddTrackPage() {
       setIsSubmitting(false); // ปลดล็อคปุ่มถ้าเกิด Error เพื่อให้กดลองใหม่ได้
     }
   };
-
-  // 🔥 เช็คว่าข้อมูลครบไหม (ถ้าไม่ครบ ปุ่มจะพัง/กดไม่ได้)
-  // 🔥 3. ปุ่มจะกดได้ก็ต่อเมื่อ เลือกขนส่งแล้ว + มีเลข Tracking + ไม่มี Error
-  const isFormValid =
-    selectedCarrier !== "" &&
-    trackingNumber.trim() !== "" &&
-    trackingError === "";
 
   // ⛔ กัน render ก่อน data มา
   if (!order) return <div>Loading...</div>;
