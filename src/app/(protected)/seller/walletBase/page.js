@@ -42,7 +42,9 @@ export default function WalletPage() {
               <div className={styles.balanceAmount}>
                 ฿ {walletData?.availableBalance?.toFixed(2) || "0.00"}
               </div>
-              <div className={styles.balanceSubtext}>Balance available for payout</div>
+              <div className={styles.balanceSubtext}>
+                Balance available for payout
+              </div>
 
               <button
                 className={styles.requestButton}
@@ -93,11 +95,13 @@ export default function WalletPage() {
                     <th className={styles.th}>Payment Method</th>
                     <th className={styles.th}>Amount</th>
                     <th className={styles.th}>Transaction ID</th>
-                    <th className={styles.th + " " + styles.noBorder}>Status</th>
+                    <th className={styles.th + " " + styles.noBorder}>
+                      Status
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {payoutHistory.map((item, index) => (
+                  {payoutHistory.slice(0, 3).map((item, index) => (
                     <tr key={index}>
                       <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                       <td>
@@ -133,11 +137,13 @@ export default function WalletPage() {
                     <th className={styles.th}>Buyer</th>
                     <th className={styles.th}>Amount</th>
                     <th className={styles.th}>Order Number</th>
-                    <th className={styles.th + " " + styles.noBorder}>Status</th>
+                    <th className={styles.th + " " + styles.noBorder}>
+                      Status
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {salesHistory.map((item, index) => (
+                  {salesHistory.slice(0, 3).map((item, index) => (
                     <tr key={index}>
                       <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                       <td>{item.bookName}</td>

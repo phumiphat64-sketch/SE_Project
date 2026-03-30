@@ -21,7 +21,6 @@ export async function GET(req, { params }) {
     .collection("payouts")
     .find({ sellerId })
     .sort({ createdAt: -1 })
-    .limit(3)
     .toArray();
 
   return NextResponse.json(payouts);

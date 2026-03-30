@@ -40,9 +40,6 @@ export async function GET(req, { params }) {
       {
         $sort: { createdAt: -1 },
       },
-      {
-        $limit: 3,
-      },
     ])
     .toArray();
 
