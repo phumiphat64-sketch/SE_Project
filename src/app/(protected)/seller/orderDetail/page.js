@@ -4,7 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Caveat, Afacad } from "next/font/google";
 import styles from "./oD.module.css";
 import BacktoOrder from "@/app/components/BacktoOrder";
-import { useEffect, useState } from "react";
+// 🔥 1. import Suspense เพิ่มเข้ามา
+import { useEffect, useState, Suspense } from "react";
 
 const caveat = Caveat({
   subsets: ["latin"],
@@ -16,12 +17,12 @@ const afacad = Afacad({
   weight: ["400", "500", "600", "700"],
 });
 
-export default function OrderDetailPage() {
+// 🔥 2. เปลี่ยนชื่อฟังก์ชันเดิมเป็น Component ย่อย (เช่น OrderDetailContent)
+function OrderDetailContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const orderId = searchParams?.get("id");
   const [book, setBook] = useState(null);
-
   const [order, setOrder] = useState(null);
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export default function OrderDetailPage() {
 
         <div className={styles.cardsWrapper}>
           <div className={styles.cardsRow}>
+            {/* --- Order Info --- */}
             <div className={styles.infoCard}>
               <div className={styles.infoTop}>
                 <h3 className={styles.cardTitle}>Order Information</h3>
@@ -96,6 +98,7 @@ export default function OrderDetailPage() {
               </div>
             </div>
 
+            {/* --- Product Card --- */}
             <div className={styles.productCard}>
               <div className={styles.productHeader}>
                 <div>
@@ -129,6 +132,7 @@ export default function OrderDetailPage() {
               <div className={styles.totalRow}>Total: ฿{order.total}</div>
             </div>
 
+            {/* --- Address Card --- */}
             <div className={styles.addressCard}>
               <h3 className={styles.cardTitle}>Shipping Address</h3>
 
@@ -148,5 +152,14 @@ export default function OrderDetailPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+// 🔥 3. สร้าง Component หลัก (export default) แล้วเอา Suspense มาครอบ
+export default function OrderDetailPage() {
+  return (
+    <Suspense fallback={<div>Loading page...</div>}>
+      <OrderDetailContent />
+    </Suspense>
   );
 }
