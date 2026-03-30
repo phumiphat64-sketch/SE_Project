@@ -71,11 +71,7 @@ export default function AddTrackPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [trackingError, setTrackingError] = useState("");
-
-  const isFormValid =
-    selectedCarrier !== "" &&
-    trackingNumber.trim() !== "" &&
-    trackingError === "";
+  const isFormValid = selectedCarrier && trackingNumber && trackingError === "";
 
   const selectedCarrierData = useMemo(() => {
     return carriers.find((c) => c.value === selectedCarrier) || null;
