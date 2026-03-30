@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Caveat, Afacad } from "next/font/google";
+import { Afacad } from "next/font/google";
 import styles from "./aT.module.css";
 import BacktoOrder from "@/app/components/BacktoOrder";
 
@@ -30,27 +30,21 @@ const carriers = [
 ];
 
 const validateTracking = (carrier, number) => {
-  if (!number) return ""; // ถ้ายังไม่พิมพ์อะไร ไม่ต้องเตือน
+  if (!number) return "";
 
   switch (carrier) {
     case "thailand-post":
-      // ขึ้นต้นอักษร 2 ตัว + เลข 9 ตัว + ลงท้าย TH (ตัวเล็กหรือใหญ่ก็ได้)
-      const thaiPostRegex = /^[A-Z]{2}[0-9]{9}TH$/i;
-      return thaiPostRegex.test(number)
+      return /^[A-Z]{2}[0-9]{9}TH$/i.test(number)
         ? ""
         : "Invalid format. Example: EF123456789TH";
 
     case "flash-express":
-      // ขึ้นต้นด้วย TH + ตัวเลข/อักษร 11-13 ตัว
-      const flashRegex = /^TH[A-Z0-9]{11,13}$/i;
-      return flashRegex.test(number)
+      return /^TH[A-Z0-9]{11,13}$/i.test(number)
         ? ""
         : "Invalid format. Example: TH012345678912A";
 
     case "kerry-express":
-      // ตัวอักษรหรือเลข 10 ถึง 15 ตัว
-      const kerryRegex = /^[A-Z0-9]{10,15}$/i;
-      return kerryRegex.test(number)
+      return /^[A-Z0-9]{10,15}$/i.test(number)
         ? ""
         : "Invalid format. Usually 10-15 characters.";
 
@@ -59,11 +53,12 @@ const validateTracking = (carrier, number) => {
   }
 };
 
-
-export default function AddTrackPage() {
+// 🔥 👉 แยก logic เดิมมาไว้ตรงนี้ (ไม่แก้แม้แต่บรรทัดเดียว)
+function AddTrackInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const orderId = searchParams.get("id");
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [order, setOrder] = useState(null);
   const [selectedCarrier, setSelectedCarrier] = useState("");
@@ -71,13 +66,16 @@ export default function AddTrackPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [trackingError, setTrackingError] = useState("");
-  const isFormValid = selectedCarrier && trackingNumber && trackingError === "";
+
+  const isFormValid =
+    selectedCarrier !== "" &&
+    trackingNumber.trim() !== "" &&
+    trackingError === "";
 
   const selectedCarrierData = useMemo(() => {
     return carriers.find((c) => c.value === selectedCarrier) || null;
   }, [selectedCarrier]);
 
-  // ✅ fetch order
   useEffect(() => {
     if (!orderId) return;
 
@@ -94,7 +92,6 @@ export default function AddTrackPage() {
     fetchOrder();
   }, [orderId]);
 
-  // dropdown close
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -106,15 +103,13 @@ export default function AddTrackPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // ✅ submit
   const handleSubmit = async () => {
-    // ป้องกันกรณีปุ่มโดนเจาะผ่าน Inspect Element
     if (!selectedCarrier || !trackingNumber.trim() || isSubmitting) {
       return;
     }
 
     try {
-      setIsSubmitting(true); // ล็อคปุ่ม ป้องกันการกดซ้ำ
+      setIsSubmitting(true);
 
       const res = await fetch(`/api/auth/orders/${orderId}`, {
         method: "PUT",
@@ -128,7 +123,7 @@ export default function AddTrackPage() {
         }),
       });
 
-      const data = await res.json(); // 👈 เพิ่มบรรทัดนี้
+      const data = await res.json();
 
       if (!res.ok) {
         if (data.message === "Tracking number already exists") {
@@ -145,11 +140,10 @@ export default function AddTrackPage() {
     } catch (error) {
       console.error("Error updating order:", error);
       alert("Something went wrong. Please try again.");
-      setIsSubmitting(false); // ปลดล็อคปุ่มถ้าเกิด Error เพื่อให้กดลองใหม่ได้
+      setIsSubmitting(false);
     }
   };
 
-  // ⛔ กัน render ก่อน data มา
   if (!order) return <div>Loading...</div>;
 
   return (
@@ -160,7 +154,6 @@ export default function AddTrackPage() {
         <div className={styles.centerWrap}>
           <h2 className={styles.title}>Update Order</h2>
 
-          {/* ✅ ORDER CARD */}
           <div className={styles.card}>
             <div className={styles.cardTopBar}>
               <div className={styles.orderNumberWrap}>
@@ -199,7 +192,6 @@ export default function AddTrackPage() {
             </div>
           </div>
 
-          {/* ✅ FORM */}
           <div className={styles.formSection}>
             <h3 className={styles.sectionTitle}>Shipping Provider (Carrier)</h3>
 
@@ -260,19 +252,15 @@ export default function AddTrackPage() {
               type="text"
               className={styles.input}
               value={trackingNumber}
-              maxLength={
-                50
-              } /* 🔥 แค่เพิ่มจำกัดความยาว กัน Tester พิมพ์มั่วจน DB พัง */
+              maxLength={50}
               onChange={(e) => {
                 setTrackingNumber(e.target.value);
-                // 🔥 เช็คเงื่อนไข Regex แค่ตอนพิมพ์
                 setTrackingError(
                   validateTracking(selectedCarrier, e.target.value),
                 );
               }}
             />
 
-            {/* 🔥 แสดงข้อความ Error สีแดง (ถ้าพิมพ์ผิด) */}
             {trackingError && (
               <p
                 style={{
@@ -290,9 +278,7 @@ export default function AddTrackPage() {
               <button
                 className={styles.submitButton}
                 onClick={handleSubmit}
-                disabled={
-                  !isFormValid || isSubmitting
-                } /* 🔥 ป้องกันการกดปุ่มถ้ายังกรอกไม่ครบ หรือกำลังโหลด */
+                disabled={!isFormValid || isSubmitting}
               >
                 Update to “In Transit”
               </button>
@@ -306,5 +292,14 @@ export default function AddTrackPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+// 🔥 👉 ตัวนี้คือ fix Vercel (สำคัญ)
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AddTrackInner />
+    </Suspense>
   );
 }
