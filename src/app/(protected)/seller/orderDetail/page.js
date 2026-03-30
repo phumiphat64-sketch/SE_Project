@@ -56,7 +56,7 @@ function OrderDetailContent() {
   }, [orderId]);
 
   const handleAddTracking = () => {
-    router.push("/seller/addTracking");
+    router.push(`/seller/addTracking?id=${order._id}`);
   };
 
   if (!order || !orderId) {

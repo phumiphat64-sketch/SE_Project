@@ -56,6 +56,10 @@ export default function SellerHome() {
 
   const outOfStockCount = booksData.filter((b) => b.stock === 0).length;
 
+  const inTransitCount = sellerOrders.filter(
+    (o) => o.status === "In Transit",
+  ).length;
+
   // 🔥 แปลง status ให้ตรง UI
   const formatStatus = (status) => {
     switch (status) {
@@ -77,7 +81,7 @@ export default function SellerHome() {
   const stats = [
     { icon: "/icons/ew.svg", number: pendingCount, label: "Pending Payment" },
     { icon: "/icons/3dc.svg", number: toShipCount, label: "To Ship" },
-    { icon: "/icons/tf.svg", number: 2, label: "In Transit" },
+    { icon: "/icons/tf.svg", number: inTransitCount, label: "In Transit" },
     { icon: "/icons/br.svg", number: cancelCount, label: "Cancel Items" },
     { icon: "/icons/mq.svg", number: 0, label: "Restricted Items" },
     { icon: "/icons/bk.svg", number: outOfStockCount, label: "Out of Stock" },
