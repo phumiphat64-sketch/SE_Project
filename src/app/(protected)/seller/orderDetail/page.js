@@ -1,11 +1,10 @@
 "use client";
-export const dynamic = "force-dynamic";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import { Caveat, Afacad } from "next/font/google";
 import styles from "./oD.module.css";
 import BacktoOrder from "@/app/components/BacktoOrder";
 import { useEffect, useState } from "react";
-
 
 const caveat = Caveat({
   subsets: ["latin"],
@@ -34,17 +33,14 @@ export default function OrderDetailPage() {
         const ordersData = await ordersRes.json();
         const booksData = await booksRes.json();
 
-        // ✅ หา order จาก orderId
         const foundOrder = ordersData.data.find(
           (o) => String(o._id) === String(orderId),
         );
 
         setOrder(foundOrder);
 
-        // ❗ กัน error ถ้า order ยังไม่เจอ
         if (!foundOrder) return;
 
-        // ✅ หา book จาก bookId
         const foundBook = booksData.data.find(
           (b) => String(b._id) === String(foundOrder.bookId),
         );
@@ -62,11 +58,9 @@ export default function OrderDetailPage() {
     router.push("/seller/addTracking");
   };
 
-  if (!order) {
+  if (!order || !orderId) {
     return <div>Loading...</div>;
   }
-
-  if (!orderId) return <div>Loading...</div>;
 
   return (
     <main className={`${afacad.className} ${styles.page}`}>
@@ -76,7 +70,6 @@ export default function OrderDetailPage() {
 
         <div className={styles.cardsWrapper}>
           <div className={styles.cardsRow}>
-            {/* Order Info */}
             <div className={styles.infoCard}>
               <div className={styles.infoTop}>
                 <h3 className={styles.cardTitle}>Order Information</h3>
@@ -103,7 +96,6 @@ export default function OrderDetailPage() {
               </div>
             </div>
 
-            {/* Product Card */}
             <div className={styles.productCard}>
               <div className={styles.productHeader}>
                 <div>
@@ -137,7 +129,6 @@ export default function OrderDetailPage() {
               <div className={styles.totalRow}>Total: ฿{order.total}</div>
             </div>
 
-            {/* Address */}
             <div className={styles.addressCard}>
               <h3 className={styles.cardTitle}>Shipping Address</h3>
 
@@ -157,15 +148,5 @@ export default function OrderDetailPage() {
         </div>
       </section>
     </main>
-  );
-}
-
-function NavItem({ label, active = false }) {
-  return (
-    <button
-      className={`${styles.navItem} ${active ? styles.navItemActive : ""}`}
-    >
-      {label}
-    </button>
   );
 }
