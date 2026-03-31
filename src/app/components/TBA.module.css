@@ -1,0 +1,109 @@
+.topBar{
+  background-color:#5a4033;
+  height:70px;
+  padding:0 40px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  position:fixed;   /* เปลี่ยน */
+  top:0;
+  left:0;
+  width:100%;
+  box-sizing:border-box;
+  z-index:1000;
+}
+
+.loginBtn {
+  background-color: #f3efe6;
+  color: #000;
+  padding: 3px 30px;
+  border-radius: 20px;
+  font-size: 18px;
+  text-decoration: none;
+  border: 1px solid #3d2c22;
+  transition: 0.3s;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 👈 เพิ่มตรงนี้ */
+}
+
+.loginBtn:hover {
+  background-color: #e6dfd4;
+}
+
+.logo {
+  font-size: 40px;
+  font-weight: bold;
+  color: white;   /* 👈 ใส่ตรงนี้ */
+}
+
+.menu{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  white-space:nowrap;
+  margin-right:30px;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+}
+
+.menuItem{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:white;
+  text-decoration:none;
+
+  font-size:18px;
+  font-family:inherit;
+}
+
+.menuItem:hover{
+  opacity:0.8;
+}
+
+.icon{
+  width:20px;
+  height:20px;
+  display:block;
+}
+
+.logoutBtn{
+  background:none;
+  border:none;
+  color:white;
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  font:inherit;
+  font-size:18px;
+}
+
+.logoutBtn:hover{
+  opacity:0.7;
+}
+
+.backBtn{
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background-color: #f3efe6;
+  border: 1px solid #3d2c22;
+  border-radius: 20px;
+
+  padding: 3px 20px;
+  font-size: 18px;
+  font-weight: 300;
+  cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}

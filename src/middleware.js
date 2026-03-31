@@ -17,6 +17,9 @@ async function verifyToken(token) {
 function checkRole(pathname, role) {
   if (pathname.startsWith("/buyer") && role !== "buyer") return "/";
   if (pathname.startsWith("/seller") && role !== "seller") return "/";
+
+  if (pathname.startsWith("/admin") && role !== "admin") return "/"; // 👈 เพิ่ม
+
   return null;
 }
 
@@ -32,8 +35,15 @@ export async function middleware(request) {
   // 1. ถ้ามาหน้า /login แต่ดันมี token (ล็อกอินอยู่แล้ว) ให้เด้งไปหน้าตัวเองเลย
   if (pathname === "/login") {
     if (payload) {
-      const redirectUrl =
-        payload.role === "seller" ? "/seller/profile" : "/buyer/profilebuyer";
+      let redirectUrl = "/";
+
+      if (payload.role === "admin") {
+        redirectUrl = "/admin/home";
+      } else if (payload.role === "seller") {
+        redirectUrl = "/seller/profile";
+      } else {
+        redirectUrl = "/buyer/profilebuyer";
+      }
       return NextResponse.redirect(new URL(redirectUrl, request.url));
     }
     return NextResponse.next(); // ถ้ายังไม่ล็อกอิน ปล่อยให้เข้าหน้า login ได้
@@ -55,5 +65,5 @@ export async function middleware(request) {
 
 // ❗ อย่าลืมเพิ่ม "/login" เข้าไปใน matcher ด้วย ไม่งั้น middleware จะไม่ทำงานหน้า login
 export const config = {
-  matcher: ["/buyer/:path*", "/seller/:path*", "/login"],
+  matcher: ["/buyer/:path*", "/seller/:path*", "/admin/:path*", "/login"],
 };

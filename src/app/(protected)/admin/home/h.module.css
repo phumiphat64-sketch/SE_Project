@@ -1,0 +1,103 @@
+.page {
+  min-height: 100vh;
+  background: #f4f3f1;
+  color: #4E3B34;
+}
+
+.topBar {
+  background: #5a4338;
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.topBarInner {
+  width: 100%;
+  max-width: 980px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.navRight {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.navLink {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.95;
+}
+
+.subBar {
+  height: 18px;
+  background: #E8DDD1;
+}
+
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.menuStack {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+}
+
+.menuCard {
+  width: 100%;
+  max-width: 380px;
+  height: 80px;
+  background: #E8DDD1;
+  color: #4E3B34;
+  border: 1px solid #bba997;
+  border-radius: 18px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 18px;
+  padding: 0 22px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 0 rgba(78, 59, 52, 0.10);
+}
+
+.menuIcon {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #4E3B34;
+  flex-shrink: 0;
+}
+
+.menuText {
+  font-size: 18px;
+  font-weight: 500;
+  color: #4E3B34;
+}

@@ -14,100 +14,110 @@ const caveat = Caveat({
   weight: ["400", "600", "700"],
 });
 
-export default function Home() {
+async function getBooks() {
+  const res = await fetch("http://localhost:3000/api/auth/books/random", {
+    cache: "no-store",
+  });
+
+  const data = await res.json();
+  return data.data || [];
+}
+
+export default async function Home() {
+  const books = await getBooks();
+
   return (
     <div className={styles.homeContainer}>
-      {/* Navbar */}
+      <div className={styles.mainContent}>
+        <section className={styles.hero}>
+          <h2 className={`${styles.heroTitle} ${caveat.className}`}>ReRead</h2>
 
-      {/* Hero Section */}
-      <section className="hero">
-        <h2 className={`hero-title ${caveat.className}`}>ReRead</h2>
-        <p className={`hero-sub ${caveat.className}`}>
-          Give books a second life.
-        </p>
-        <p className={`hero-sub2 ${caveat.className}`}>BUY & SELL YOUR BOOKS</p>
+          <p className={`${styles.heroSub} ${caveat.className}`}>
+            Give books a second life.
+          </p>
 
-        <div className="hero-search-wrapper">
-          {/* Search Box */}
-          <div className="search-box ${caveat.className}">
-            <input
-              type="text"
-              placeholder="Browse Books"
-              className={`${caveat.className} search-input`}
-            />
-            <button className="search-btn">🔍</button>
+          <p className={`${styles.heroSub2} ${caveat.className}`}>
+            BUY & SELL YOUR BOOKS
+          </p>
+
+          <div className={styles.heroSearchWrapper}>
+            <div className={styles.searchBox}>
+              <div className={styles.inputWrapper}>
+                <input
+                  type="text"
+                  placeholder="Browse Books"
+                  className={`${styles.searchInput} ${caveat.className}`}
+                />
+                <button className={styles.searchBtn}>🔍</button>
+              </div>
+
+              <Link
+                href="/login"
+                className={`${styles.btnFilled} ${caveat.className}`}
+              >
+                Join Now
+              </Link>
+            </div>
           </div>
+        </section>
 
-          {/* Join Button */}
-          <Link href="/login" className={`btn-filled ${caveat.className}`}>
-            Join Now
-          </Link>
-        </div>
-      </section>
+        {/* Featured Books */}
+        <section>
+          <h2 className={styles.sectionTitle}>
+            <span className={`${styles.brand} ${caveat.className}`}>
+              ReRead
+            </span>
 
-      {/* Featured Books */}
-      <section className="featured">
-        <h2 className="section-title">
-          <span
-            className={caveat.className}
-            style={{
-              fontSize: "4.5rem",
-              color: "#5b3d31",
-              fontWeight: 700,
-            }}
-          >
-            ReRead
-          </span>
-          <span
-            className={`hero-sub2 ${caveat.className}`}
-            style={{ fontSize: "2.8rem" }}
-          >
-            Where books find new homes.
-          </span>
-        </h2>
+            <span className={`${styles.tagline} ${caveat.className}`}>
+              Where books find new homes.
+            </span>
+          </h2>
 
-        <BookCarousel books={books} />
-      </section>
-
-      {/* Why Readers Love Us */}
-      <section className="why">
-        <h2 className="section-title">Why Readers Love Us</h2>
-
-        <div className="why-grid">
-          <div className="why-card">Affordable Second-Hand Books</div>
-          <div className="why-card">Safe & Easy Transactions</div>
-          <div className="why-card">Support Sustainable Reading</div>
-        </div>
-      </section>
-
-      {/* Get Started */}
-      <section className="get-started">
-        <h2 className="section-title">Get Started with ReRead</h2>
-
-        <div className="start-grid">
-          <div className="start-card">
-            <h3>For Buyers</h3>
-            <p>Search, compare, and buy second-hand books easily.</p>
+          <div className={styles.carouselWrapper}>
+            <BookCarousel books={books} />
           </div>
-          <div className="start-card">
-            <h3>For Sellers</h3>
-            <p>List your books and reach readers everywhere.</p>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-container">
+        {/* Why Readers Love Us */}
+        <section>
+          <div className={styles.blockone}>
+            <h2 className={styles.sectionTitle}>Why Readers Love Us</h2>
+
+            <div className={styles.whyGrid}>
+              <div className={styles.whyCard}>Affordable Second-Hand Books</div>
+              <div className={styles.whyCard}>Safe & Easy Transactions</div>
+              <div className={styles.whyCard}>Support Sustainable Reading</div>
+            </div>
+          </div>
+        
+          <div className={styles.getStartedBlock}>
+            <h2 className={styles.sectionTitle}>Get Started with ReRead</h2>
+
+            <div className={styles.startGrid}>
+              <div className={styles.startCard}>
+                <h3>For Buyers</h3>
+                <p>Search, compare, and buy second-hand books easily.</p>
+              </div>
+
+              <div className={styles.startCard}>
+                <h3>For Sellers</h3>
+                <p>List your books and reach readers everywhere.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer className={styles.footer}>
+        <div className={styles.footerContainer}>
           {/* Left Section */}
-          <div className="footer-left">
+          <div className={styles.footerLeft}>
             <Image src="/books/-_5.png" alt="books" width={400} height={260} />
 
-            <div className="footer-about">
+            <div>
               <h3>About Us</h3>
 
-              <div className="email-row">
+              <div className={styles.emailRow}>
                 <Image
                   src="/icons/mail.png"
                   alt="mail"
@@ -117,7 +127,7 @@ export default function Home() {
                 <span>reread.secondhandbook@gmail.com</span>
               </div>
 
-              <div className="social-icons">
+              <div className={styles.socialIcons}>
                 <Image
                   src="/icons/facebook.png"
                   alt="facebook"
@@ -135,7 +145,7 @@ export default function Home() {
           </div>
 
           {/* Middle Section */}
-          <div className="footer-column">
+          <div className={styles.footerColumn}>
             <h3>Support</h3>
             <p>Contact Customer Service</p>
             <p>Terms and Conditions of Use</p>
@@ -144,7 +154,7 @@ export default function Home() {
           </div>
 
           {/* Right Section */}
-          <div className="footer-column">
+          <div className={styles.footerColumn}>
             <h3>ติดต่อเรา</h3>
             <p>ReRead.SecondHandBook</p>
             <p>เลขที่ 1518 ถนนประชาราษฎร์ 1</p>
@@ -156,60 +166,3 @@ export default function Home() {
     </div>
   );
 }
-
-const books = [
-  {
-    title: "Harry Potter and the Philosopher's Stone",
-    author: "J.K. Rowling",
-    seller: "Sellername",
-    image: "/books/rectangle-1.webp",
-  },
-  {
-    title: "Harry Potter and the Chamber of Secrets",
-    author: "J.K. Rowling",
-    seller: "Sellername",
-    image: "/books/rectangle-2.webp",
-  },
-  {
-    title: "Harry Potter and the Prisoner of Azkaban",
-    author: "J.K. Rowling",
-    seller: "Sellername",
-    image: "/books/rectangle-3.webp",
-  },
-  {
-    title: "Harry Potter and the Goblet of Fire",
-    author: "J.K. Rowling",
-    seller: "Sellername",
-    image: "/books/rectangle-4.webp",
-  },
-  {
-    title: "Harry Potter and the Order of the Phoenix",
-    author: "J.K. Rowling",
-    seller: "Sellername",
-    image: "/books/rectangle-5.webp",
-  },
-  {
-    title: "Harry Potter and the Half-Blood Prince",
-    author: "J.K. Rowling",
-    seller: "Sellername",
-    image: "/books/rectangle-6.webp",
-  },
-  {
-    title: "Harry Potter and the Deathly Hallows",
-    author: "J.K. Rowling",
-    seller: "Sellername",
-    image: "/books/rectangle-7.webp",
-  },
-  {
-    title: "Fantastic Beasts: The Crimes of Grindelwald",
-    author: "J.K. Rowling",
-    seller: "Sellername",
-    image: "/books/rectangle-10.webp",
-  },
-  {
-    title: "Fantastic Beasts and Where to Find Them",
-    author: "J.K. Rowling",
-    seller: "Sellername",
-    image: "/books/rectangle-11.webp",
-  },
-];
