@@ -14,13 +14,12 @@ const caveat = Caveat({
   weight: ["400", "600", "700"],
 });
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
 async function getBooks() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/books/random`,
-    {
-      cache: "no-store",
-    },
-  );
+  const res = await fetch(`${baseUrl}/api/auth/books/random`, {
+    cache: "no-store",
+  });
 
   const data = await res.json();
   return data.data || [];
