@@ -18,7 +18,7 @@ const poppins = Poppins({
 const menuItems = [
   {
     title: "Users management",
-    href: "/admin/users",
+    href: "/admin/UserM",
     icon: <UsersIcon />,
   },
   {
@@ -41,23 +41,7 @@ const menuItems = [
 export default function AdminHomePage() {
   return (
     <main className={`${styles.page} ${poppins.className}`}>
-      <header className={styles.topBar}>
-        <div className={styles.topBarInner}>
-          <div className={`${styles.brand} ${playfair.className}`}>ReRead</div>
 
-          <nav className={styles.navRight}>
-            <Link href="/admin/home" className={styles.navLink}>
-              <HomeIcon />
-              <span>Home</span>
-            </Link>
-
-            <Link href="/login" className={styles.navLink}>
-              <LogoutIcon />
-              <span>Logout</span>
-            </Link>
-          </nav>
-        </div>
-      </header>
 
       <div className={styles.subBar} />
 

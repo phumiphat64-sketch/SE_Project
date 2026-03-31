@@ -77,13 +77,18 @@ export default function LoginPage() {
         throw new Error(data.message);
       }
 
+      console.log("USER FROM API:", data.user);
+
       alert("Login successful");
 
       // เก็บ user ลง localStorage
       localStorage.setItem("user", JSON.stringify(data.user));
 
       // ตรวจ role
-      if (data.user.role === "buyer") {
+      // ตรวจ role
+      if (data.user.role === "admin") {
+        window.location.href = "/admin/home";
+      } else if (data.user.role === "buyer") {
         window.location.href = "/buyer/firstpage";
       } else if (data.user.role === "seller") {
         const resSeller = await fetch(
@@ -98,7 +103,6 @@ export default function LoginPage() {
         }
       } else {
         alert("Invalid user role");
-        window.location.href = "/login";
       }
     } catch (err) {
       alert(err.message);

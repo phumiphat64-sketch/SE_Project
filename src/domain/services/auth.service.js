@@ -44,6 +44,7 @@ export default class AuthService {
       {
         userId: user._id.toString(),
         role: user.role,
+        status: user.status || "active", // 🔥 เพิ่มบรรทัดนี้
       },
       process.env.JWT_SECRET,
       { expiresIn: "1h" },
@@ -57,6 +58,7 @@ export default class AuthService {
         email: user.email,
         phone: user.phone,
         dateOfBirth: user.dateOfBirth,
+        status: user.status || "active",
         role: user.role,
         addresses: user.addresses || [], // 👈 1. เพิ่มบรรทัดนี้ เพื่อส่งออกจาก Service
       },

@@ -60,10 +60,23 @@ export async function middleware(request) {
     return NextResponse.redirect(new URL(redirectPath, request.url));
   }
 
+  // 4. Check status (🔥 ใส่ตรงนี้)
+  if (payload?.status === "inactive") {
+    if (!pathname.startsWith("/suspended")) {
+      return NextResponse.redirect(new URL("/suspended", request.url));
+    }
+  }
+
   return NextResponse.next();
 }
 
 // ❗ อย่าลืมเพิ่ม "/login" เข้าไปใน matcher ด้วย ไม่งั้น middleware จะไม่ทำงานหน้า login
 export const config = {
-  matcher: ["/buyer/:path*", "/seller/:path*", "/admin/:path*", "/login"],
+  matcher: [
+    "/buyer/:path*",
+    "/seller/:path*",
+    "/admin/:path*",
+    "/login",
+    "/suspended", // 👈 เพิ่ม
+  ],
 };
