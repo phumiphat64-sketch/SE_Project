@@ -12,6 +12,9 @@ export default function UsersManagementPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [roleFilter, setRoleFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [userDetail, setUserDetail] = useState(null);
   const [addFormData, setAddFormData] = useState({
     name: "",
     phoneNumber: "",
@@ -113,6 +116,14 @@ export default function UsersManagementPage() {
     const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
     return regex.test(password);
   };
+  
+  const bank = userDetail?.savedCards?.[0];
+
+  const bankName = bank?.bankName || userDetail?.bankName || "-";
+
+  const accountName = bank?.accountName || userDetail?.accountName || "-";
+
+  const accountNumber = bank?.cardNumber || userDetail?.accountNumber || "-";
 
   return (
     <main className={styles.page}>
@@ -206,6 +217,20 @@ export default function UsersManagementPage() {
                           <img
                             src="/icons/visibility.svg"
                             className={styles.icon}
+                            onClick={async () => {
+                              try {
+                                const res = await fetch(
+                                  `/api/auth/userDetail/${user.id}`,
+                                );
+                                const data = await res.json();
+
+                                setSelectedUser(user);
+                                setUserDetail(data); // ⭐ ตัวจริงจาก DB
+                                setIsDetailOpen(true);
+                              } catch (err) {
+                                console.error(err);
+                              }
+                            }}
                           />
                           <img src="/icons/edit.svg" className={styles.icon} />
 
@@ -445,6 +470,91 @@ export default function UsersManagementPage() {
               >
                 Add User
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isDetailOpen && selectedUser && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalBox}>
+            <div className={styles.modalHeader}>
+              <h2>User Detail</h2>
+            </div>
+
+            <button
+              className={styles.closeBtn}
+              onClick={() => setIsDetailOpen(false)}
+            >
+              <img src="/cross.png" alt="close" />
+            </button>
+
+            <div className={styles.sectionHeader}>
+              <span>Profile</span>
+            </div>
+
+            <div className={styles.formGrid}>
+              {/* Avatar */}
+              <div className={styles.avatarBox}>
+                <img src="/profile.png" alt="avatar" />
+              </div>
+
+              {/* Info */}
+              <div>
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label>Name:</label>
+                    <input value={selectedUser.account} readOnly />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Role:</label>
+                    <input value={selectedUser.role} readOnly />
+                  </div>
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Email:</label>
+                  <input value={selectedUser.email} readOnly />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Status:</label>
+
+                  <span
+                    className={`${styles.status} ${
+                      selectedUser.status === "Active"
+                        ? styles.active
+                        : styles.inactive
+                    }`}
+                    style={{ width: "fit-content" }}
+                  >
+                    {selectedUser.status}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Bank section (optional ตามรูปคุณ) */}
+            <div className={styles.sectionHeader}>
+              <span>Bank Account Information</span>
+            </div>
+
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label>Bank Name:</label>
+                <input value={bankName} readOnly />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Account Name:</label>
+                <input value={accountName} readOnly />
+              </div>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>Account Number:</label>
+              <input value={accountNumber} readOnly />
             </div>
           </div>
         </div>
