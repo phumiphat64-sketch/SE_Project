@@ -12,7 +12,7 @@ export async function GET(req, context) {
     .collection("orders")
     .find({
       sellerId: sellerId,
-      status: "Paid",
+      status: { $in: ["Paid", "In Transit", "Complete"] },
     })
     .toArray();
 
