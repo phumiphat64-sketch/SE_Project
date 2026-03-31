@@ -15,6 +15,8 @@ export default function UsersManagementPage() {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [userDetail, setUserDetail] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editUser, setEditUser] = useState(null);
   const [addFormData, setAddFormData] = useState({
     name: "",
     phoneNumber: "",
@@ -232,7 +234,27 @@ export default function UsersManagementPage() {
                               }
                             }}
                           />
-                          <img src="/icons/edit.svg" className={styles.icon} />
+                          <img
+                            src="/icons/edit.svg"
+                            className={styles.icon}
+                            onClick={async () => {
+                              try {
+                                const res = await fetch(
+                                  `/api/auth/userDetail/${user.id}`,
+                                );
+                                const data = await res.json();
+
+                                setEditUser({
+                                  ...user,
+                                  phone: data.phone || "-", // ⭐ เพิ่มตรงนี้
+                                });
+
+                                setIsEditOpen(true);
+                              } catch (err) {
+                                console.error(err);
+                              }
+                            }}
+                          />
 
                           <img
                             src={
@@ -334,8 +356,8 @@ export default function UsersManagementPage() {
                         })
                       }
                     >
-                      <option value="Seller">Seller</option>
-                      <option value="Buyer">Buyer</option>
+                      <option>Seller</option>
+                      <option>Buyer</option>
                     </select>
                   </div>
                 </div>
@@ -470,6 +492,142 @@ export default function UsersManagementPage() {
               >
                 Add User
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isEditOpen && editUser && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalBox}>
+            <div className={styles.modalHeader}>
+              <h2>Edit User</h2>
+            </div>
+
+            <button
+              className={styles.closeBtn}
+              onClick={() => setIsEditOpen(false)}
+            >
+              <img src="/cross.png" alt="close" />
+            </button>
+
+            <div className={styles.sectionHeader}>
+              <span>Profile</span>
+            </div>
+
+            <div className={styles.formGrid}>
+              {/* Avatar */}
+              <div className={styles.avatarBox}>
+                <img src="/profile.png" alt="avatar" />
+              </div>
+
+              {/* Info */}
+              <div>
+                {/* Name + Role */}
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label>Name:</label>
+                    <input value={editUser.account} readOnly />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Role:</label>
+                    <select
+                      value={editUser.role}
+                      onChange={(e) =>
+                        setEditUser({
+                          ...editUser,
+                          role: e.target.value,
+                        })
+                      }
+                    >
+                      <option>Seller</option>
+                      <option>Buyer</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Phone + Status (⭐ สำคัญ: อยู่บรรทัดเดียวกัน) */}
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label>Phone Number:</label>
+                    <input value={editUser.phone || "-"} readOnly />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Status:</label>
+                    <span
+                      className={`${styles.status} ${
+                        editUser.status === "Active"
+                          ? styles.active
+                          : styles.inactive
+                      }`}
+                      style={{ width: "fit-content" }}
+                    >
+                      {editUser.status}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Email */}
+                <div className={styles.formGroup}>
+                  <label>Email:</label>
+                  <input value={editUser.email} readOnly />
+                </div>
+
+                <div className={styles.modalActions}>
+                  <button
+                    className={styles.cancelBtn}
+                    onClick={() => setIsEditOpen(false)}
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    className={styles.confirmBtn}
+                    onClick={async () => {
+                      try {
+                        const res = await fetch(
+                          `/api/auth/users/${editUser.id}/update`,
+                          {
+                            method: "PATCH",
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                              role: editUser.role,
+                            }),
+                          },
+                        );
+
+                        const data = await res.json();
+
+                        if (!res.ok) {
+                          alert("Update failed");
+                          return;
+                        }
+
+                        // ⭐ update UI ทันที
+                        setUsers((prev) =>
+                          prev.map((u) =>
+                            u.id === editUser.id
+                              ? { ...u, role: editUser.role }
+                              : u,
+                          ),
+                        );
+
+                        alert("Updated successfully!");
+                        setIsEditOpen(false);
+                      } catch (err) {
+                        console.error(err);
+                        alert("Something went wrong");
+                      }
+                    }}
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
