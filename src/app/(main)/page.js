@@ -15,7 +15,7 @@ const caveat = Caveat({
 });
 
 async function getBooks() {
-  const res = await fetch("http://localhost:3000/api/auth/books/random", {
+  const res = await fetch("/api/auth/books/random", {
     cache: "no-store",
   });
 
