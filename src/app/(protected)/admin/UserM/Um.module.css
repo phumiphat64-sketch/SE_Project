@@ -569,3 +569,31 @@
   flex-direction: column;
   align-items: center; /* ⭐ ทำให้ทุกอย่างอยู่กลาง */
 }
+
+.statusDropdown {
+  padding: 6px 30px 6px 16px;
+  border-radius: 999px;
+  border: none;
+  font-size: 12px;
+  color: white;
+  cursor: pointer;
+  appearance: none; /* ซ่อน default arrow */
+  position: relative;
+}
+
+/* สี */
+.active {
+  background: #6e9b75;
+}
+
+.inactive {
+  background: #aa5656;
+}
+
+/* ใส่ลูกศร ▼ */
+.statusDropdown {
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='10' viewBox='0 0 20 20' width='10' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px;
+}
