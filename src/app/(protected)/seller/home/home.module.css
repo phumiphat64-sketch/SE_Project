@@ -236,3 +236,27 @@
   background-color: #d9534f;
   color: white;
 }
+
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  font-size: 30px;
+
+
+  color: black;            
+  text-decoration: none;    
+
+  transition: all 0.2s ease;
+}
+
+/* ตัวที่กดไม่ได้ */
+.disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none; /* 🔥 กัน hover + click */
+}

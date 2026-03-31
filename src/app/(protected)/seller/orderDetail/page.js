@@ -63,6 +63,35 @@ function OrderDetailContent() {
     return <div>Loading...</div>;
   }
 
+  const handleCancelOrder = async () => {
+    if (!confirm("Are you sure you want to cancel this order?")) return;
+
+    try {
+      const res = await fetch(`/api/auth/orders/${order._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: "Canceled",
+          trackingNumber: order.trackingNumber || "", // ✅ ใส่เพิ่ม
+          carrier: order.carrier || "", // ✅ ใส่เพิ่ม
+        }),
+      });
+
+      if (!res.ok) {
+        alert("Cancel failed");
+        return;
+      }
+
+      alert("Order canceled");
+      router.push("/seller/home");
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
+    }
+  };
+
   return (
     <main className={`${afacad.className} ${styles.page}`}>
       <BacktoOrder />
@@ -84,17 +113,33 @@ function OrderDetailContent() {
                 </div>
                 <div className={styles.infoLine}>
                   <b>Status:</b>{" "}
-                  <span className={styles.toShipBadge}>To Ship</span>
+                  <span className={styles.toShipBadge}>
+                    {order.status === "Pending"
+                      ? "Pending"
+                      : order.status === "Paid"
+                        ? "To Ship"
+                        : order.status}
+                  </span>
                 </div>
               </div>
 
               <div className={styles.infoBottom}>
-                <button
-                  className={styles.trackButton}
-                  onClick={handleAddTracking}
-                >
-                  Add Tracking
-                </button>
+                {order.status === "Pending" ? (
+                  <button
+                    className={styles.trackButton}
+                    onClick={handleCancelOrder}
+                    style={{ background: "#d9534f" }} // 🔥 ปุ่มแดง
+                  >
+                    Cancel Order
+                  </button>
+                ) : (
+                  <button
+                    className={styles.trackButton}
+                    onClick={handleAddTracking}
+                  >
+                    Add Tracking
+                  </button>
+                )}
               </div>
             </div>
 

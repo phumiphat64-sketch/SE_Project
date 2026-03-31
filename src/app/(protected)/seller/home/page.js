@@ -185,7 +185,17 @@ export default function SellerHome() {
                   </span>
                 </td>
                 <td>{new Date(o.createdAt).toLocaleDateString()}</td>
-                <td>›</td>
+                <td>
+                  {o.status === "Pending" || o.status === "Paid" ? (
+                    <Link href={`/seller/orderDetail?id=${o._id}`}>
+                      <span className={styles.arrow}>›</span>
+                    </Link>
+                  ) : (
+                    <span className={`${styles.arrow} ${styles.disabled}`}>
+                      ›
+                    </span>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
