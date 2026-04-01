@@ -1,10 +1,11 @@
 // Repository Pattern
+
 import { getClient } from "../database/mongoDB";
 import UserRepository from "@/domain/repositories/user.repository.interface";
 import { ObjectId } from "mongodb";
 
 export default class MongoUserRepository extends UserRepository {
-  // สร้าง Private Method เพื่อลดความซ้ำซ้อนของการเรียก Database
+  // 🔹 สร้าง Private Method เหมือนกัน เพื่อให้โค้ดเป็นมาตรฐานเดียวกันทั้งโปรเจกต์
   async #getDb() {
     const client = await getClient();
     return client.db(process.env.MONGODB_DB);
@@ -12,12 +13,12 @@ export default class MongoUserRepository extends UserRepository {
 
   async create(user) {
     const db = await this.#getDb();
-    return db.collection("users").insertOne(user);
+    return await db.collection("users").insertOne(user);
   }
 
   async findByEmail(email) {
     const db = await this.#getDb();
-    return db.collection("users").findOne({ email });
+    return await db.collection("users").findOne({ email });
   }
 
   async update(id, data) {

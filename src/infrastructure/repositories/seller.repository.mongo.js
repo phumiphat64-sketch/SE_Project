@@ -1,8 +1,7 @@
-//Repository Pattern
-
 import { getClient } from "../database/mongoDB";
 
 export default class SellerRepositoryMongo {
+  // 🔹 สร้าง Private Method เพื่อลดยอดการเขียนบรรทัดเรียก DB ซ้ำๆ
   async #getDb() {
     const client = await getClient();
     return client.db("DB_Server");
