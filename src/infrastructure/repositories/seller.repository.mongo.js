@@ -1,31 +1,27 @@
+//Repository Pattern
+
 import { getClient } from "../database/mongoDB";
 
 export default class SellerRepositoryMongo {
-  async createSellerProfile(data) {
+  async #getDb() {
     const client = await getClient();
-    const db = client.db("DB_Server");
+    return client.db("DB_Server");
+  }
 
-    const result = await db.collection("seller_profiles").insertOne(data);
-
-    return result;
+  async createSellerProfile(data) {
+    const db = await this.#getDb();
+    return await db.collection("seller_profiles").insertOne(data);
   }
 
   async getSellerByUserId(userId) {
-    const client = await getClient();
-    const db = client.db("DB_Server");
-
+    const db = await this.#getDb();
     return await db.collection("seller_profiles").findOne({ userId });
   }
 
   async updateSellerByUserId(userId, data) {
-    const client = await getClient();
-    const db = client.db("DB_Server");
-
-    const result = await db
+    const db = await this.#getDb();
+    return await db
       .collection("seller_profiles")
       .updateOne({ userId }, { $set: data });
-
-    return result;
   }
 }
-
