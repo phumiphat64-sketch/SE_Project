@@ -3,6 +3,13 @@ import { jwtVerify } from "jose";
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
+// 🔹 Strategy Pattern: สร้าง Map เก็บการตั้งค่าของแต่ละ Role ไว้ที่เดียว
+const roleConfig = {
+  admin: { prefix: "/admin", home: "/admin/home" },
+  seller: { prefix: "/seller", home: "/seller/profile" },
+  buyer: { prefix: "/buyer", home: "/buyer/profilebuyer" },
+};
+
 // 🔹 Auth Guard
 async function verifyToken(token) {
   try {
@@ -13,19 +20,11 @@ async function verifyToken(token) {
   }
 }
 
-// 🔹 Strategy Pattern (Lookup Map) สำหรับจัดการ Route และ Redirect
-// ถ้าระบบมี Role ใหม่ในอนาคต แค่มาเพิ่มใน Object นี้ที่เดียว โค้ดส่วนอื่นไม่ต้องแก้เลย
-const roleConfig = {
-  admin: { path: "/admin", redirect: "/admin/home" },
-  seller: { path: "/seller", redirect: "/seller/profile" },
-  buyer: { path: "/buyer", redirect: "/buyer/profilebuyer" },
-};
-
 // 🔹 Role Guard
 function checkRole(pathname, role) {
-  // วนลูปเช็คตาม config ด้านบนแทนการใช้ if หลายๆ บรรทัด
+  // ถ้าพยายามเข้าหน้าที่มี prefix แต่อยู่ผิด Role ให้เด้งกลับหน้าแรก
   for (const [key, config] of Object.entries(roleConfig)) {
-    if (pathname.startsWith(config.path) && role !== key) {
+    if (pathname.startsWith(config.prefix) && role !== key) {
       return "/";
     }
   }
@@ -43,12 +42,12 @@ export async function proxy(request) {
 
   // 1. ถ้ามาหน้า /login แต่ดันมี token (ล็อกอินอยู่แล้ว) ให้เด้งไปหน้าตัวเองเลย
   if (pathname === "/login") {
-    if (payload) {
-      // ใช้ Lookup Map ดึง URL เป้าหมายตาม Role (ถ้าไม่เจอให้ไป "/") ลด if-else
-      const redirectUrl = roleConfig[payload.role]?.redirect || "/";
+    if (payload && roleConfig[payload.role]) {
+      // ดึง URL ปลายทางจาก Dictionary แทนการใช้ if-else
+      const redirectUrl = roleConfig[payload.role].home;
       return NextResponse.redirect(new URL(redirectUrl, request.url));
     }
-    return NextResponse.next(); // ถ้ายังไม่ล็อกอิน ปล่อยให้เข้าหน้า login ได้
+    return NextResponse.next();
   }
 
   // 2. ถ้าเข้าหน้าอื่นที่ต้องการสิทธิ์ แต่ไม่มี Token → เด้งไป login
@@ -62,15 +61,16 @@ export async function proxy(request) {
     return NextResponse.redirect(new URL(redirectPath, request.url));
   }
 
-  // 4. Check status (ยุบรวมเงื่อนไข if ให้เหลือบรรทัดเดียว)
-  if (payload?.status === "inactive" && !pathname.startsWith("/suspended")) {
-    return NextResponse.redirect(new URL("/suspended", request.url));
+  // 4. Check status
+  if (payload?.status === "inactive") {
+    if (!pathname.startsWith("/suspended")) {
+      return NextResponse.redirect(new URL("/suspended", request.url));
+    }
   }
 
   return NextResponse.next();
 }
 
-// ❗ อย่าลืมเพิ่ม "/login" เข้าไปใน matcher ด้วย ไม่งั้น middleware จะไม่ทำงานหน้า login
 export const config = {
   matcher: [
     "/buyer/:path*",
