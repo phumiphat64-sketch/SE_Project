@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getClient } from "@/infrastructure/database/mongoDB";
+import { ObjectId } from "mongodb";
 
 export async function GET(req) {
   try {
@@ -40,14 +41,24 @@ export async function POST(req) {
   const client = await getClient();
   const db = client.db("DB_Server");
 
-  
+  console.log("sellerId:", sellerId);
 
-  // 🔥 คำนวณ balance ก่อน
+  // 🔥 เช็คทั้งหมดใน DB
+  const allOrders = await db.collection("orders").find({}).toArray();
+  console.log("ALL ORDERS:", allOrders.length);
+
+  // 🔥 เช็คเฉพาะ sellerId
+  const debugOrders = await db
+    .collection("orders")
+    .find({ sellerId })
+    .toArray();
+  console.log("MATCH ORDERS:", debugOrders.length);
+
   const orders = await db
     .collection("orders")
     .find({
       sellerId,
-      status: "Paid",
+      status: { $in: ["Paid", "In Transit", "Delivered"] },
     })
     .toArray();
 
@@ -55,16 +66,24 @@ export async function POST(req) {
     .collection("payouts")
     .find({
       sellerId,
+      status: { $ne: "Canceled" }, // สมมติว่าไม่เอารายการที่ยกเลิกมาหักลบ
     })
     .toArray();
 
-  const income = orders.reduce((sum, o) => sum + Number(o.total || 0), 0);
+  const withdrawAmount = Number(amount);
+
+  const income = orders.reduce((sum, o) => {
+    const value = o.total ?? o.subtotal ?? 0;
+    return sum + Number(value);
+  }, 0);
+
   const expense = payouts.reduce((sum, p) => sum + Number(p.amount || 0), 0);
 
   const balance = income - expense;
 
-  // ❗ กันถอนเกิน
-  if (amount > balance) {
+  console.log({ income, expense, balance, withdrawAmount });
+
+  if (withdrawAmount > balance) {
     return NextResponse.json({ message: "เงินไม่พอ" }, { status: 400 });
   }
 

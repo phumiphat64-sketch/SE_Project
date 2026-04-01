@@ -97,7 +97,7 @@ export default function LoginPage() {
         const sellerCheck = await resSeller.json();
 
         if (sellerCheck.isSeller) {
-          window.location.replace("/seller/profilehide");
+          window.location.replace("/seller/home");
         } else {
           window.location.href = "/seller/selleregis";
         }
