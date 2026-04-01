@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useEffect} from "react";
 import styles from "../UserM/Um.module.css"; // ⭐ reuse CSS เดิม
+import bmStyles from "./Bm.module.css";
 
 export default function BooksManagementPage() {
   const [books, setBooks] = useState([]);
@@ -10,6 +11,7 @@ export default function BooksManagementPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
   const itemsPerPage = 8;
 
   useEffect(() => {
@@ -26,7 +28,8 @@ export default function BooksManagementPage() {
           dateAdded: new Date(b.createdAt).toLocaleDateString(),
           price: b.price,
           status: b.status,
-          sellerName: b.sellerName || "-", // ⭐ เพิ่มตรงนี้
+          sellerName: b.sellerName || "-",
+          author: b.author || "-", // 👈 เพิ่มบรรทัดนี้ เพื่อดึง author มาจาก Database
         }));
 
         setBooks(formatted);
@@ -220,7 +223,7 @@ export default function BooksManagementPage() {
                 <div className={styles.formRow}>
                   <div className={styles.formGroup}>
                     <label>By:</label>
-                    <input value={"Author"} readOnly />
+                    <input value={selectedBook.author} readOnly />
                   </div>
 
                   <div className={styles.formGroup}>
@@ -238,32 +241,54 @@ export default function BooksManagementPage() {
                   <div className={styles.formGroup}>
                     <label>Status:</label>
 
-                    <select
-                      className={`${styles.statusDropdown} ${
-                        selectedBook.status === "Published"
-                          ? styles.active
-                          : styles.inactive
-                      }`}
-                      value={
-                        selectedBook.status === "Published"
-                          ? "Approved"
-                          : selectedBook.status
-                      }
-                      onChange={(e) => {
-                        const newStatus =
-                          e.target.value === "Approved"
-                            ? "Published"
-                            : "Restrict";
-
-                        setSelectedBook({
-                          ...selectedBook,
-                          status: newStatus,
-                        });
-                      }}
+                    <div
+                      style={{ position: "relative", display: "inline-block" }}
                     >
-                      <option value="Approved">Approved</option>
-                      <option value="Restrict">Restrict</option>
-                    </select>
+                      <select
+                        className={`${bmStyles.statusDropdown} ${
+                          selectedBook.status === "Published"
+                            ? bmStyles.active
+                            : bmStyles.inactive
+                        }`}
+                        value={
+                          selectedBook.status === "Published"
+                            ? "Approved"
+                            : selectedBook.status
+                        }
+                        onChange={(e) => {
+                          const value = e.target.value;
+
+                          setSelectedBook({
+                            ...selectedBook,
+                            status:
+                              value === "Approved" ? "Published" : "Restrict",
+                          });
+
+                          // 👇 เพิ่มบรรทัดนี้ เพื่อบังคับให้เสียโฟกัสทันทีที่เลือกเสร็จ
+                          e.target.blur();
+                        }}
+                        onFocus={() => setIsFocus(true)}
+                        onBlur={() => setIsFocus(false)}
+                      >
+                        <option value="Approved">Approved</option>
+                        <option value="Restrict">Restrict</option>
+                      </select>
+
+                      {/* 🔥 icon สลับ */}
+                      <img
+                        src={isFocus ? "/ku.svg" : "/kd.svg"}
+                        style={{
+                          position: "absolute",
+                          right: "100px", // ⭐ ไม่ต้องดันเยอะ
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          width: "12px",
+                          height: "12px",
+                          pointerEvents: "none",
+                          filter: "invert(1)",
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -276,6 +301,47 @@ export default function BooksManagementPage() {
 
             <div style={{ padding: "10px 0", color: "#3f312a" }}>
               Lorem ipsum dolor sit amet consectetur adipisicing elit...
+            </div>
+
+            <div className={bmStyles.actionButtons}>
+              <button
+                className={bmStyles.btnDiscard}
+                onClick={() => setIsDetailOpen(false)}
+              >
+                Discard
+              </button>
+              <button
+                className={bmStyles.btnSave}
+                onClick={async () => {
+                  try {
+                    await fetch("/api/auth/admin/books", {
+                      method: "PATCH",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        id: selectedBook.id,
+                        status: selectedBook.status, // already mapped
+                      }),
+                    });
+
+                    // ✅ update list หน้า table ทันที (ไม่ต้อง reload)
+                    setBooks((prev) =>
+                      prev.map((b) =>
+                        b.id === selectedBook.id
+                          ? { ...b, status: selectedBook.status }
+                          : b,
+                      ),
+                    );
+
+                    setIsDetailOpen(false);
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+              >
+                Save changes
+              </button>
             </div>
           </div>
         </div>

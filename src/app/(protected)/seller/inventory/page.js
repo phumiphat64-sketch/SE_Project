@@ -34,6 +34,7 @@ export default function InventoryPage() {
     if (status === "Published") return styles.published;
     if (status === "Out of Stock") return styles.out;
     if (status === "Inactive") return styles.inactive;
+    if (status === "Restrict") return styles.restrict; 
   };
 
   async function fetchBooks() {
@@ -174,8 +175,15 @@ export default function InventoryPage() {
 
                 <td>
                   <button
-                    className={`${styles.editBtn} ${afacad.className}`}
-                    onClick={() => router.push(`/seller/editbook/${book._id}`)}
+                    disabled={book.status === "Restrict"} // ✅ disable
+                    className={`${styles.editBtn} ${afacad.className} ${
+                      book.status === "Restrict" ? styles.disabled : ""
+                    }`}
+                    onClick={() => {
+                      if (book.status !== "Restrict") {
+                        router.push(`/seller/editbook/${book._id}`);
+                      }
+                    }}
                   >
                     <img src="/icons/pen.svg" className={styles.editIcon} />
                     Edit

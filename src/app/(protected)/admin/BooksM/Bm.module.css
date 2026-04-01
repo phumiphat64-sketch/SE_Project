@@ -121,17 +121,113 @@
 
 /* สี */
 .active {
-  background: #6e9b75;
+  background: #6e9b75 !important;
 }
 
 .inactive {
-  background: #aa5656;
+  background: #aa5656 !important;
 }
 
 /* ใส่ลูกศร ▼ */
 .statusDropdown {
-  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='10' viewBox='0 0 20 20' width='10' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
+  border-radius: 999px;
+  font-size: 13px;
+  color: white;
+  cursor: pointer;
+  appearance: none;
+  font-weight: 500;
+  width: 120px !important;
+  display: inline-block !important;
+  padding: 6px 24px 6px 12px !important; 
+  min-width: 80px !important;
+  text-align: left;
+  background-position: right 12px center;
   background-size: 10px;
+  /* background-color: #6e9b75 !important; ❌ ลบบรรทัดนี้ออกเพื่อให้เปลี่ยนสีได้ */
+  border: none !important;
+}
+
+.statusDropdown option {
+  color: white;
+}
+
+/* Approved */
+.statusDropdown option[value="Approved"] {
+  background: #6e9b75;
+}
+
+/* Restrict */
+.statusDropdown option[value="Restrict"] {
+  background: #aa5656;
+}
+
+.dropdownWrapper {
+  position: relative;
+  width: fit-content;
+}
+
+/* dropdown list */
+.dropdownMenu {
+  position: absolute;
+  top: 100%; /* ⭐ จาก 110% → 100% */
+  left: 0;
+  margin-top: -8px; /* ⭐ ดันให้ชนกัน */
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+/* option */
+.option {
+  padding: 8px 16px;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.option:hover {
+  opacity: 0.9;
+}
+
+.option:first-child {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.option:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.btnDiscard {
+  background: #9d5b5b; /* สีแดงใกล้เคียงตามภาพ */
+  color: white;
+  border: none;
+  padding: 10px 32px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btnSave {
+  background: #6e9b75; /* สีเขียว */
+  color: white;
+  border: none;
+  padding: 10px 32px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-family: inherit;
+  cursor: pointer;
 }

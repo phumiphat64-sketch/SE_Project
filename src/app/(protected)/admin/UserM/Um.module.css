@@ -407,7 +407,7 @@
 }
 
 .formGroup input,
-.formGroup select {
+.formGroup select:not([class*="statusDropdown"]) {
   height: 42px;
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -571,7 +571,8 @@
 }
 
 .statusDropdown {
-  padding: 6px 30px 6px 16px;
+  padding: 6px 24px 6px 12px;
+  min-width: 80px;
   border-radius: 999px;
   border: none;
   font-size: 12px;

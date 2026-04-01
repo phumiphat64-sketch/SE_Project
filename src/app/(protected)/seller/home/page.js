@@ -54,10 +54,19 @@ export default function SellerHome() {
 
   const toShipCount = sellerOrders.filter((o) => o.status === "Paid").length;
 
+  
+  const BOOK_STATUS = {
+    RESTRICTED: "Restrict",
+  };
+
   const outOfStockCount = booksData.filter((b) => b.stock === 0).length;
 
   const inTransitCount = sellerOrders.filter(
     (o) => o.status === "In Transit",
+  ).length;
+
+  const restrictedCount = booksData.filter(
+    (b) => b.status === "Restrict",
   ).length;
 
   // 🔥 แปลง status ให้ตรง UI
@@ -83,9 +92,14 @@ export default function SellerHome() {
     { icon: "/icons/3dc.svg", number: toShipCount, label: "To Ship" },
     { icon: "/icons/tf.svg", number: inTransitCount, label: "In Transit" },
     { icon: "/icons/br.svg", number: cancelCount, label: "Cancel Items" },
-    { icon: "/icons/mq.svg", number: 0, label: "Restricted Items" },
+    {
+      icon: "/icons/mq.svg",
+      number: restrictedCount,
+      label: "Restricted Items",
+    },
     { icon: "/icons/bk.svg", number: outOfStockCount, label: "Out of Stock" },
   ];
+
 
   useEffect(() => {
     const fetchData = async () => {

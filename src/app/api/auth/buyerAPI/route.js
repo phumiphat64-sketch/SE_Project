@@ -1,4 +1,5 @@
 import { getClient } from "@/infrastructure/database/mongoDB";
+import { ObjectId } from "mongodb";
 
 export async function GET() {
   try {
@@ -7,8 +8,41 @@ export async function GET() {
 
     const books = await db
       .collection("books")
-      .find({ status: "Published" }) // ✅ เอาทุกคน
-      .sort({ createdAt: -1 })
+      .aggregate([
+        {
+          $match: { status: "Published" },
+        },
+        {
+          $lookup: {
+            from: "seller_profiles",
+            let: { sellerId: "$sellerId" },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ["$userId", "$$sellerId"],
+                  },
+                },
+              },
+            ],
+            as: "seller",
+          },
+        },
+        {
+          $unwind: {
+            path: "$seller",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $addFields: {
+            sellerName: "$seller.fullName",
+          },
+        },
+        {
+          $sort: { createdAt: -1 },
+        },
+      ])
       .toArray();
 
     return Response.json({

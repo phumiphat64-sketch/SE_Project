@@ -241,3 +241,13 @@ font-weight:600;
   color:#aaa;
   cursor:not-allowed;
 }
+
+.restrict {
+  color: #c62828; /* 🔥 แดง */
+  font-weight: 600;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

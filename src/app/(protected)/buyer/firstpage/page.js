@@ -64,7 +64,8 @@ export default function BuyerPage() {
 
     return (
       (title.includes(query) || author.includes(query)) &&
-      Number(book.stock) > 0 // ✅ เพิ่มบรรทัดนี้
+      Number(book.stock) > 0 &&
+      book.status !== "Restrict" // 🔥 เพิ่มเงื่อนไขตรงนี้
     );
   });
 
