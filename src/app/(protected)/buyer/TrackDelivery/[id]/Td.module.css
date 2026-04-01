@@ -1,15 +1,16 @@
 .container {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 40px;
+  padding: 60px;
   background: #fffdfa; /* สีพื้นหลังสว่างอมครีมนิดๆ ตามรูป */
   min-height: 100vh;
   color: #000;
+  margin-top: -20px;
 }
 
 .title {
-  margin-top: 70px;
-  font-size: 26px;
+  margin-top: 30px;
+  font-size: 32px;
   font-weight: 700;
   margin-bottom: 20px;
 }
@@ -20,6 +21,7 @@
   border-radius: 8px;
   border: 1px solid #e0e0e0;
   margin-bottom: 30px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.33);
 }
 
 .cardHeader {
@@ -34,7 +36,7 @@
 }
 
 .cardBody {
-  padding: 24px;
+  padding: 32px;
 }
 
 /* Kerry section */
@@ -47,27 +49,32 @@
 }
 
 .logo {
-  width: 76px;
-  height: 76px;
-  background: #dcdcdc;
-  border-radius: 4px;
+  width: 150px;      /* เพิ่มขนาด */
+  height: 150px;
+  object-fit: cover; /* เต็มกรอบ */
+  border-radius: 6px;
   flex-shrink: 0;
+  background: none;  /* ❌ ลบพื้นเทา */
+}
+
+.logo {
+  image-rendering: auto;
 }
 
 .kerryInfo h3 {
-  margin: 0 0 6px 0;
-  font-size: 20px;
+  margin: 10 0 6px 0;
+  font-size: 24px;
   font-weight: 700;
 }
 
 .tracking {
   margin: 0 0 10px 0;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .date {
   margin: 0;
-  font-size: 12px;
+  font-size: 14px;
   color: #444;
 }
 
@@ -78,19 +85,20 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  height: 28px;
-  padding: 0 10px;
-  border-radius: 14px;
+  height: 30px;
+  padding: 0 15px;
+  border-radius: 10px;
   border: none;
-  background: #604f4f;
+  background: #6D5353;
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
+  font-family: inherit;
   cursor: pointer;
 }
 
 .meta p {
-  margin: 6px 0;
-  font-size: 13px;
+  margin: 8px 0;
+  font-size: 18px; /* ขยายตรงนี้ */
 }
 
 .meta strong {
@@ -121,8 +129,8 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -145,7 +153,7 @@
 
 .stepText {
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 20px;
   color: #000;
 }
@@ -166,12 +174,14 @@
 .backBtn, .supportBtn {
   flex: 1;
   max-width: 320px;
-  padding: 12px 0;
+  padding: 8px 0;
   border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 400;
   cursor: pointer;
   text-align: center;
+  font-family: inherit;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.33);
 }
 
 .backBtn {
@@ -184,4 +194,17 @@
   background: #6a8cb1;
   border: none;
   color: #fff;
+}
+
+.backBtn, .supportBtn {
+  transition: all 0.2s ease;
+}
+
+.backBtn:hover, .supportBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+}
+
+.backBtn:active, .supportBtn:active {
+  transform: scale(0.97);
 }

@@ -18,7 +18,10 @@ const afacad = Afacad({
 
 export default function Page({ children }) {
   return (
-    <div style={{ backgroundColor: "#FFFEFA", minHeight: "100vh" }}>
+    <div
+      className={afacad.className} // 👈 เพิ่มตรงนี้
+      style={{ backgroundColor: "#FFFEFA", minHeight: "100vh" }}
+    >
       <Navbar />
       {children}
     </div>

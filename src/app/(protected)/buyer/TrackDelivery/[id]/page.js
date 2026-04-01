@@ -2,6 +2,10 @@
 
 import styles from "./Td.module.css";
 import { Afacad } from "next/font/google";
+import BacktoMyOrder from "@/app/components/BackToMyOrders";
+import { useParams , useRouter} from "next/navigation";
+import { useEffect, useState } from "react";
+
 
 const afacad = Afacad({
   subsets: ["latin"],
@@ -9,30 +13,78 @@ const afacad = Afacad({
 });
 
 export default function Page() {
+  const { id } = useParams();
+  const [order, setOrder] = useState(null);
+  const router = useRouter();
+  const [copied, setCopied] = useState(false);
+
+  const steps = [
+    "Order Confirmed",
+    "Payment Completed",
+    "Shipped",
+    "In Transit",
+    "Out For Delivery",
+    "Delivered",
+  ];
+
+  const currentStatus = order?.status;
+
+  const currentIndex = steps.findIndex((step) => step === currentStatus);
+
+  useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        const res = await fetch(`/api/auth/orders/${id}`);
+        const data = await res.json();
+        setOrder(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    if (id) fetchOrder();
+  }, [id]);
+
+  if (!order) return <div>Loading...</div>;
+
   return (
     <div className={`${styles.container} ${afacad.className}`}>
       {/* ถ้ามี Component PH ก็ใส่ไว้ตามเดิมได้ครับ */}
       {/* <PH /> */}
-
+      <BacktoMyOrder />
       <h1 className={styles.title}>Track Delivery</h1>
 
       <div className={styles.card}>
         <div className={styles.cardHeader}>
-          <p className={styles.orderId}>Order #zzz-zzzzz-zzzz</p>
+          <p className={styles.orderId}>Order {order.id}</p>
         </div>
 
         <div className={styles.cardBody}>
           <div className={styles.kerryBox}>
-            <div className={styles.logo}></div>
+            <img
+              src={order.images?.[0]?.replace(
+                "/upload/",
+                "/upload/w_300,h_300,c_fill,q_auto/",
+              )}
+              alt="book"
+              className={styles.logo}
+            />
 
             <div className={styles.kerryInfo}>
-              <h3>Kerry Express</h3>
-              <p className={styles.tracking}>KR123456789</p>
-              <p className={styles.date}>Placed on 20/2/2026</p>
+              <h3>{order.carrier.replace(/\b\w/g, (c) => c.toUpperCase())}</h3>
+              <p className={styles.tracking}>{order.trackingNumber}</p>
+              <p className={styles.date}>Placed on {order.placedOn}</p>
             </div>
 
-            <button className={styles.copyBtn}>
-              copy
+            <button
+              className={styles.copyBtn}
+              onClick={() => {
+                navigator.clipboard.writeText(order.trackingNumber);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 1500);
+              }}
+            >
+              {copied ? "Copied!" : "Copy"}
               <svg
                 width="14"
                 height="14"
@@ -51,10 +103,15 @@ export default function Page() {
 
           <div className={styles.meta}>
             <p>
-              Carrier : <strong>Kerry Express</strong>
+              Carrier :{" "}
+              <strong>
+                {order.carrier.replace(/\b\w/g, (c) => c.toUpperCase())}
+              </strong>
             </p>
+
             <p>
-              Tracking No. : <span className={styles.link}>KR123456789</span>
+              Tracking No. :{" "}
+              <span className={styles.link}>{order.trackingNumber}</span>
             </p>
           </div>
         </div>
@@ -150,8 +207,18 @@ export default function Page() {
 
       {/* Actions */}
       <div className={styles.actions}>
-        <button className={styles.backBtn}>Back To My Orders</button>
-        <button className={styles.supportBtn}>Contact Support</button>
+        <button
+          className={styles.backBtn}
+          onClick={() => router.push("/buyer/orderpage")}
+        >
+          Back To My Orders
+        </button>
+        <button
+          className={styles.supportBtn}
+          onClick={() => alert("Support coming soon 🚀")}
+        >
+          Contact Support
+        </button>
       </div>
     </div>
   );

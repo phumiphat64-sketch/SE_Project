@@ -17,7 +17,7 @@ export default function BackToOrder({ title }) {
             router.refresh();
           }}
         >
-          ← Back To All Orders
+          ← Back To My Orders
         </button>
       </div>
     </>
