@@ -9,7 +9,7 @@
   bottom: 0;
   width: 100vw;
   height: 100dvh; /* ใช้ dvh เพื่อความแม่นยำบนมือถือ */
-  background-color: #f4f4f4;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   overflow: hidden; /* ล็อก scroll เฉพาะในหน้านี้ */
