@@ -1,11 +1,15 @@
 import { getClient } from "../database/mongoDB";
 import { ObjectId } from "mongodb";
+// Module Pattern + Repository Pattern
+// 🔹 สร้าง Helper Function สำหรับเรียก DB (ซ่อนไว้ให้ใช้แค่ในไฟล์นี้เท่านั้น)
+// เพื่อให้ฟังก์ชันอื่นๆ ในอนาคต (เช่น updateOrder, getOrder) สามารถเรียกใช้ได้โดยไม่ต้องเขียนซ้ำ
+async function getDb() {
+  const client = await getClient();
+  return client.db("DB_Server");
+}
 
 export async function createOrder(orderData) {
-  const client = await getClient();
-  const db = client.db("DB_Server");
-
-  const collection = db.collection("orders");
+  const db = await getDb();
 
   // 🔥 1. หา book จาก bookId (string เช่น BK-xxxx)
   let sellerId = null;
@@ -29,6 +33,6 @@ export async function createOrder(orderData) {
     createdAt: new Date(),
   };
 
-  const result = await collection.insertOne(newOrder);
-  return result;
+  // ยุบรวมตัวแปร result แล้ว return ออกไปโดยตรงเลย
+  return await db.collection("orders").insertOne(newOrder);
 }
