@@ -4,7 +4,8 @@
 
 import styles from "./register.module.css";
 import { Crimson_Text, Caveat } from "next/font/google";
-import { useState } from "react";
+import { useState , useEffect} from "react";
+import { useRouter } from "next/navigation";
 
 const crimson = Crimson_Text({
   subsets: ["latin"],
@@ -21,6 +22,7 @@ export default function RegisterPage() {
   const [showTerms, setShowTerms] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -30,6 +32,20 @@ export default function RegisterPage() {
     confirmPassword: "",
     acceptedTerms: false,
   });
+
+  useEffect(() => {
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      dateOfBirth: "",
+      password: "",
+      confirmPassword: "",
+      acceptedTerms: false,
+    });
+
+    setSelected(null);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -139,7 +155,7 @@ export default function RegisterPage() {
       }
 
       alert("Account created successfully!");
-      console.log(result);
+      router.replace("/login");
     } catch (error) {
       console.error(error);
       alert("Something went wrong");
