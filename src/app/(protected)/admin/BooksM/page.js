@@ -29,9 +29,12 @@ export default function BooksManagementPage() {
           price: b.price,
           status: b.status,
           sellerName: b.sellerName || "-",
-          author: b.author || "-", // 👈 เพิ่มบรรทัดนี้ เพื่อดึง author มาจาก Database
-        }));
+          author: b.author || "-",
 
+          // ✅ เพิ่มบรรทัดนี้
+          image: b.images?.[0] || "",
+        }));
+        console.log("IMAGES:", data.data[0].images);
         setBooks(formatted);
       } catch (err) {
         console.error(err);
@@ -40,6 +43,12 @@ export default function BooksManagementPage() {
 
     fetchBooks();
   }, []);
+
+  useEffect(() => {
+    if (selectedBook) {
+      console.log("SELECTED BOOK:", selectedBook);
+    }
+  }, [selectedBook]);
 
   const filteredBooks = useMemo(() => {
     return (Array.isArray(books) ? books : []).filter((b) => {
@@ -138,6 +147,7 @@ export default function BooksManagementPage() {
                           <span
                             style={{ cursor: "pointer" }}
                             onClick={() => {
+                              console.log("BOOK CLICK:", book);
                               setSelectedBook(book);
                               setIsDetailOpen(true);
                             }}
@@ -202,8 +212,12 @@ export default function BooksManagementPage() {
 
             <div className={styles.formGrid}>
               {/* Image */}
-              <div className={styles.avatarBox}>
-                <div style={{ width: 120, height: 120, background: "#ccc" }} />
+              <div className={bmStyles.bookImageBox}>
+                <img
+                  src={selectedBook.image}
+                  alt="book"
+                  className={bmStyles.bookImage}
+                />
               </div>
 
               {/* Info */}

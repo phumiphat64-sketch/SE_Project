@@ -75,14 +75,34 @@
 
 .sellerRow {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 4px;
+  align-items: flex-start; /* 👈 เปลี่ยนจาก center */
+  gap: 8px;
+}
+
+.sellerRow span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.4em;
 }
 
 .avatar {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatarWrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  background: #f2c94c; /* 👈 สีวง (เปลี่ยนได้) */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

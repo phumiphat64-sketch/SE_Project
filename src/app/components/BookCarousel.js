@@ -36,10 +36,23 @@ export default function BookCarousel({ books }) {
                 <p>{book.author}</p>
 
                 <div className={styles.sellerRow}>
-                  <img
-                    src={sellerImages[index % sellerImages.length]}
-                    className={styles.avatar}
-                  />
+                  <div
+                    className={styles.avatarWrap}
+                    style={{
+                      background: [
+                        "#f2c94c", // เหลือง
+                        "#f28b82", // ชมพู/แดงอ่อน
+                        "#a7d7c5", // เขียวมิ้น
+                        "#d1c4e9", // ม่วงอ่อน
+                        "#f7c59f", // ส้มพีช 👈 เพิ่มใหม่
+                      ][index % 5],
+                    }}
+                  >
+                    <img
+                      src={sellerImages[index % sellerImages.length]}
+                      className={styles.avatar}
+                    />
+                  </div>
                   <span>{book.sellerInfo?.fullName}</span>
                 </div>
               </div>

@@ -1,17 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Crimson_Text, Caveat } from "next/font/google";
 import BookCarousel from "../components/BookCarousel";
 import styles from "./main.module.css";
+import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
 
-const crimson = Crimson_Text({
+export const crimson = Crimson_Text({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
 });
 
-const caveat = Caveat({
+export const caveat = Caveat({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
+});
+
+export const afacad = Afacad({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin", "thai"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
@@ -50,7 +60,9 @@ export default async function Home() {
                   placeholder="Browse Books"
                   className={`${styles.searchInput} ${caveat.className}`}
                 />
-                <button className={styles.searchBtn}>🔍</button>
+                <button className={styles.searchBtn}>
+                  <img src="search.svg" alt="search" />
+                </button>
               </div>
 
               <Link
@@ -80,30 +92,119 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Why Readers Love Us */}
-        <section>
-          <div className={styles.blockone}>
-            <h2 className={styles.sectionTitle}>Why Readers Love Us</h2>
+        {/* Reviews Section */}
+        <section className={styles.reviewSection}>
+          <h2 className={styles.sectionTitle}>Why Readers Love Us</h2>
 
-            <div className={styles.whyGrid}>
-              <div className={styles.whyCard}>Affordable Second-Hand Books</div>
-              <div className={styles.whyCard}>Safe & Easy Transactions</div>
-              <div className={styles.whyCard}>Support Sustainable Reading</div>
-            </div>
-          </div>
-        
-          <div className={styles.getStartedBlock}>
-            <h2 className={styles.sectionTitle}>Get Started with ReRead</h2>
-
-            <div className={styles.startGrid}>
-              <div className={styles.startCard}>
-                <h3>For Buyers</h3>
-                <p>Search, compare, and buy second-hand books easily.</p>
+          <div className={styles.reviewGrid}>
+            <div className={styles.reviewCard}>
+              <div className={styles.reviewTop}>
+                <div className={styles.stars}>★★★★★</div>
+                <div className={styles.date}>Jan 2026</div>
               </div>
 
-              <div className={styles.startCard}>
-                <h3>For Sellers</h3>
-                <p>List your books and reach readers everywhere.</p>
+              <div className={styles.reviewUser}>
+                <img
+                  className={styles.avatar}
+                  src="https://api.dicebear.com/7.x/adventurer/svg?seed=Mint"
+                  alt="Mint"
+                />
+                <div className={styles.reviewName}>Mint</div>
+              </div>
+
+              <p className={styles.reviewText}>
+                คนรักหนังสือแบบเราชอบมาก
+                <br />
+                บางเล่มเลิกผลิตไปแล้ว
+                <br />
+                แต่มีคนเอามาลงขาย ดีใจ
+              </p>
+            </div>
+
+            <div className={styles.reviewCard}>
+              <div className={styles.reviewTop}>
+                <div className={styles.stars}>★★★★★</div>
+                <div className={styles.date}>Jan 2026</div>
+              </div>
+
+              <div className={styles.reviewUser}>
+                <img
+                  className={styles.avatar}
+                  src="https://api.dicebear.com/7.x/adventurer/svg?seed=Sharron"
+                  alt="Sharron"
+                />
+                <div className={styles.reviewName}>Sharron</div>
+              </div>
+
+              <p className={styles.reviewText}>
+                เริ่ดมากคุณน้า
+                <br />
+                ตามหาหนังสือมานานมาก
+                <br />
+                สั่งวันนี้พรุ่งนี้ได้ ไม่มีงงี ไม่งอกตา
+              </p>
+            </div>
+
+            <div className={styles.reviewCard}>
+              <div className={styles.reviewTop}>
+                <div className={styles.stars}>★★★★☆</div>
+                <div className={styles.date}>Jan 2026</div>
+              </div>
+
+              <div className={styles.reviewUser}>
+                <img
+                  className={styles.avatar}
+                  src="https://api.dicebear.com/7.x/adventurer/svg?seed=Audrey"
+                  alt="Audrey"
+                />
+                <div className={styles.reviewName}>Audrey</div>
+              </div>
+
+              <p className={styles.reviewText}>
+                เว็บไซต์ใช้งานง่าย ขายได้สะดวก
+                <br />
+                ลูกค้ายืนยันปุ๊บ เงินเข้าเลย
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Get Started */}
+        <section className={styles.startSectionNew}>
+          <h2 className={styles.sectionTitle}>Get Started with ReRead</h2>
+
+          <div className={styles.startGridNew}>
+            <div className={styles.startCardNew}>
+              <div>
+                <h3 className={styles.startHeading}>For Buyers</h3>
+                <ul className={styles.startList}>
+                  <li>Search for books by title, author, or category</li>
+                  <li>View price and book condition</li>
+                  <li>Add to cart and order easily</li>
+                  <li>Track your order status</li>
+                  <li>Read reviews before buying</li>
+                </ul>
+              </div>
+
+              <div className={styles.cardImageWrap}>
+                <img src="2_2.svg" alt="buyers" />
+              </div>
+            </div>
+
+            <div className={styles.startCardNew}>
+              <div>
+                <h3 className={styles.startHeading}>For Sellers</h3>
+                <ul className={styles.startList}>
+                  <li>Post books quickly</li>
+                  <li>Add details, images, and price</li>
+                  <li>Manage listings anytime</li>
+                  <li>Update shipping status</li>
+                  <li>Reach more buyers online</li>
+                </ul>
+              </div>
+
+              <div className={styles.cardImageWrap}>
+                <img src="1_1.svg" alt="sellers" />
               </div>
             </div>
           </div>
