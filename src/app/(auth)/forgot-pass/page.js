@@ -102,7 +102,7 @@ export default function ForgotPass() {
           className={`${styles.button} ${afacad.className}`}
           onClick={handleForgotPassword}
         >
-          Send Reset Link
+          Send Reset OTP
         </button>
       </div>
     </div>
