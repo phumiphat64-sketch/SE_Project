@@ -110,9 +110,13 @@
   display: flex;
   justify-content: center;
   align-items: baseline;
-  gap: 50px; /* 👈 ระยะห่าง */
-  font-size: 56px;
+  gap: 50px;
+
+  font-size: 64px;      /* 👈 ใหญ่ขึ้น */
+  font-weight: 300;
   margin: 40px 0;
+
+  letter-spacing: 1px;  /* 👈 ฟีลลายมือ */
 }
 
 /* Why (ของใหม่ สไตล์เดียวกับรูปที่ 1) */
@@ -208,34 +212,37 @@
 
 /* Footer */
 .footer {
-  position: flex;
-  bottom: 0;
-  left: 0;
   width: 100%;
   margin-top: 160px;
-
-  background: #6b4c3b;
+  background: #4e3d33; /* ปรับสีน้ำตาลเข้มให้ตรงกับในรูป */
   color: #fff;
-  padding: 20px;
-  z-index: 1000;
+  padding: 40px 0; /* เพิ่มพื้นที่บน-ล่างให้พอดี */
+  position: relative;
 }
 
 .footerContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 30px 40px;
-
+  padding: 0 40px;
+  padding-left: 320px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* กระจาย 4 คอลัมน์ให้ห่างกัน */
   align-items: flex-start;
-  gap: 60px; /* 👈 เพิ่ม */
+  gap: 40px; 
+}
+
+.footerImageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto; /* 👈 บังคับไม่ให้ Flexbox หดขนาดรูป */
+  min-width: 250px; /* 👈 กำหนดพื้นที่ขั้นต่ำให้รูป */
 }
 
 .footerLeft {
   display: flex;
-  align-items: center;
-  gap: 20px;
-  max-width: 320px;
+  align-items: center; /* หรือเปลี่ยนเป็น flex-start ถ้าอยากให้อยู่บนสุด */
+  gap: 40px; /* ระยะห่างระหว่างหนังสือ กับ About Us */
 }
 
 .footerLeft img {
@@ -250,25 +257,31 @@
 
 .footer p,
 .footer span {
-  font-size: 0.9rem;
+  font-size: 1.6rem;
   color: #e0d6cc;
   margin: 4px 0;
 }
 
 .footerColumn {
-  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* ระยะห่างระหว่างบรรทัดในคอลัมน์ */
 }
 
 .footerColumn h3 {
-  margin-bottom: 12px;
-  font-size: 1.2rem;
+  font-size: 2.2rem; /* 👈 ปรับเลขตรงนี้ให้ใหญ่ขึ้น (เช่น 2.4rem, 2.5rem) */
+  margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่างหัวข้อหน่อยจะได้ไม่อึดอัด */
+  font-weight: 600;
+  color: #fff;
 }
 
 .footerColumn p {
-  margin: 6px 0;
-  color: #e0d6cc;
-  font-size: 0.95rem;
+  font-size: 1.3rem; /* 👈 ปรับเลขตรงนี้ (เช่น 1.4rem, 1.5rem) */
+  margin: 10px 0;    /* เพิ่มระยะห่างระหว่างบรรทัดให้อ่านง่ายขึ้น */
+  color: #f2f2f2;
   cursor: pointer;
+  line-height: 0.3;
+  letter-spacing: 0.3px;
 }
 
 .footerColumn p:hover {
@@ -276,27 +289,45 @@
 }
 
 .footerAbout {
+  margin-left: -500px;
+}
+
+.bookAbsolute {
+  position: absolute;
+  left: 50; /* 👈 สั่งให้ติดขอบซ้ายสุดของหน้าจอ */
+  top: 50%; /* 👈 ดันลงมาครึ่งนึง */
+  transform: translateY(-50%); /* 👈 ดึงกลับขึ้นมาให้อยู่กึ่งกลางเป๊ะๆ */
+  
+  /* ไม่ต้องใส่ width/height ตรงนี้แล้ว ปล่อยให้ Image ของ Next.js จัดการ */
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.bigBookImage {
+  width: 100%;
+  max-width: 280px; /* 👈 ถ้าอยากให้ใหญ่หรือเล็กกว่านี้ ให้ปรับเลขนี้ได้เลยครับ (เช่น 300px, 350px) */
+  height: auto;
+  object-fit: contain;
 }
 
 .emailRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
+  gap: 12px; 
+  margin-bottom: 16px;
+  color: #f2f2f2;
 }
 
 .socialIcons {
   display: flex;
-  gap: 10px;
-  margin-top: 6px;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .socialIcons img {
-  width: 22px; /* 🔥 เล็กลง */
-  height: 22px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
 .socialIcons img:hover {
@@ -387,9 +418,29 @@
   background: #ffffff;
   border: 1px solid #d7d7d7;
   border-radius: 20px;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 3px rgba(0,0,0,0.32);
   padding: 24px 26px;
   min-height: 220px;
+  transition: all 0.25s ease;
+}
+
+.reviewCard:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+.reviewCard:hover {
+  border: 1px solid rgba(47,128,237,0.3);
+}
+
+.reviewCard:hover .reviewUser {
+  transform: translateX(2px);
+  transition: 0.25s;
+}
+
+.reviewCard:hover .stars {
+  transform: scale(1.05);
+  transition: 0.25s;
 }
 
 .reviewTop {
@@ -399,13 +450,15 @@
 }
 
 .stars {
-  font-size: 22px;
+  font-size: 30px;
   color: #f1bd34;
+  padding-top: -40px;
 }
 
 .date {
   font-size: 12px;
   color: #6f675f;
+  padding-top: 15px;
 }
 
 .reviewUser {
@@ -416,24 +469,35 @@
 }
 
 .avatar {
-  width: 24px;
-  height: auto;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
 
-  border: 2px solid #668970;
-  padding: 3px;                 /* 👈 ทำให้มีช่องว่างข้างใน */
-  background: #fff;             /* 👈 ทำให้ขอบดู clean */
+  border: none;   /* ❌ เอาขอบออก */
+}
+
+.avatarWrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #fde2e4;   /* 👈 สีพื้นหลังแทน border */
 }
 
 .reviewName {
   font-weight: 600;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .reviewText {
-  font-size: 14px;
+  font-size: 24px;
   line-height: 1.5;
+  font-weight: 450;
 }
 
 /* ===== Get Started ===== */
@@ -459,18 +523,31 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* 👈 ตัวนี้สำคัญ */
-  
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 3px rgba(0,0,0,0.32);
   min-height: 420px; /* 👈 เว้นพื้นที่ให้รูป */
+}
+
+.startCardNew:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+}
+
+.startCardNew:hover img {
+  transform: translateY(-6px) scale(1.05);
+  transition: 0.3s;
 }
 
 .startHeading {
   text-align: center;
   margin-bottom: 10px;
+  font-size: 30px;
+  margin-top: 10px;
 }
 
 .startList {
-  font-size: 13px;
-  padding-left: 18px;
+  font-size: 25px;
+  padding-left: 28px;
 }
 
 .startList li {
@@ -489,10 +566,16 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .cardImageWrap img {
-  width: 180px;   /* ปรับขนาดได้ */
+  width: 350px;   /* ปรับขนาดได้ */
   height: auto;
+  transition: transform 0.3s ease;
+}
+
+.startCardNew:hover {
+  border: 1px solid rgba(102, 137, 112, 0.3);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.12);
 }

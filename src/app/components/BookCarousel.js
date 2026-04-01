@@ -1,10 +1,30 @@
 "use client";
 
-import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import styles from "./BookCarousel.module.css";
+import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
+
+export const crimson = Crimson_Text({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+export const afacad = Afacad({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin", "thai"],
+  weight: ["400", "500", "600", "700"],
+});
 
 const sellerImages = ["/1.png", "/2.png", "/3.png", "/4.png", "/5.png"];
 
@@ -28,12 +48,20 @@ export default function BookCarousel({ books }) {
           <SwiperSlide key={index}>
             <div className={styles.bookCard}>
               <div className={styles.imageWrapper}>
-                <img src={book.images?.[0]} alt={book.title} />
+                <img
+                  src={book.images?.[0]}
+                  alt={book.title}
+                  width={300}
+                  height={220}
+                  className={styles.bookImage}
+                  quality={100}
+                />
               </div>
 
               <div className={styles.info}>
-                <h4>{book.title}</h4>
-                <p>{book.author}</p>
+                <h4 className={crimson.className}>{book.title}</h4>
+
+                <p className={afacad.className}>{book.author}</p>
 
                 <div className={styles.sellerRow}>
                   <div
@@ -53,7 +81,9 @@ export default function BookCarousel({ books }) {
                       className={styles.avatar}
                     />
                   </div>
-                  <span>{book.sellerInfo?.fullName}</span>
+                  <span className={afacad.className}>
+                    {book.sellerInfo?.fullName}
+                  </span>
                 </div>
               </div>
             </div>
