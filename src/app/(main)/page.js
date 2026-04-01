@@ -3,6 +3,7 @@ import Link from "next/link";
 import BookCarousel from "../components/BookCarousel";
 import styles from "./main.module.css";
 import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
+import TypingInput from "../components/TypingInput";
 
 export const crimson = Crimson_Text({
   subsets: ["latin"],
@@ -55,11 +56,10 @@ export default async function Home() {
           <div className={styles.heroSearchWrapper}>
             <div className={styles.searchBox}>
               <div className={styles.inputWrapper}>
-                <input
-                  type="text"
-                  placeholder="Browse Books"
+                <TypingInput
                   className={`${styles.searchInput} ${caveat.className}`}
                 />
+
                 <button className={styles.searchBtn}>
                   <img src="search.svg" alt="search" />
                 </button>
