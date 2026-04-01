@@ -30,7 +30,7 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/next.config.mjs ./
 
-HEALTHCHECK --interval= --timeout=5s --start-period=10s \ CMD wget --quiet --tries=1 --spider http://localhost:3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s CMD wget --quiet --tries=1 --spider http://localhost:3000
 
 USER app
 
