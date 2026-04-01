@@ -1,0 +1,301 @@
+.page {
+  min-height: 100vh;
+  background: #f4f3f1;
+  color: #3f312a;
+}
+
+.subBar {
+  margin-top: 70px;
+  height: 38px;
+  background: #ddd6cf;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px;
+}
+
+.pageTitle {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  margin-top: -10px
+}
+
+/* SEARCH */
+.searchWrapper {
+  margin-bottom: 30px;
+}
+
+.searchInput {
+  width: 100%;
+  height: 46px;
+  border-radius: 8px;
+  border: 1px solid #dcd7d2;
+  padding: 0 16px;
+  background: #ffffff;
+}
+
+/* FILTER */
+.filterRow {
+  margin-bottom: 16px;
+}
+
+.dropdown {
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 20px;
+  border: 1px solid #bfb6ae;
+  background-color: #f5f2ee;
+}
+
+/* TABLE */
+.tableContainer {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #dcd7d2;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background: #e9e4df;
+  padding: 16px;
+  font-weight: 600;
+}
+
+.table td {
+  padding: 16px;
+  border-top: 1px solid #bfb6ae;
+  text-align: center;
+}
+
+.table th,
+.table td {
+  border-right: 1px solid #bfb6ae;  /* ✅ เส้น column */
+}
+
+/* STATUS */
+.statusText {
+  font-weight: 600;
+}
+
+.pending {
+  color: #d4af37;
+}
+
+.complete {
+  color: #6e9b75;
+}
+
+.cancel {
+  color: #aa5656;
+}
+
+/* ACTION */
+.actionCell {
+  text-align: center;
+}
+
+.detailBtn {
+  cursor: pointer;
+  color: #6d5a4e;
+}
+
+/* PAGINATION */
+.paginationRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  gap: 8px;
+}
+
+.pageButton {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid #bfb6ae;
+  background: #f5f2ee;
+  cursor: pointer;
+}
+
+/* ===== MODAL OVERLAY ===== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* ===== MODAL BOX ===== */
+.modalBox {
+  position: relative;
+  background: #ffffff;
+  width: 650px;
+  max-width: 90%;
+  border-radius: 20px;
+  padding: 28px 32px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== HEADER ===== */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  margin-top: -25px;
+  border-bottom: 1px solid #dcd7d2;
+}
+
+.modalHeader h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2c221e;
+}
+
+/* ===== CLOSE BUTTON ===== */
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid #5a4338;
+  background: transparent;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeBtn img {
+  width: 58px;
+  height: 38px;
+}
+
+/* ===== SECTION HEADER ===== */
+.sectionHeader {
+  margin: 20px 0 12px;
+}
+
+.sectionHeader span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b5b52;
+  border-bottom: 2px solid #6b5b52;
+  padding-bottom: 4px;
+}
+
+/* ===== GRID ===== */
+.formGrid {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 24px;
+}
+
+/* ===== AVATAR ===== */
+.avatarBox {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;          /* ✅ ทำให้รูปเป็นวงกลม */
+  background: #d9d9d9;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* ✅ ครอปภาพสวย */
+}
+
+/* ===== FORM ===== */
+.formRow {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 14px;
+}
+
+.formGroup {
+  flex: 1;
+  padding-top: 12px;
+}
+
+.formGroup label {
+  font-size: 13px;
+  color: #6b5b52;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.formGroup input {
+  width: 100%;
+  height: 36px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #2c221e;
+  padding: 0;
+}
+
+/* ===== DIVIDER LINE ===== */
+.divider {
+  height: 1px;
+  background: #dcd7d2;
+  margin: 16px 0;
+}
+
+/* ===== AMOUNT ===== */
+.amountText {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c221e;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.cancelBtn {
+  background: #a65555;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.confirmBtn {
+  background: #6e9b75;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.cancelBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

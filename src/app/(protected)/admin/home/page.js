@@ -33,7 +33,7 @@ const menuItems = [
   },
   {
     title: "Payment management",
-    href: "/admin/payment",
+    href: "/admin/PayM",
     icon: <PaymentIcon />,
   },
 ];
@@ -42,7 +42,7 @@ export default function AdminHomePage() {
   return (
     <main className={`${styles.page} ${poppins.className}`}>
 
-      
+
       <div className={styles.subBar} />
 
       <section className={styles.container}>
