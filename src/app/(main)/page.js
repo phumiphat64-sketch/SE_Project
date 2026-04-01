@@ -215,17 +215,17 @@ export default async function Home() {
         <div className={styles.footerContainer}>
           {/* Left Section */}
           <div className={styles.footerLeft}>
-            <Image src="/books/-_5.png" alt="books" width={400} height={260} />
+            <Image src="/books/-_5.png" alt="books" width={120} height={120} />
 
-            <div>
+            <div className={styles.footerAbout}>
               <h3>About Us</h3>
 
               <div className={styles.emailRow}>
                 <Image
                   src="/icons/mail.png"
                   alt="mail"
-                  width={22}
-                  height={22}
+                  width={20}
+                  height={20}
                 />
                 <span>reread.secondhandbook@gmail.com</span>
               </div>
@@ -234,14 +234,14 @@ export default async function Home() {
                 <Image
                   src="/icons/facebook.png"
                   alt="facebook"
-                  width={28}
-                  height={28}
+                  width={24}
+                  height={24}
                 />
                 <Image
                   src="/icons/instagram.png"
                   alt="instagram"
-                  width={28}
-                  height={28}
+                  width={24}
+                  height={24}
                 />
               </div>
             </div>

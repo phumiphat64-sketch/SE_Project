@@ -78,7 +78,7 @@ export default function ForgotPass() {
           </h2>
 
           <p className={`${styles.subtitle} ${afacad.className}`}>
-            Enter your registered email address and we'll send you a link to
+            Enter your registered email address and we'll send you an OTP to
             reset your password.
           </p>
 
@@ -94,7 +94,7 @@ export default function ForgotPass() {
           />
 
           <p className={`${styles.description} ${afacad.className}`}>
-            We will send a password reset link to this email.
+            We will send an OTP to this email to reset your password.
           </p>
         </div>
 

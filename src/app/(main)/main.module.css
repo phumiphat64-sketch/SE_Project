@@ -111,7 +111,7 @@
   justify-content: center;
   align-items: baseline;
   gap: 50px; /* 👈 ระยะห่าง */
-  
+  font-size: 56px;
   margin: 40px 0;
 }
 
@@ -223,22 +223,23 @@
 .footerContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 30px 40px;
 
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 60px; /* 👈 เพิ่ม */
 }
 
 .footerLeft {
   display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  align-items: center;
+  gap: 20px;
   max-width: 320px;
 }
 
 .footerLeft img {
-  width: 80px; /* 🔥 ลดรูป */
+  width: 100px; /* 👈 จาก 80 → 100 */
   height: auto;
 }
 
@@ -272,6 +273,12 @@
 
 .footerColumn p:hover {
   text-decoration: underline;
+}
+
+.footerAbout {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .emailRow {
@@ -364,24 +371,25 @@
 /* ===== Reviews Section ===== */
 .reviewSection {
   width: 100%;
-  max-width: 980px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 22px;
+  padding: 0 32px;
   margin-top: 120px;
 }
 
 .reviewGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 34px;
+  gap: 40px;
 }
 
 .reviewCard {
   background: #ffffff;
   border: 1px solid #d7d7d7;
-  border-radius: 16px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-  padding: 16px 18px 18px;
+  border-radius: 20px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.15);
+  padding: 24px 26px;
+  min-height: 220px;
 }
 
 .reviewTop {
@@ -391,7 +399,7 @@
 }
 
 .stars {
-  font-size: 18px;
+  font-size: 22px;
   color: #f1bd34;
 }
 
@@ -420,10 +428,11 @@
 
 .reviewName {
   font-weight: 600;
+  font-size: 20px;
 }
 
 .reviewText {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
