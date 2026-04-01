@@ -1,3 +1,6 @@
+// domain/entities/book.entity.js
+// Entity Pattern
+
 export default class Book {
   constructor({
     bookId,
@@ -10,6 +13,10 @@ export default class Book {
     status,
     images,
   }) {
+    // 1. ตรวจสอบข้อมูลเบื้องต้น (เผื่อเพิ่มกฎเกณฑ์ในอนาคต)
+    this.#validate(sellerId, title, price);
+
+    // 2. กำหนดค่าพื้นฐานที่รับเข้ามา
     this.bookId = bookId;
     this.sellerId = sellerId;
     this.title = title;
@@ -19,9 +26,21 @@ export default class Book {
     this.stock = stock;
     this.images = images || [];
 
-    const validStatus = ["Published", "Out of Stock", "Inactive"];
-    this.status = validStatus.includes(status) ? status : "Published";
-
+    // 3. กำหนดค่าสถานะที่ผ่านการกรองแล้ว และเวลาสร้าง
+    this.status = this.#validateStatus(status);
     this.createdAt = new Date();
+  }
+
+  // 🔹 Private Method สำหรับจัดการ Business Rules (สามารถนำคอมเมนต์ออกเพื่อใช้งานได้)
+  #validate(sellerId, title, price) {
+    // if (!sellerId) throw new Error("Seller ID is required");
+    // if (!title) throw new Error("Book title is required");
+    // if (price < 0) throw new Error("Price cannot be negative");
+  }
+
+  // 🔹 Private Method สำหรับกรองสถานะหนังสือ (Encapsulation)
+  #validateStatus(status) {
+    const validStatus = ["Published", "Out of Stock", "Inactive"];
+    return validStatus.includes(status) ? status : "Published";
   }
 }
