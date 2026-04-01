@@ -1,4 +1,4 @@
-// Service Layer Pattern
+// Service Layer Pattern + Dependency Injection + Guard Clause
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -10,36 +10,30 @@ export default class AuthService {
   }
 
   async register(data) {
-    const existing = await this.userRepository.findByEmail(data.email);
-
-    if (existing) {
+    // 1. Guard Clause: เช็คว่ามีอีเมลนี้หรือยัง
+    if (await this.userRepository.findByEmail(data.email)) {
       throw new Error("User already exists");
     }
 
+    // 2. Hash Password & สร้าง Entity
     const hashedPassword = await bcrypt.hash(data.password, 10);
-
     const user = new User({
       ...data,
       password: hashedPassword,
     });
 
-    return this.userRepository.create(user);
+    return await this.userRepository.create(user);
   }
 
   async login({ email, password }) {
     const user = await this.userRepository.findByEmail(email);
 
-    if (!user) {
+    // 1. Guard Clauses: รวมการเช็ค User และ Password ไว้ด้วยกันให้กระชับ
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new Error("Invalid email or password");
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      throw new Error("Invalid email or password");
-    }
-
-    // 🔐 Generate JWT
+    // 2. 🔐 Generate JWT
     const token = jwt.sign(
       {
         userId: user._id.toString(),
@@ -50,6 +44,7 @@ export default class AuthService {
       { expiresIn: "1h" },
     );
 
+    // 3. Return Payload
     return {
       token,
       user: {
