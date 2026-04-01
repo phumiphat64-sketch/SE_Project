@@ -2,7 +2,7 @@
 .page {
   margin-top: 70px;
   min-height: 100vh;
-  background: #f4f3f1;
+  background: #FFFEFA;
   color: #3f312a;
 }
 
@@ -67,7 +67,7 @@
 }
 
 .table th {
-  background: #e9e4df;
+  background: #FFF6EA;
   padding: 16px;
   font-weight: 600;
   text-align: left;

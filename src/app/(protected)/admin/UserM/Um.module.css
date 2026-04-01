@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  background: #f4f3f1;
+  background: #FFFEFA;
   color: #3f312a;
   margin-top: 70px;
 }
@@ -48,9 +48,11 @@
   border: 1px solid #dcd7d2;
   padding: 0 16px 0 40px;
   background: #ffffff;
-  font-size: 14px;
+  font-size: 20px;
   color: #3f312a;
   outline: none;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+  font-family: inherit;
 }
 
 .searchInput::placeholder {
@@ -76,16 +78,16 @@
 
 /* dropdown pill style */
 .dropdown {
-  height: 42px;
-  padding: 0 36px 0 14px;
+  height: 32px;
+  padding: 0 26px 0 14px;
   border-radius: 20px;
   border: 1px solid #bfb6ae;
-  background-color: #f5f2ee;
-  font-size: 15px;
+  background-color: #FFFFFF;
+  font-size: 18px;
   color: #2c221e;
   outline: none;
   cursor: pointer;
-
+  font-family: inherit;
   appearance: none;
 
   /* ลูกศร dropdown */
@@ -99,19 +101,17 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #6e9b75;
+  background: #4E3B34;
   color: #ffffff;
   border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
+  border-radius: 10px;
+  padding: 10px 25px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: background 0.2s;
-}
-
-.addUserBtn:hover {
-  background: #5a8260;
+  font-family: inherit;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
 }
 
 /* TABLE CONTAINER */
@@ -175,7 +175,7 @@
 
 /* HEADER */
 .table th {
-  background: #e9e4df;
+  background: #FFF6EA;
   padding: 16px;
   font-weight: 600;
   font-size: 15px;
@@ -188,7 +188,8 @@
 /* BODY */
 .table td {
   padding: 16px;
-  font-size: 15px;
+  font-size: 18px;
+  color: #000000;
   border-right: none;
   border-top: 1px solid #bfb6ae;
   text-align: center;
@@ -327,20 +328,14 @@
    ADD USER MODAL STYLES 
 ================================= */
 
-/* ปุ่มกดเพื่อเปิด Modal (เผื่อคุณเอาไปวางคู่กับ Filter) */
-.addUserBtn {
-  background: #5a4338;
-  color: #fff;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 14px;
-  transition: background 0.2s;
-}
 .addUserBtn:hover {
   background: #46342b;
+
+  /* ⭐ เงาเข้มขึ้น */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+
+  /* ⭐ ขยับขึ้นนิดนึง */
+  transform: translateY(-1px);
 }
 
 /* พื้นหลังสีดำจางๆ ตอน Popup เด้ง */

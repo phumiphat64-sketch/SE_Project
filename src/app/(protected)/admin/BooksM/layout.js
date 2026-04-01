@@ -18,8 +18,11 @@ const afacad = Afacad({
 
 export default function ProtectedLayout({ children }) {
   return (
-    <div style={{ backgroundColor: "#FFFEFA", minHeight: "100vh" }}>
-      <TopBar/>
+    <div
+      className={afacad.className}
+      style={{ backgroundColor: "#FFFEFA", minHeight: "100vh" }}
+    >
+      <TopBar />
       {children}
     </div>
   );
