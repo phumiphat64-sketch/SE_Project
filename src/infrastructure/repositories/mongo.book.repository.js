@@ -1,15 +1,21 @@
 import { getClient } from "@/infrastructure/database/mongoDB";
 import { ObjectId } from "mongodb";
 import crypto from "crypto";
-
+// Repository Pattern
+// Helper function ทำหน้าที่สร้าง Book ID แยกส่วนออกมาถูกต้องแล้วครับ
 function generateBookId() {
   return "BK-" + crypto.randomBytes(3).toString("hex").toUpperCase();
 }
 
 export default class MongoBookRepository {
-  async addBook(book) {
+  // 🔹 สร้าง Private Method เพื่อลดความซ้ำซ้อน
+  async #getDb() {
     const client = await getClient();
-    const db = client.db("DB_Server");
+    return client.db("DB_Server");
+  }
+
+  async addBook(book) {
+    const db = await this.#getDb();
 
     return await db.collection("books").insertOne({
       ...book,
@@ -18,8 +24,7 @@ export default class MongoBookRepository {
   }
 
   async findById(id) {
-    const client = await getClient();
-    const db = client.db("DB_Server");
+    const db = await this.#getDb();
 
     const book = await db.collection("books").findOne({
       _id: new ObjectId(id),
@@ -29,8 +34,7 @@ export default class MongoBookRepository {
   }
 
   async update(id, data) {
-    const client = await getClient();
-    const db = client.db("DB_Server");
+    const db = await this.#getDb();
 
     const updateData = { ...data };
 
