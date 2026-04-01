@@ -37,21 +37,29 @@ const banks = [
     id: "bangkok",
     name: "Bangkok Bank Public Company Limited",
     logo: "/Bk.png",
+    accountNumber: "147-4-567890",
+    accountName: "ReRead",
   },
   {
     id: "krungthai",
     name: "KRUNG THAI BANK Public Company Limited",
     logo: "/Ks.png",
+    accountNumber: "984-1-23456-7",
+    accountName: "ReRead",
   },
   {
     id: "kasikorn",
     name: "KASIKORNBANK Public Company Limited",
     logo: "/Kb.png",
+    accountNumber: "738-2-88990-0",
+    accountName: "ReRead",
   },
   {
     id: "scb",
     name: "SIAM COMMERCIAL BANK Public Company Limited",
     logo: "/SCBR.png",
+    accountNumber: "045-2-12345-6",
+    accountName: "ReRead",
   },
 ];
 
@@ -152,9 +160,11 @@ const PromptPayQR = ({
 
 const BankTransferPage = ({ order, selectedBank, setShowBankTransfer }) => {
   const bankData = banks.find((b) => b.id === selectedBank);
-  const [accountNumber, setAccountNumber] = useState("");
-  const [accountName, setAccountName] = useState("");
+
+  const accountNumber = bankData?.accountNumber || "";
+  const accountName = bankData?.accountName || "";
   const [copiedField, setCopiedField] = useState("");
+  const [showCardConfirm, setShowCardConfirm] = useState(false);
   const router = useRouter();
 
   const handleCopy = (text, field) => {
@@ -221,13 +231,8 @@ const BankTransferPage = ({ order, selectedBank, setShowBankTransfer }) => {
             <div className={css.fieldBox}>
               <input
                 className={css.inputField}
-                placeholder="Enter account number"
                 value={accountNumber}
-                maxLength={15} /* 👈 กันยาวเกิน */
-                onChange={(e) => {
-                  let value = e.target.value.replace(/\D/g, ""); // 👈 เอาเฉพาะเลข
-                  setAccountNumber(value);
-                }}
+                readOnly
               />
               <Copy
                 size={18}
@@ -241,19 +246,7 @@ const BankTransferPage = ({ order, selectedBank, setShowBankTransfer }) => {
           <div className={css.field}>
             <p className={css.fieldLabel}>Account Name</p>
             <div className={css.fieldBox}>
-              <input
-                className={css.inputField}
-                placeholder="Enter account name"
-                value={accountName}
-                onChange={(e) => {
-                  let value = e.target.value;
-
-                  // ❌ กัน emoji / symbol
-                  value = value.replace(/[^a-zA-Zก-๙\s]/g, "");
-
-                  setAccountName(value);
-                }}
-              />
+              <input className={css.inputField} value={accountName} readOnly />
               <Copy
                 size={18}
                 className={css.copyIcon}
@@ -286,9 +279,7 @@ const BankTransferPage = ({ order, selectedBank, setShowBankTransfer }) => {
           {/* Button */}
           <button
             className={`${css.transferButton} ${afacad.className}`}
-            disabled={
-              accountNumber.length < 10 || accountName.trim().length < 2
-            }
+            disabled={!selectedBank}
             onClick={async () => {
               try {
                 // ❗ validate ก่อน
@@ -361,7 +352,7 @@ const BankTransferPage = ({ order, selectedBank, setShowBankTransfer }) => {
           </p>
         </div>
       </div>
-    </div> 
+    </div>
   );
 };
 
@@ -642,6 +633,77 @@ const AddCardModal = ({ onClose, onSave, savedCards }) => {
   );
 };
 
+const CardConfirmModal = ({
+  order,
+  selectedCard,
+  savedCards,
+  onConfirm,
+  onCancel,
+}) => {
+  const card = savedCards.find((c) => c.id === selectedCard);
+  const brand = card?.brand;
+
+  return (
+    <div className={css.modalOverlay}>
+      <div className={css.confirmCard}>
+        {/* header */}
+        <div className={css.confirmHeader}>
+          <img src="/Ks.png" className={css.bankLogo} />
+          <img
+            src={brand === "VISA" ? "/Visa.svg" : "/MC.svg"}
+            className={css.visaLogo}
+          />
+        </div>
+
+        {/* body */}
+        <div className={css.confirmBody}>
+          <div className={css.confirmRow}>
+            <span className={css.confirmLabel}>Merchant Name:</span>
+            <span className={css.confirmValue}>ReRead</span>
+          </div>
+
+          <div className={css.confirmRow}>
+            <span className={css.confirmLabel}>Amount:</span>
+            <span className={css.confirmValue}>
+              ฿ {order?.total?.toFixed(2)}
+            </span>
+          </div>
+
+          <div className={css.confirmRow}>
+            <span className={css.confirmLabel}>Transaction Date:</span>
+            <span className={css.confirmValue}>
+              {new Date().toLocaleDateString()}
+            </span>
+          </div>
+
+          <div className={css.confirmRow}>
+            <span className={css.confirmLabel}>Card Number:</span>
+            <span className={css.confirmValue}>
+              **** **** ****{" "}
+              {savedCards.find((c) => c.id === selectedCard)?.last4}
+            </span>
+          </div>
+
+          {/* buttons */}
+          <button className={css.confirmBtn} onClick={onConfirm}>
+            Confirm
+          </button>
+
+          <button className={css.cancelBtn} onClick={onCancel}>
+            Cancel
+          </button>
+
+          {/* footer */}
+          <p className={css.confirmFooter}>
+            Call our customer service representative at KrungThai Bank Call
+            Center 02-111-1111 (24 hours)
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function BuyerPaymentPage() {
   const [method, setMethod] = useState("internetBanking");
   const [selectedBank, setSelectedBank] = useState(null);
@@ -652,6 +714,7 @@ export default function BuyerPaymentPage() {
   const [showAddCardModal, setShowAddCardModal] = useState(false);
   const [savedCards, setSavedCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [showCardConfirm, setShowCardConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const router = useRouter();
@@ -1017,61 +1080,8 @@ export default function BuyerPaymentPage() {
                         return;
                       }
 
-                      if (!order?._id) {
-                        alert("Order not loaded");
-                        return;
-                      }
-
-                      console.log("ORDER BEFORE PAY:", order);
-                      console.log("ORDER ID:", order?._id);
-
-                      if (loading) return;
-                      setLoading(true);
-
-                      try {
-                        console.log("ORDER BEFORE PAY:", order);
-                        console.log("ORDER ID:", order?._id);
-
-                        const userStorage = localStorage.getItem("user");
-                        const userData = userStorage
-                          ? JSON.parse(userStorage)
-                          : null;
-                        const userId = userData?.id;
-
-                        const res = await fetch("/api/auth/orders", {
-                          method: "PATCH",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify({
-                            orderId: order._id,
-                            status: "Paid",
-                            userId,
-
-                            paymentMethod: "card",
-                            paymentDetail: {
-                              cardId: selectedCard,
-                            },
-                          }),
-                        });
-
-                        const data = await res.json();
-
-                        console.log("PAYMENT RESPONSE:", data);
-                        console.log("STATUS:", res.status);
-
-                        if (!res.ok) {
-                          throw new Error(data.message || "Payment failed");
-                        }
-
-                        alert("Payment successful!");
-                        router.push("/buyer/firstpage");
-                      } catch (err) {
-                        console.error(err);
-                        alert("Something went wrong");
-                      } finally {
-                        setLoading(false);
-                      }
+                      setShowCardConfirm(true); // ✅ ถูกแล้ว
+                      return;
                     }
 
                     if (method === "internetBanking") {
@@ -1100,6 +1110,60 @@ export default function BuyerPaymentPage() {
             onClose={() => setShowAddCardModal(false)}
             onSave={handleSaveCard}
             savedCards={savedCards}
+          />
+        )}
+
+        {showCardConfirm && (
+          <CardConfirmModal
+            order={order}
+            selectedCard={selectedCard}
+            savedCards={savedCards}
+            onConfirm={async () => {
+              try {
+                if (!order?._id) {
+                  alert("Order not loaded");
+                  return;
+                }
+
+                const userStorage = localStorage.getItem("user");
+                const userData = userStorage ? JSON.parse(userStorage) : null;
+                const userId = userData?.id;
+
+                const res = await fetch("/api/auth/orders", {
+                  method: "PATCH",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    orderId: order._id,
+                    status: "Paid",
+                    userId,
+                    paymentMethod: "card",
+                    paymentDetail: {
+                      cardId: selectedCard,
+                    },
+                  }),
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                  throw new Error(data.message || "Payment failed");
+                }
+
+                alert("Payment successful!");
+
+                // ✅ ปิด modal
+                setShowCardConfirm(false);
+
+                // ✅ redirect
+                router.push("/buyer/firstpage");
+              } catch (err) {
+                console.error(err);
+                alert("Something went wrong");
+              }
+            }}
+            onCancel={() => setShowCardConfirm(false)}
           />
         )}
       </section>

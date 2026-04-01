@@ -340,3 +340,29 @@
     gap: 20px;
   }
 }
+
+.placeOrder:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.placeOrder {
+  transition: all 0.15s ease;
+}
+
+.placeOrder:active {
+  transform: scale(0.96);
+}
+
+/* hover เพิ่มความลื่น */
+.placeOrder:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+
+/* disabled */
+.placeOrder:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}

@@ -207,7 +207,10 @@ export default function OrderSummaryPage() {
 
               <button
                 className={styles.placeOrder}
+                disabled={!defaultAddress}
                 onClick={async () => {
+                  if (!defaultAddress) return; // กันพลาดซ้ำ
+
                   const user = JSON.parse(localStorage.getItem("user"));
 
                   const newOrder = {
@@ -215,8 +218,7 @@ export default function OrderSummaryPage() {
                     placedOn: new Date().toLocaleDateString(),
                     status: "Pending",
 
-                    bookId: orderData?._id, // 🔥🔥🔥 เพิ่มตรงนี้
-
+                    bookId: orderData?._id,
                     bookName: orderData?.title,
                     author: orderData?.author,
                     store: orderData?.sellerName,
@@ -239,7 +241,6 @@ export default function OrderSummaryPage() {
                     ].filter(Boolean),
                   };
 
-                  // 🔥 ยิงเข้า DB
                   await fetch("/api/auth/orders", {
                     method: "POST",
                     headers: {
@@ -257,6 +258,12 @@ export default function OrderSummaryPage() {
               >
                 Place Order
               </button>
+
+              {!defaultAddress && (
+                <p style={{ color: "red", marginTop: "8px" }}>
+                  Please add a shipping address before placing order
+                </p>
+              )}
             </div>
           </div>
         </div>
