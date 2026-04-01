@@ -13,13 +13,22 @@ async function verifyToken(token) {
   }
 }
 
+// 🔹 Strategy Pattern (Lookup Map) สำหรับจัดการ Route และ Redirect
+// ถ้าระบบมี Role ใหม่ในอนาคต แค่มาเพิ่มใน Object นี้ที่เดียว โค้ดส่วนอื่นไม่ต้องแก้เลย
+const roleConfig = {
+  admin: { path: "/admin", redirect: "/admin/home" },
+  seller: { path: "/seller", redirect: "/seller/profile" },
+  buyer: { path: "/buyer", redirect: "/buyer/profilebuyer" },
+};
+
 // 🔹 Role Guard
 function checkRole(pathname, role) {
-  if (pathname.startsWith("/buyer") && role !== "buyer") return "/";
-  if (pathname.startsWith("/seller") && role !== "seller") return "/";
-
-  if (pathname.startsWith("/admin") && role !== "admin") return "/"; // 👈 เพิ่ม
-
+  // วนลูปเช็คตาม config ด้านบนแทนการใช้ if หลายๆ บรรทัด
+  for (const [key, config] of Object.entries(roleConfig)) {
+    if (pathname.startsWith(config.path) && role !== key) {
+      return "/";
+    }
+  }
   return null;
 }
 
@@ -35,15 +44,8 @@ export async function proxy(request) {
   // 1. ถ้ามาหน้า /login แต่ดันมี token (ล็อกอินอยู่แล้ว) ให้เด้งไปหน้าตัวเองเลย
   if (pathname === "/login") {
     if (payload) {
-      let redirectUrl = "/";
-
-      if (payload.role === "admin") {
-        redirectUrl = "/admin/home";
-      } else if (payload.role === "seller") {
-        redirectUrl = "/seller/profile";
-      } else {
-        redirectUrl = "/buyer/profilebuyer";
-      }
+      // ใช้ Lookup Map ดึง URL เป้าหมายตาม Role (ถ้าไม่เจอให้ไป "/") ลด if-else
+      const redirectUrl = roleConfig[payload.role]?.redirect || "/";
       return NextResponse.redirect(new URL(redirectUrl, request.url));
     }
     return NextResponse.next(); // ถ้ายังไม่ล็อกอิน ปล่อยให้เข้าหน้า login ได้
@@ -60,11 +62,9 @@ export async function proxy(request) {
     return NextResponse.redirect(new URL(redirectPath, request.url));
   }
 
-  // 4. Check status (🔥 ใส่ตรงนี้)
-  if (payload?.status === "inactive") {
-    if (!pathname.startsWith("/suspended")) {
-      return NextResponse.redirect(new URL("/suspended", request.url));
-    }
+  // 4. Check status (ยุบรวมเงื่อนไข if ให้เหลือบรรทัดเดียว)
+  if (payload?.status === "inactive" && !pathname.startsWith("/suspended")) {
+    return NextResponse.redirect(new URL("/suspended", request.url));
   }
 
   return NextResponse.next();
@@ -77,6 +77,6 @@ export const config = {
     "/seller/:path*",
     "/admin/:path*",
     "/login",
-    "/suspended", // 👈 เพิ่ม
+    "/suspended",
   ],
 };
