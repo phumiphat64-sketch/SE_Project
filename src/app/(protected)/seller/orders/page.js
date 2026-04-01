@@ -68,10 +68,27 @@ export default function OrdersPage() {
     };
   });
 
+  const formatStatus = (status) => {
+    switch (status) {
+      case "Pending":
+        return "Pending";
+      case "Paid":
+        return "To Ship";
+      case "Shipped":
+        return "In Transit";
+      case "Completed":
+        return "Completed";
+      case "Canceled":
+        return "Canceled";
+      default:
+        return status;
+    }
+  };
+
   const filteredOrders = useMemo(() => {
     return ordersWithBook.filter((order) => {
       const matchesTab =
-        activeTab === "All" ? true : order.status === activeTab;
+        activeTab === "All" ? true : formatStatus(order.status) === activeTab;
 
       const keyword = search.trim().toLowerCase();
 
@@ -97,23 +114,6 @@ export default function OrdersPage() {
     return filteredOrders.slice(start, start + ITEMS_PER_PAGE);
   }, [filteredOrders, currentPage]);
 
-  const formatStatus = (status) => {
-    switch (status) {
-      case "Pending":
-        return "Pending";
-      case "Paid":
-        return "To Ship";
-      case "Shipped":
-        return "In Transit";
-      case "Completed":
-        return "Completed";
-      case "Canceled":
-        return "Canceled";
-      default:
-        return status;
-    }
-  };
-  
   return (
     <main className={`${afacad.className} ${styles.page}`}>
       <section className={styles.content}>
