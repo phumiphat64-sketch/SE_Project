@@ -63,8 +63,10 @@ export async function proxy(request) {
 
   // 4. Check status
   if (payload?.status === "inactive") {
+    const roleHome = roleConfig[payload.role]?.home || "/";
+
     if (!pathname.startsWith("/suspended")) {
-      return NextResponse.redirect(new URL("/suspended", request.url));
+      return NextResponse.redirect(new URL(roleHome, request.url));
     }
   }
 

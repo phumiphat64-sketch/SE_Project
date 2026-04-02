@@ -12,8 +12,6 @@ export async function POST(req) {
 
     const { token, user } = await authService.login(body);
 
-    // ✅ สร้าง response ก่อน
-    // ✅ สร้าง response ก่อน
     const response = NextResponse.json({
       message: "Login successful",
       user: {
@@ -23,11 +21,10 @@ export async function POST(req) {
         phone: user.phone,
         dateOfBirth: user.dateOfBirth,
         role: user.role,
-        addresses: user.addresses || [], // 👈 เพิ่มบรรทัดนี้เข้าไปครับ
+        addresses: user.addresses || [], 
       },
     });
 
-    // ✅ แล้วค่อย set cookie ผ่าน response
     response.cookies.set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

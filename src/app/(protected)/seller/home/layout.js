@@ -40,11 +40,13 @@ export default function ProtectedLayout({ children }) {
 
   return (
     <div
-      className={afacad.className}
+      className={afacad.className} // 👈 เพิ่มตรงนี้
       style={{ backgroundColor: "#FFFEFA", minHeight: "100vh" }}
     >
       <SuspendedGuard user={user} />
-      <TopBar />
+
+      <TopBar showBack={true} />
+
       {children}
     </div>
   );

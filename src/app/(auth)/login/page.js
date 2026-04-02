@@ -44,6 +44,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -142,12 +143,21 @@ export default function LoginPage() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <input
-          type="password"
-          placeholder="Password"
-          className={`${styles.input} ${crimson.className}`}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className={styles.passwordWrapper}>
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className={`${styles.input} ${crimson.className}`}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <img
+            src={showPassword ? "/EyeO.svg" : "/EyeC.svg"} // 👈 ใส่รูปคุณ
+            alt="toggle password"
+            onClick={() => setShowPassword(!showPassword)}
+            className={styles.eyeIcon}
+          />
+        </div>
 
         <div className={styles.forgotWrapper}>
           <p
