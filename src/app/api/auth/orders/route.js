@@ -64,13 +64,12 @@ export async function PATCH(request) {
       userId,
     } = await request.json();
 
-    // 🔥 ใส่ตรงนี้เลย
     if (!ObjectId.isValid(orderId)) {
       return NextResponse.json({ message: "Invalid orderId" }, { status: 400 });
     }
 
     const objectId = new ObjectId(orderId);
-
+    
     if (!orderId) {
       return NextResponse.json(
         { message: "Order ID is required" },
@@ -82,7 +81,6 @@ export async function PATCH(request) {
     const database = client.db("DB_Server");
     const collection = database.collection("orders");
 
-    // ✅ 1. หา order ก่อน
     const order = await collection.findOne({
       _id: objectId,
     });
@@ -91,17 +89,14 @@ export async function PATCH(request) {
       return NextResponse.json({ message: "Order not found" }, { status: 404 });
     }
 
-    // ✅ 2. กันกดซ้ำ
     if (order.status === "Paid") {
       return NextResponse.json({ message: "Already paid" }, { status: 400 });
     }
 
-    // 🔥 3. ใส่ logic หัก stock ตรงนี้ (ตำแหน่งที่คุณถาม)
     if (status === "Paid") {
       const booksCollection = database.collection("books");
 
       if (order.bookId) {
-        // 🔥 เพิ่ม 2 บรรทัดนี้ก่อน
         if (!ObjectId.isValid(order.bookId)) {
           return NextResponse.json(
             { message: "Invalid bookId" },
@@ -111,7 +106,6 @@ export async function PATCH(request) {
 
         const bookObjectId = new ObjectId(order.bookId);
 
-        // 🔥 แล้วใช้ตัวนี้แทน
         const book = await booksCollection.findOne({
           _id: bookObjectId,
         });
@@ -159,7 +153,6 @@ export async function PATCH(request) {
       }
     }
 
-    // ✅ 4. ค่อย update order (สำคัญ: ต้องอยู่หลัง stock)
     const result = await collection.updateOne(
       { _id: objectId },
       {
@@ -169,7 +162,7 @@ export async function PATCH(request) {
           paymentMethod: paymentMethod || null,
           paymentDetail: paymentDetail || null,
 
-          ...(phone && { phone }), // ✅ update เฉพาะตอนมีค่า
+          ...(phone && { phone }), 
 
           paidAt: status === "Paid" ? new Date() : null,
         },

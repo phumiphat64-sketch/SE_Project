@@ -81,7 +81,7 @@ function AddTrackInner() {
 
     const fetchOrder = async () => {
       try {
-        const res = await fetch(`/api/auth/orders/${orderId}`);
+        const res = await fetch(`/ii/auth/orders/${orderId}`);
         const data = await res.json();
         setOrder(data);
       } catch (err) {

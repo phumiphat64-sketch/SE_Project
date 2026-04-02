@@ -7,8 +7,7 @@ export async function PATCH(req) {
     const url = new URL(req.url);
     const segments = url.pathname.split("/");
 
-    const orderId = segments[segments.length - 2]; // 👈 ดึง id จาก URL
-
+    const orderId = segments[segments.length - 2];
     console.log("orderId:", orderId);
 
     const client = await getClient();

@@ -17,13 +17,11 @@ export async function GET(req, { params }) {
         },
       },
       {
-        // 🔥 แปลง userId (string → ObjectId)
         $addFields: {
           userObjectId: { $toObjectId: "$userId" },
         },
       },
       {
-        // 🔥 join กับ users
         $lookup: {
           from: "users",
           localField: "userObjectId",

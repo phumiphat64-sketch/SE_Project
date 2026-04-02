@@ -37,17 +37,14 @@ export async function GET(req) {
 export async function POST(req) {
   const body = await req.json();
   const { sellerId, amount } = body;
-
+  
   const client = await getClient();
   const db = client.db("DB_Server");
 
   console.log("sellerId:", sellerId);
-
-  // 🔥 เช็คทั้งหมดใน DB
   const allOrders = await db.collection("orders").find({}).toArray();
   console.log("ALL ORDERS:", allOrders.length);
 
-  // 🔥 เช็คเฉพาะ sellerId
   const debugOrders = await db
     .collection("orders")
     .find({ sellerId })
@@ -87,15 +84,8 @@ export async function POST(req) {
     return NextResponse.json({ message: "เงินไม่พอ" }, { status: 400 });
   }
 
-  // =========================
-  // ✅ สุ่ม transactionId
-  // =========================
   const random = Math.floor(1000 + Math.random() * 9000);
   const transactionId = `WD-${random}`;
-
-  // =========================
-  // ✅ สุ่ม status + วัน
-  // =========================
   const isPending = Math.random() < 0.5;
 
   let status = "Success";
@@ -109,16 +99,10 @@ export async function POST(req) {
     completeAt.setDate(completeAt.getDate() + days);
   }
 
-  // =========================
-  // ✅ ดึงข้อมูลธนาคาร
-  // =========================
   const sellerProfile = await db.collection("seller_profiles").findOne({
     userId: sellerId,
   });
 
-  // =========================
-  // ✅ บันทึก payout
-  // =========================
   await db.collection("payouts").insertOne({
     sellerId,
     amount: Number(amount),

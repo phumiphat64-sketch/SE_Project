@@ -36,14 +36,9 @@ export async function POST(req) {
       },
     );
 
-    // debug log
     console.log("matched:", result.matchedCount);
     console.log("modified:", result.modifiedCount);
     console.log("OTP for", email, ":", otp);
-
-    // =========================
-    // SEND EMAIL
-    // =========================
 
     const transporter = nodemailer.createTransport({
       service: "gmail",

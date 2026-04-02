@@ -22,7 +22,6 @@ async function verifyToken(token) {
 
 // 🔹 Role Guard
 function checkRole(pathname, role) {
-  // ถ้าพยายามเข้าหน้าที่มี prefix แต่อยู่ผิด Role ให้เด้งกลับหน้าแรก
   for (const [key, config] of Object.entries(roleConfig)) {
     if (pathname.startsWith(config.prefix) && role !== key) {
       return "/";
@@ -40,17 +39,14 @@ export async function proxy(request) {
     payload = await verifyToken(token);
   }
 
-  // 1. ถ้ามาหน้า /login แต่ดันมี token (ล็อกอินอยู่แล้ว) ให้เด้งไปหน้าตัวเองเลย
   if (pathname === "/login") {
     if (payload && roleConfig[payload.role]) {
-      // ดึง URL ปลายทางจาก Dictionary แทนการใช้ if-else
       const redirectUrl = roleConfig[payload.role].home;
       return NextResponse.redirect(new URL(redirectUrl, request.url));
     }
     return NextResponse.next();
   }
 
-  // 2. ถ้าเข้าหน้าอื่นที่ต้องการสิทธิ์ แต่ไม่มี Token → เด้งไป login
   if (!token || !payload) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
