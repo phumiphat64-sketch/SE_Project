@@ -5,6 +5,7 @@ import PageHeader from "@/app/components/PageHeader";
 import { Crimson_Text, Caveat, Afacad, IBM_Plex_Mono } from "next/font/google";
 import { useRouter } from "next/navigation";
 
+
 export const crimson = Crimson_Text({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
@@ -33,6 +34,7 @@ export default function AddBookPage() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState(1);
+  const [isPublishing, setIsPublishing] = useState(false);
   const router = useRouter();
 
   const handleUploadClick = () => {
@@ -68,6 +70,8 @@ export default function AddBookPage() {
   };
 
   const handlePublish = async () => {
+    if (isPublishing) return; // กันยิงซ้ำ
+
     if (!title || !author || !price) {
       alert("Please fill required fields");
       return;
@@ -79,24 +83,26 @@ export default function AddBookPage() {
     }
 
     try {
+      setIsPublishing(true); // lock ปุ่ม
 
-        const uploadedImages = [];
+      const uploadedImages = [];
 
-        for (const img of images) {
-          const formData = new FormData();
-          formData.append("file", img.file);
+      for (const img of images) {
+        const formData = new FormData();
+        formData.append("file", img.file);
 
-          const uploadRes = await fetch("/api/auth/upload", {
-            method: "POST",
-            body: formData,
-          });
+        const uploadRes = await fetch("/api/auth/upload", {
+          method: "POST",
+          body: formData,
+        });
 
-          const uploadData = await uploadRes.json();
+        const uploadData = await uploadRes.json();
 
-          if (uploadData.success) {
-            uploadedImages.push(uploadData.path);
-          }
+        if (uploadData.success) {
+          uploadedImages.push(uploadData.path);
         }
+      }
+
       const bookData = {
         title,
         author,
@@ -123,17 +129,11 @@ export default function AddBookPage() {
 
       alert("Book published successfully!");
       router.replace("/seller/home");
-
-      setTitle("");
-      setAuthor("");
-      setDescription("");
-      setPrice("");
-      setStock(1);
-      setImages([]);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsPublishing(false); // unlock
     }
-
   };
 
   const removeImage = (index) => {
@@ -147,7 +147,9 @@ export default function AddBookPage() {
 
       {/* BOOK IMAGES */}
       <div className={`${styles.card} ${afacad.className}`}>
-        <div className={`${styles.cardHeader} ${afacad.className}`}>Book Images</div>
+        <div className={`${styles.cardHeader} ${afacad.className}`}>
+          Book Images
+        </div>
 
         <div className={styles.cardBody}>
           <p className={`${styles.uploadText} ${afacad.className}`}>
@@ -168,12 +170,17 @@ export default function AddBookPage() {
               onChange={handleFiles}
             />
 
-            <button className={`${styles.uploadBtn} ${afacad.className}`} onClick={handleUploadClick}>
+            <button
+              className={`${styles.uploadBtn} ${afacad.className}`}
+              onClick={handleUploadClick}
+            >
               <img src="/icons/upload.svg" alt="upload" />
               Upload images
             </button>
 
-            <span className={`${styles.dragText} ${afacad.className}`}>Drag & Drop images here</span>
+            <span className={`${styles.dragText} ${afacad.className}`}>
+              Drag & Drop images here
+            </span>
           </div>
           {images.length > 0 && (
             <div className={styles.previewGrid}>
@@ -202,7 +209,9 @@ export default function AddBookPage() {
 
       {/* BOOK INFORMATION */}
       <div className={styles.card}>
-        <div className={`${styles.cardHeader} ${afacad.className}`}>Book Information</div>
+        <div className={`${styles.cardHeader} ${afacad.className}`}>
+          Book Information
+        </div>
 
         <div className={`${styles.cardBody} ${afacad.className}`}>
           <div className={styles.formGroup}>
@@ -273,8 +282,12 @@ export default function AddBookPage() {
 
       {/* Publish Button */}
       <div className={styles.publishWrap}>
-        <button className={`${styles.publishBtn} ${afacad.className}`} onClick={handlePublish}>
-          Publish Book
+        <button
+          disabled={isPublishing}
+          className={styles.publishBtn}
+          onClick={handlePublish}
+        >
+          {isPublishing ? "Publishing..." : "Publish Book"}
         </button>
       </div>
     </div>
